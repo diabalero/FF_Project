@@ -1,4 +1,5 @@
 <?php
+require('mysql.php');
 $json = json_decode(file_get_contents('C:/Users/alexandj/WebServer/root/FF_Project/data/2015.json'));
 //var_dump($json);
 //var_dump($json->players[0]);
