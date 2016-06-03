@@ -1,31 +1,38 @@
 <?php
 //require mysql.php allows you to run queries using the $mysqli connection variable, example: $mysqli->query($sql);
-require('mysql.php');
+//require('mysql.php');
 
 $seasons = array('2010', '2011', '2012', '2013', '2014', '2015');
 $weeks = array('1','2','3','4','5','6','7','8','9','10','11,','12','13','14','15','16','17','18','19','20','21','22');
 
 //function to insert stats for players/seasons/weeks. configured so that iteration through the pages is possible via a wrapper function
-function insert_t_players_stats_from_nfl_api($week, $season){
-    $cxContext = set_proxy();
+function insert_t_players_stats_from_nfl_api($week, $season, $requireProxy){ //set requireProxy to true if you are at work
+    //set the proxy info if true in the function definition
+    if($requireProxy == true){
+    $cxContext = set_proxy();        
+    }
+    else $cxContext = null;
+    //here is the URL, I will loop through all the weeks of seasons 2010 to Present
     $url = "http://api.fantasy.nfl.com/v2/players/weekstats?week=" . $week . "&season=" . $season;
-    //echo $url;
+    //get the stats from the nfl api in json form
     $json = json_decode(file_get_contents($url, False, $cxContext));
-    //var_dump($json->games->{'102016'});
-    /*foreach ($json->games as $var){
-        var_dump($var);
-    }*/
+    //get the game id from the json file, that will be part of the path to the stats
     $game_id = $json->systemConfig->currentGameId;
-    //echo $game_id;
+    //create an array of player id's to loop through
+    $player_ids = array();
+    foreach ($json->games->$game_id->players as $key => $value){
+    array_push($player_ids, $key);
+    // for each player, insert the stats into the database on the given season and week (externally looped outside of this function)
+    foreach ($player_ids as $key => $value){ //something is really wrong here...
+        echo $value . "<br />";
+    }
    /*foreach($json->games->$game_id->players->{'100027'}->stats->week->{'2015'}->{'1'} as $key => $value){
         
         echo "Key = " . $key . " " . "Value= " .  $value . "<br />";        
     }*/
-    $player_ids = array();
-    foreach ($json->games->$game_id->players as $key => $value){
-        array_push($player_ids, $key);
+
     }
-    print_r($player_ids);
+    
 }
 
 
@@ -81,7 +88,7 @@ function set_proxy(){
     }
 
 //Execute functions here
-insert_t_players_stats_from_nfl_api("1", "2015");    
+insert_t_players_stats_from_nfl_api("1", "2015", false);    
     
 ?>
 
