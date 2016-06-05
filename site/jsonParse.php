@@ -25,8 +25,15 @@ function insert_t_players_stats_from_nfl_api($week, $season, $requireProxy){ //s
     }
    //here is the path through the json file for looping reference 
    //$json->games->$game_id->players->$player_id->stats->week->$season->$week
-
+    echo "<table><tr><td>player_id</td><td>stat_id</td><td>stat value</td></tr>";
+    
+    foreach($player_ids as $player_id){
+        foreach($json->games->$game_id->players->$player_id->stats->week->$season->$week as $key =>$value){
+            echo $player_id . ":" . $key . ":" . $value . "<br />";
+        }
     }
+    }//end of the function
+    
     //List the player_id's in the array
     /*foreach ($player_ids as $key => $value){
         echo $key . ":" .  $value . "<br />";
@@ -85,7 +92,7 @@ function set_proxy(){
     }
 
 //Execute functions here
-insert_t_players_stats_from_nfl_api("1", "2015", true);    
+insert_t_players_stats_from_nfl_api("1", "2015", false);    
     
 ?>
 
