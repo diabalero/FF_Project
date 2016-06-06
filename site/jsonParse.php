@@ -1,17 +1,16 @@
 <?php
 //require mysql.php allows you to run queries using the $mysqli connection variable, example: $mysqli->query($sql);
-//require('mysql.php');
-
-$seasons = array('2010', '2011', '2012', '2013', '2014', '2015');
-$weeks = array('1','2','3','4','5','6','7','8','9','10','11,','12','13','14','15','16','17','18','19','20','21','22');
+require('mysql.php');
 
 //function to insert stats for players/seasons/weeks. configured so that iteration through the pages is possible via a wrapper function
-function insert_t_players_stats_from_nfl_api($week, $season, $requireProxy){ //set requireProxy to true if you are at work
+function insert_t_players_stats_from_nfl_api($week, $season, $requireProxy, $mysqli){ //set requireProxy to true if you are at work
     //set the proxy info if true in the function definition
     if($requireProxy == true){
     $cxContext = set_proxy();        
     }
-    else $cxContext = null;
+    else {
+        $cxContext = null;
+    }
     //here is the URL, I will loop through all the weeks of seasons 2010 to Present
     $url = "http://api.fantasy.nfl.com/v2/players/weekstats?week=" . $week . "&season=" . $season;
     //get the stats from the nfl api in json form
@@ -25,13 +24,24 @@ function insert_t_players_stats_from_nfl_api($week, $season, $requireProxy){ //s
     }
    //here is the path through the json file for looping reference 
    //$json->games->$game_id->players->$player_id->stats->week->$season->$week
-    echo "<table><tr><td>player_id</td><td>stat_id</td><td>stat value</td></tr>";
     
     foreach($player_ids as $player_id){
         foreach($json->games->$game_id->players->$player_id->stats->week->$season->$week as $key =>$value){
-            echo $player_id . ":" . $key . ":" . $value . "<br />";
-        }
+                //execute the mysqli_query statement to insert the data into the db 
+                if($mysqli){
+                        $insert = "INSERT INTO t_player_stats(PLAYER_ID, stat_id, season, week, value) 
+                        VALUES('" .  $player_id . "', '" . $key . "', '" . $season . "', '" . $week . "', '" . $value . "')";
+                    echo $insert . "<br />";
+                    /*if($mysqli->query($insert) === TRUE){
+                    echo 'success!';
+                        }
+                    else{
+                        printf("Error: %s\n", $mysqli->error);
+                    }*/
+                        }        
+                    }
     }
+
     }//end of the function
     
     //List the player_id's in the array
@@ -92,7 +102,13 @@ function set_proxy(){
     }
 
 //Execute functions here
-insert_t_players_stats_from_nfl_api("1", "2015", false);    
+for($season = 2010; $season < 2016; $season++){
+    for($week = 1; $week < 23; $week++){
+        insert_t_players_stats_from_nfl_api($week, $season, false, $mysqli);    
+    }
+    
+}
+
     
 ?>
 
