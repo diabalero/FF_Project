@@ -32,22 +32,17 @@ function insert_t_players_stats_from_nfl_api($week, $season, $requireProxy, $mys
                         $insert = "INSERT INTO t_player_stats(PLAYER_ID, stat_id, season, week, value) 
                         VALUES('" .  $player_id . "', '" . $key . "', '" . $season . "', '" . $week . "', '" . $value . "')";
                     echo $insert . "<br />";
-                    /*if($mysqli->query($insert) === TRUE){
+                    if($mysqli->query($insert) === TRUE){
                     echo 'success!';
                         }
                     else{
                         printf("Error: %s\n", $mysqli->error);
-                    }*/
+                    }
                         }        
                     }
     }
 
-    }//end of the function
-    
-    //List the player_id's in the array
-    /*foreach ($player_ids as $key => $value){
-        echo $key . ":" .  $value . "<br />";
-    }*/
+    }
 
 
 
@@ -71,13 +66,13 @@ function insert_t_stats_from_nfl_api(){
         foreach ($json["stats"] as $stat){
             $insert = "INSERT INTO t_stats(stat_id, abbr, name, shortname) 
                 VALUES('" . $stat['id'] . "', '" . $stat['abbr'] . "', '" . $stat['name'] . "', '" . $stat['shortName'] . "')";
-            //echo $insert . "<br />";
-            if($mysqli->query($insert) === TRUE){
+            echo $insert . "<br />";
+            /*if($mysqli->query($insert) === TRUE){
                 echo 'success!';
             }
             else{
                 printf("Error: %s\n", $mysqli->error);
-            }
+            }*/
                 }        
             }
     }
@@ -102,12 +97,16 @@ function set_proxy(){
     }
 
 //Execute functions here
-for($season = 2010; $season < 2016; $season++){
-    for($week = 1; $week < 23; $week++){
-        insert_t_players_stats_from_nfl_api($week, $season, false, $mysqli);    
-    }
     
-}
+    //this populates the database with players stats. this has been done, probably no reason to execute this again.
+    /*for($week = 1; $week < 18; $week++){
+        insert_t_players_stats_from_nfl_api($week, '2010', true, $mysqli);    
+    }*/
+    
+    //this populates the database with stats. probably no reason to execute this again
+    /*
+    insert_t_stats_from_nfl_api()
+    */
 
     
 ?>
