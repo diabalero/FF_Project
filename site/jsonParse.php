@@ -140,7 +140,7 @@ function insert_t_nfl_player_from_v1_api($week, $season, $requireProxy, $mysqli)
     insert_t_stats_from_nfl_api()
     */
     for($week = 1; $week < 18; $week++){
-        insert_t_nfl_player_from_v1_api($week, '2010', true, $mysqli);        
+        //insert_t_nfl_player_from_v1_api($week, '2010', true, $mysqli);        
     }
 
     
