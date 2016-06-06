@@ -96,6 +96,38 @@ function set_proxy(){
     return $cxContext;
     }
 
+
+
+
+//function to extract player data from v1 of the api
+function insert_t_nfl_player_from_v1_api($week, $season, $requireProxy, $mysqli){
+    //set the proxy if needed
+    if ($requireProxy == true){
+        $cxContext = set_proxy();
+    }
+    else{
+        $cxContext = null;
+    }
+    //create url based on function parameters
+    $url = "http://api.fantasy.nfl.com/v1/players/stats?statType=seasonStats&season=" . $season . "&week=" . $week . "&format=json";
+    //cache json
+    $json = json_decode(file_get_contents($url, False, $cxContext));
+    //show me the json
+    //var_dump($json);
+    
+    foreach ($json->players as $key => $value){
+        $insert = "INSERT INTO t_players(player_id, name, position) VALUES ('" . mysqli_real_escape_string($mysqli, $value->id) . "', '" . mysqli_real_escape_string($mysqli, $value->name) . "', '" . mysqli_real_escape_string($mysqli, $value->position) . "')";
+         if($mysqli->query($insert) === TRUE){
+                    echo "successfully added" .  $value->name . "<br/>";
+                        }
+                    else{
+                        printf("Error: %s\n", $mysqli->error);
+                        echo "<br />";
+                    }
+            
+        }
+    }
+    
 //Execute functions here
     
     //this populates the database with players stats. this has been done, probably no reason to execute this again.
@@ -107,6 +139,9 @@ function set_proxy(){
     /*
     insert_t_stats_from_nfl_api()
     */
+    for($week = 1; $week < 18; $week++){
+        insert_t_nfl_player_from_v1_api($week, '2010', true, $mysqli);        
+    }
 
     
 ?>
