@@ -20,23 +20,7 @@ p {
 
 }
 
-table {
-	float: left;
-}
 
-th {
-	float: left;
-	background-color: #b3e6ff;
-	width: 10%;
-	border: 1px solid ##002233;
-}
-
-td {
-	float: left;
-	background-color: #99ddff;
-	width: 10%;
-	border: 1px solid #002233;
-}
 
 
 
