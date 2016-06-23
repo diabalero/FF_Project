@@ -20,7 +20,11 @@ p {
 
 }
 
-
+#menu{
+	width: 300px;
+	float: right;
+	text-align: right;
+}
 
 
 
