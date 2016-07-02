@@ -22,4 +22,17 @@ p {
 #scoreboard{
 	background-color: #3366ff;
 	color: white;
+	height: 300px;
+}
+
+#transactions{
+	height: 300px;
+}
+
+#headlines{
+	height: 300px;
+}
+
+#myteamnews{
+	height: 300px;
 }
