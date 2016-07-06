@@ -1,3 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src='javascript/jquery.js'></script>
+    <script src='javascript/js.js'></script>
+    
+    <Title>Fantasy Football Boost Site</Title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="css/Main.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+</head>
+<?php require('menu.html'); ?>
+
+
 <form name='stats_view'>
     <select name='season'>
         <option value='2016'>2016</option>
@@ -26,5 +40,6 @@
         <option value='TE'>TE</option>
         <option value='DEF'>DEF</option>
     </select>
+    
     
 
