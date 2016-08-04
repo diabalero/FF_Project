@@ -7,18 +7,63 @@ if ($mysqli->connect_error) {
             . $mysqli->connect_error);
 }
 
-$all_players_result_set = $mysqli->query("Select * FROM t_draft_player_list");
-while ($player_array = $all_players_result_set->fetch_array()){
-    $arrays[] = $player_array;
-}
-echo "<table id='player_list_table'><tr><td>Player/Team/Pos</td><td>ADP</td><td>Bye</td><td>High</td><td>Low</td></td></tr>";
-foreach($arrays as $array)
-{
-    echo "<tr><td>" . $array['Name'] . " " . $array['Pos'] . " " . $array['Team'] . "</td><td>" . $array['Overall'] . "</td><td>" . $array['Bye'] . "</td><td>" . $array['High'] . "</td><td>" . $array['Low'] . "</td</tr>"; 
-}
-echo "</table>";
-$all_players_result_set->close();
 
+if ($_GET['resource'] == 'player_list'){
+    $all_players_result_set = $mysqli->query("Select * FROM t_draft_player_list");
+    while ($player_array = $all_players_result_set->fetch_array()){
+        $arrays[] = $player_array;
+    }
+    echo "<table id='player_list_table'><tr><th>Pos</th><th>Player/Team</th><th>ADP</th><th>Bye</th><th>Low</th><th>High</th></th></tr>";
+    foreach($arrays as $array)
+    {
+        echo "<tr class='player_row' id='row_for_" . str_replace(' ', '',$array['Name']) . "'><td>" . $array['Pos'] . "</td><td class = 'click_to_draft' value = '" . $array['Name'] . "'>" . $array['Name'] . " ".  $array['Team'] . "</td><td>" . $array['Overall'] . "</td><td>" . $array['Bye'] . "</td><td class='low_pick' value='" . $array['Low'] . "'>" . $array['Low'] . "</td><td class='high_pick' value='" . $array['High'] . "'>" . $array['High'] . "</td</tr>"; 
+    }
+    echo "</table>";
+    $all_players_result_set->close();   
+}
+
+if ($_GET['resource'] == 'drafted_players'){
+    $drafted_players_result_set = $mysqli->query("SELECT * FROM t_draft_record");
+    $drafted_players_json = json_encode($drafted_players_result_set->fetch_array());
+    echo $drafted_players_json;
+}
+
+/*if($_POST['resource'] == 'draft_player'){
+    $owner = $_POST['owner'];
+    $player_name = $_POST['player_name'];
+    $pick = $_POST['pick'];
+    $sql = "INSERT INTO 't_draft_record' ('owner', 'player_name', 'pick') VALUES '$owner', '$player_name', '$pick'";
+    echo $sql;
+} */
+
+if($_GET['resource'] == 'draft_grid'){
+    $num_rounds = $_GET['numRounds'];
+    $num_teams = $_GET['numTeams'];
+    echo "<table id='draft_grid'>";
+    
+    for($round = 1; $round <=$num_rounds; $round++){
+        //odd numbered rounds
+        if($round % 2 != 0){
+            $pick = .01;
+            echo "<tr round='" . $round . "' >";
+            for($i=1; $i<=$num_teams; $i++){
+                echo "<td pick='" . $round + $pick . "'>";
+                }
+                $pick = $pick + .01;
+            }
+            echo "</tr>";
+            //even numbered rounds
+            if($round % 2 == 0){
+            $pick = $num_teams/100;
+            echo "<tr>";
+            for($i=$num_teams; $i>=1; $i--){
+                echo "<td pick='" . $round + $pick . "'>" . $round + $pick . "</td>";
+                }
+            echo "</tr>";
+            }
+        }
+    echo "</table>";
+}
 
 
 ?>

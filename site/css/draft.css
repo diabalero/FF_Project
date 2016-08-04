@@ -1,0 +1,30 @@
+#menu{
+    background-color:#d9d9d9;
+    width:100%;
+    height:200px; 
+}
+#draft_grid{
+    height:50px;
+    width:50px;
+    border:1px solid black;
+}
+
+#player_list_table, td, th{
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+#player_list_table tr{
+    margin: 0px, 2px;
+}
+#player_list_table tr:nth-child(even){
+    background-color:#d9d9d9;
+    
+}
+
+.click_to_draft:hover{
+    font-size: 1.1em;
+    font-weight: bolder;
+    cursor: pointer;
+    background-color:black;
+    color:white;
+}
