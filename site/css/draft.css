@@ -1,17 +1,33 @@
-#menu{
-    background-color:#d9d9d9;
-    width:100%;
-    height:200px; 
+#outer_limits{
+    max-height:100vh;
+    max-width:100vw;
 }
-#draft_grid{
-    height:50px;
-    width:50px;
+#menu{
     border:1px solid black;
+    background-color:#d9d9d9;
+    height:5%;
+    width:98%;
+    
+}
+/*draft grid was a bad idea and probly has to go =(
+/*#draft_grid{
+    width:99%;
+    height:99%;
+}
+*/
+#player_list{
+    border:1px solid green;
+    float:left;
+    height:95%;
+    width:25%;
+    overflow: scroll;
+    
 }
 
 #player_list_table, td, th{
     border-collapse: collapse;
     border: 1px solid black;
+    
 }
 #player_list_table tr{
     margin: 0px, 2px;
@@ -27,4 +43,19 @@
     cursor: pointer;
     background-color:black;
     color:white;
+}
+
+#teams_display{
+    float:left;
+    height:95%;
+    width:73%;
+    overflow:scroll;
+}
+.team_board{
+    float:left;
+    width:25%;
+    border-collapse: collapse;
+}
+.postition_td{
+    width:10%;
 }
