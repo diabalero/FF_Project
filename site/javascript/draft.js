@@ -32,12 +32,12 @@ $(document).ready(function(){
                 var team = (13 - (pick *100));
             }
             draft_record.push({'pick':pick, 'team':team, 'player':player_name, 'pos': player_pos });
-           //handy to see this work, but I wont need it. 
+           //handy to see this work, but I wont need it. this just proves that picks are recorded into the draft_record array as a log.
            /*for(var i = 0; i < draft_record.length; i++ )
                 {
                     alert(draft_record[i]['pos']);
                 }*/
-
+                
 
           
             
