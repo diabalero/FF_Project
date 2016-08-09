@@ -1,3 +1,9 @@
+//to do//
+//code for adding players to bench when starter spots are taken
+//hidable right side bar to show pick, player and team. needs to be hidden unless clicked to show
+//code to undo a draft pick. should be able to click on a previous pick and reset draft to that point (undo that pick and all after it)
+//color available player rows based on how the current pick compares to thier highest and lowest pick  
+
 $(document).ready(function(){
     
    var numTeams = 13;
