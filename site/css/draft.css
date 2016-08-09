@@ -45,6 +45,10 @@
     color:white;
 }
 
+.drafted{
+    text-decoration: line-through;
+}
+
 #teams_display{
     float:left;
     height:95%;
