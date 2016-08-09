@@ -11,7 +11,7 @@ $(document).ready(function(){
    $('#teams_display').load('../DraftHelper/data.php?resource=teams_display&numTeams='+numTeams+'&numRounds='+numRounds);
    $('#draft_status').text("Round:"+round+" Pick:"+ Math.round(pick*100));
    $.get('../DraftHelper/data.php?resource=drafted_players', function(data, status){
-   console.log("Data: " + data + "\nStatus: " + status);
+   //console.log("Data: " + data + "\nStatus: " + status);
    
    }); //end function to get the list of drafted players and edit/update the working players list column as needed
    
@@ -24,19 +24,28 @@ $(document).ready(function(){
         //3. add player to the correct cell of the correct team board
         //4. increment the pick and round status
         $('body').on('click', '.click_to_draft', function () {
+            //create these variables for ease of use...
             var player_name = $(this).attr('player_name');
             var player_pos = $(this).attr('player_pos');
-            if(round%2!=0){//if an odd round
-                var team = pick * 100;
+            
+            // if its an odd round the team picking should coincide with the pick number 
+            if(round%2!=0){
+                var team = Math.round(pick * 100);
             }
-            if(round%2 == 0){ //if an even round
-                var team = ((numteams + 1) - (pick * 100));
+            //if its an even round the team picking should be inverse to the pick number
+            if(round%2 == 0){
+                var team = ((numTeams + 1) - Math.round(pick * 100));
             }
+            // add the draft pick to the draft_record array
             draft_record.push({'pick':pick, 'team':team, 'player':player_name, 'pos': player_pos });
-
+            // logging to console what team just picked 
+            console.log('Team ' + team + ' just picked');
+            // remove the 'click_to_draft class from the player name cell so he cant be drafted again
             $(this).removeClass();
+            //add the 'drafted' class to the player name cell so his name is styled with line-though
             $(this).addClass('drafted');
-            //figure out what table and cell to put the player in, and put him there.
+            //figure out what team board table and cell to put the player in, and put him there.
+                //!!! still need to add code to add bench spots when starters spots are filled !!!!//
             if (player_pos == 'QB'){
                 if($("#Team"+team+'_QB').text() == ''){
                     $("#Team"+team+'_QB').text(player_name);
@@ -99,22 +108,17 @@ $(document).ready(function(){
                 
             }
             
-                
-
-          
-            
-                
-            
-            
-            if(pick != 0.12){
-                pick = (pick * 100 + .01 * 100)/100;
-                console.log(pick);
+            //if the pick is less than the number of teams
+            if(pick < (numTeams/100)){
+                pick = (((pick * 100) + 1) /100); //Math.round(pick * 100 + .01 * 100)/100;
+                console.log('The current pick is '+ pick);
                 $('#draft_status').text("Round:"+round+" Pick:"+ Math.round(pick*100));
                 return;
             }
-            if(pick == 0.12){
+            if(pick == (numTeams/100)){
                 pick = .01;
                 round += 1;
+                console.log('The current pick is '+ pick);
                 $('#draft_status').text("Round:"+round+" Pick:"+ Math.round(pick*100));
                 return;
             }   
