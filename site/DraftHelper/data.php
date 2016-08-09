@@ -89,13 +89,13 @@ if($_GET['resource'] == 'teams_display'){
         echo "<tr><th colspan=2>Team".$team. " Pick".$team."</th></tr>";
         echo "<tr><td>QB</td><td id='Team".$team."_QB'></td></tr>";
         echo "<tr><td>RB1</td><td id='Team".$team."_RB1'></td></tr>";
-        echo "<tr><td>RB2</td><td id='Team".$team."RB2'></td></tr>";
-        echo "<tr><td>WR1</td><td id='Team".$team."WR1'></td></tr>";
-        echo "<tr><td>WR2</td><td id='Team".$team."WR2'></td></tr>";
-        echo "<tr><td>Flex</td><td id='Team".$team."Flex'></td></tr>";
-        echo "<tr><td>TE</td><td id='Team".$team."TE'></td></tr>";
-        echo "<tr><td>K</td><td id='Team".$team."K'></td></tr>";
-        echo "<tr><td>DEF</td><td id='Team".$team."DEF'></td></tr>";
+        echo "<tr><td>RB2</td><td id='Team".$team."_RB2'></td></tr>";
+        echo "<tr><td>WR1</td><td id='Team".$team."_WR1'></td></tr>";
+        echo "<tr><td>WR2</td><td id='Team".$team."_WR2'></td></tr>";
+        echo "<tr><td>Flex</td><td id='Team".$team."_Flex'></td></tr>";
+        echo "<tr><td>TE</td><td id='Team".$team."_TE'></td></tr>";
+        echo "<tr><td>K</td><td id='Team".$team."_PK'></td></tr>";
+        echo "<tr><td>DEF</td><td id='Team".$team."_DEF'></td></tr>";
         echo "</table>";
     }
 }

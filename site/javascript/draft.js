@@ -33,14 +33,72 @@ $(document).ready(function(){
                 var team = ((numteams + 1) - (pick * 100));
             }
             draft_record.push({'pick':pick, 'team':team, 'player':player_name, 'pos': player_pos });
-           //this loop can be used to wholesale apply the right settings to the player list after a change is made
-           /*for(var i = 0; i < draft_record.length; i++ )
-                {
-                    alert(draft_record[i]['pos']);
-                }*/
-            //
+
             $(this).removeClass();
             $(this).addClass('drafted');
+            //figure out what table and cell to put the player in, and put him there.
+            if (player_pos == 'QB'){
+                if($("#Team"+team+'_QB').text() == ''){
+                    $("#Team"+team+'_QB').text(player_name);
+                }
+                else{
+                    //add a bench row to the table and put the player there.
+                }
+            }
+            if (player_pos == 'TE'){
+                if($("#Team"+team+'_TE').text() == ''){
+                    $("#Team"+team+'_TE').text(player_name);
+                }
+                else{
+                    //add a bench row to the table and put the player there.
+                }
+            }
+            if (player_pos == 'PK'){
+                if($("#Team"+team+'_PK').text() == ''){
+                    $("#Team"+team+'_PK').text(player_name);
+                }
+                else{
+                    //add a bench row to the table and put the player there.
+                }
+            }
+            if (player_pos == 'DEF'){
+                if($("#Team"+team+'_DEF').text() == ''){
+                    $("#Team"+team+'_DEF').text(player_name);
+                }
+                else{
+                    //add a bench row to the table and put the player there.
+                }
+            }
+            if (player_pos == 'RB'){
+                if($("#Team"+team+'_RB1').text() == ''){
+                    $("#Team"+team+'_RB1').text(player_name);
+                    }
+                else if($("#Team"+team+'_RB2').text() == ''){
+                    $("#Team"+team+'_RB2').text(player_name);
+                    }
+                else if($("#Team"+team+'_Flex').text() == ''){
+                    $("#Team"+team+'_Flex').text(player_name);
+                    }
+                else{
+                    //add a bench row to the table and put the player there.
+                }
+            }
+            if (player_pos == 'WR'){
+                if($("#Team"+team+'_WR1').text() == ''){
+                    $("#Team"+team+'_WR1').text(player_name);
+                        }
+                else if($("#Team"+team+'_WR2').text() == ''){
+                    $("#Team"+team+'_WR2').text(player_name);
+                        }
+                else if($("#Team"+team+'_Flex').text() == ''){
+                    $("#Team"+team+'_Flex').text(player_name);
+                        }
+                else{
+                    //add a bench row to the table and put the player there.
+                        }                
+                
+            }
+            
                 
 
           
@@ -61,5 +119,14 @@ $(document).ready(function(){
                 return;
             }   
         });
+        
+        function reset(){
+           //use this function to reset the draft to a certain point
+           /*for(var i = 0; i < draft_record.length; i++ )
+                {
+                    alert(draft_record[i]['pos']);
+                }*/
+            //
+        }
 
 }); //end document.ready
