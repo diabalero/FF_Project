@@ -83,9 +83,10 @@ if($_GET['resource'] == 'menu'){
 if($_GET['resource'] == 'teams_display'){
     $num_rounds = $_GET['numRounds'];
     $num_teams = $_GET['numTeams'];
+    $num_bench_spots = $num_rounds - 9;
     
     for($team = 1; $team <= $num_teams; $team++){
-        echo "<table class='team_board' id='team_".$team.">board'>";
+        echo "<table class='team_board' id='team_".$team."_board'>";
         echo "<tr><th colspan=2>Team".$team. " Pick".$team."</th></tr>";
         echo "<tr><td>QB</td><td id='Team".$team."_QB'></td></tr>";
         echo "<tr><td>RB1</td><td id='Team".$team."_RB1'></td></tr>";
@@ -94,8 +95,12 @@ if($_GET['resource'] == 'teams_display'){
         echo "<tr><td>WR2</td><td id='Team".$team."_WR2'></td></tr>";
         echo "<tr><td>Flex</td><td id='Team".$team."_Flex'></td></tr>";
         echo "<tr><td>TE</td><td id='Team".$team."_TE'></td></tr>";
-        echo "<tr><td>K</td><td id='Team".$team."_PK'></td></tr>";
+        echo "<tr><td>PK</td><td id='Team".$team."_PK'></td></tr>";
         echo "<tr><td>DEF</td><td id='Team".$team."_DEF'></td></tr>";
+    for($i = 1; $i<= $num_bench_spots; $i++){
+        echo "<tr id='team".$team."_bench_".$i."'><td>BN</td><td></td></tr>";
+    }
+        
         echo "</table>";
     }
 }

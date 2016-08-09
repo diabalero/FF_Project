@@ -1,16 +1,19 @@
 //to do//
-//code for adding players to bench when starter spots are taken
+//change code from adding bench spots to having fixed bench spots, will have to add logic to remove rows if a player avoids a certain position the whole draft, or deny the team from drafting that player..
+    //almost done - still need to fix player list functionality if a team cannot draft a player 
 //hidable right side bar to show pick, player and team. needs to be hidden unless clicked to show
 //code to undo a draft pick. should be able to click on a previous pick and reset draft to that point (undo that pick and all after it)
 //color available player rows based on how the current pick compares to thier highest and lowest pick  
 
 $(document).ready(function(){
     
-   var numTeams = 13;
+   var numTeams = 1;
    var numRounds = 15;
+   var num_bench_spots = numRounds - 9;
    var round = 1;
    var pick = .01;
    var draft_record = [];
+   console.log(num_bench_spots);
     
    //load the list of all the players into the side bar
    $('#player_list').load('../DraftHelper/data.php?resource=player_list');
@@ -57,7 +60,7 @@ $(document).ready(function(){
                     $("#Team"+team+'_QB').text(player_name);
                 }
                 else{
-                    //add a bench row to the table and put the player there.
+                    add_to_bench(team, player_pos, player_name);
                 }
             }
             if (player_pos == 'TE'){
@@ -65,7 +68,7 @@ $(document).ready(function(){
                     $("#Team"+team+'_TE').text(player_name);
                 }
                 else{
-                    //add a bench row to the table and put the player there.
+                    add_to_bench(team, player_pos, player_name);
                 }
             }
             if (player_pos == 'PK'){
@@ -73,7 +76,7 @@ $(document).ready(function(){
                     $("#Team"+team+'_PK').text(player_name);
                 }
                 else{
-                    //add a bench row to the table and put the player there.
+                    add_to_bench(team, player_pos, player_name);
                 }
             }
             if (player_pos == 'DEF'){
@@ -81,7 +84,7 @@ $(document).ready(function(){
                     $("#Team"+team+'_DEF').text(player_name);
                 }
                 else{
-                    //add a bench row to the table and put the player there.
+                    add_to_bench(team, player_pos, player_name);
                 }
             }
             if (player_pos == 'RB'){
@@ -95,7 +98,7 @@ $(document).ready(function(){
                     $("#Team"+team+'_Flex').text(player_name);
                     }
                 else{
-                    //add a bench row to the table and put the player there.
+                    add_to_bench(team, player_pos, player_name);
                 }
             }
             if (player_pos == 'WR'){
@@ -109,14 +112,14 @@ $(document).ready(function(){
                     $("#Team"+team+'_Flex').text(player_name);
                         }
                 else{
-                    //add a bench row to the table and put the player there.
+                    add_to_bench(team, player_pos, player_name);
                         }                
                 
             }
             
             //if the pick is less than the number of teams
             if(pick < (numTeams/100)){
-                pick = (((pick * 100) + 1) /100); //Math.round(pick * 100 + .01 * 100)/100;
+                pick = (((pick * 100) + 1) /100);
                 console.log('The current pick is '+ pick);
                 $('#draft_status').text("Round:"+round+" Pick:"+ Math.round(pick*100));
                 return;
@@ -138,5 +141,25 @@ $(document).ready(function(){
                 }*/
             //
         }
+        function add_to_bench(team, player_pos, player_name){
+                 var i = 1;
+                 console.log(num_bench_spots);
+                 while(i <= num_bench_spots){
+                     if($('#team'+team+'_bench_'+i+' td:nth-child(2)').text() == ''){
+                            $('#team'+team+'_bench_'+i+' td:nth-child(2)').text(player_name);
+                            return;    
+                        }
+                    else{
+                        i++;
+                    }     
+                    console.log('you cannot draft another '+player_pos);
+                    }
+        function draft_player(pick, team, player_name, player_pos){
+
+        }
+        }
+                     
+                 
+            
 
 }); //end document.ready
