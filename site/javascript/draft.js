@@ -19,9 +19,10 @@ $(document).ready(function(){
    //function to style the low and high picks to highlight value 
    
    //function to pick a player.
-        //1. put the players name in the right cell of the right table
+        //1. add a record to the draft_record array
         //2. cross off the name in the player list
-        //3. increment the pick and round status
+        //3. add player to the correct cell of the correct team board
+        //4. increment the pick and round status
         $('body').on('click', '.click_to_draft', function () {
             var player_name = $(this).attr('player_name');
             var player_pos = $(this).attr('player_pos');
@@ -29,14 +30,17 @@ $(document).ready(function(){
                 var team = pick * 100;
             }
             if(round%2 == 0){ //if an even round
-                var team = (13 - (pick *100));
+                var team = ((numteams + 1) - (pick * 100));
             }
             draft_record.push({'pick':pick, 'team':team, 'player':player_name, 'pos': player_pos });
-           //handy to see this work, but I wont need it. this just proves that picks are recorded into the draft_record array as a log.
+           //this loop can be used to wholesale apply the right settings to the player list after a change is made
            /*for(var i = 0; i < draft_record.length; i++ )
                 {
                     alert(draft_record[i]['pos']);
                 }*/
+            //
+            $(this).removeClass();
+            $(this).addClass('drafted');
                 
 
           
