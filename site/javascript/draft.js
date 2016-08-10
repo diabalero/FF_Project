@@ -1,6 +1,7 @@
 //to do//
 //hide player rows drafted more than 10 players ago (only show last 10 players drafted, roll up the rest)
 //style the drafted player rows more, faded gray, etc
+    //need a class for the row, not just the td
 //hidable right side bar to show pick, player and team. needs to be hidden unless clicked to show
 //code to undo a draft pick. should be able to click on a previous pick and reset draft to that point (undo that pick and all after it)
 //color available player rows based on how the current pick compares to thier highest and lowest pick 
@@ -183,10 +184,12 @@ $(document).ready(function(){
             draft_record.push({'round':round, 'pick':pick, 'team':team, 'player':player_name, 'pos':player_pos });
             // logging to console what team just picked 
             console.log('Team ' + team + ' just picked');
+            // remove the nth child CSS that alternates the color of rows in the player list
+            $('#player_list_table tr:nth-child(even)').removeAttr("background-color");
             // remove the 'click_to_draft class from the player name cell so he cant be drafted again
             $(obj).removeClass();
             //add the 'drafted' class to the player name cell so his name is styled with line-though
-            $(obj).addClass('drafted');
+            $(obj).parent().addClass('drafted');
             //figure out what team board table and cell to put the player in, and put him there.
         }
                      
