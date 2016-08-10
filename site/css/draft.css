@@ -56,8 +56,9 @@
 }
 .team_board{
     margin: 20px;
+    margin-bottom:20px;
     float:left;
-    width:15%;
+    width:20%;
     border-collapse: collapse;
     
 }
