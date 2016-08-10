@@ -1,7 +1,5 @@
 //to do//
 //hide player rows drafted more than 10 players ago (only show last 10 players drafted, roll up the rest)
-//style the drafted player rows more, faded gray, etc
-    //need a class for the row, not just the td
 //hidable right side bar to show pick, player and team. needs to be hidden unless clicked to show
 //code to undo a draft pick. should be able to click on a previous pick and reset draft to that point (undo that pick and all after it)
 //color available player rows based on how the current pick compares to thier highest and lowest pick 
@@ -32,127 +30,148 @@ $(document).ready(function(){
    
    //function to style the low and high picks to highlight value 
    
-   //function to pick a player.
-        //1. add a record to the draft_record array
-        //2. cross off the name in the player list
-        //3. add player to the correct cell of the correct team board
-        //4. increment the pick and round status
-        $('body').on('click', '.click_to_draft', function () {
-            //create these variables for ease of use...
-            var player_name = $(this).attr('player_name');
-            var player_pos = $(this).attr('player_pos');
-            var this_obj = $(this);
-            
-            // if its an odd round the team picking should coincide with the pick number 
-            if(round%2!=0){
-                var team = Math.round(pick * 100);
-            }
-            //if its an even round the team picking should be inverse to the pick number
-            if(round%2 == 0){
-                var team = ((numTeams + 1) - Math.round(pick * 100));
-            }
+   //function to draft a player
+    $('body').on('click', '.click_to_draft', function () {
+        //create these variables for ease of use...
+        var player_name = $(this).attr('player_name');
+        var player_pos = $(this).attr('player_pos');
+        var this_obj = $(this);
+        var team_id = pick * 100;
+        var team_name = $('#team_'+team_id+'_board').find('.team_name').text();
+        console.log(team_name);
+        
+        // if its an odd round the team picking should coincide with the pick number 
+        if(round%2!=0){
+            var team = Math.round(pick * 100);
+        }
+        //if its an even round the team picking should be inverse to the pick number
+        if(round%2 == 0){
+            var team = ((numTeams + 1) - Math.round(pick * 100));
+        }
 
-                //!!! still need to add code to add bench spots when starters spots are filled !!!!//
-            if (player_pos == 'QB'){
-                if($("#Team"+team+'_QB').text() == ''){
-                    $("#Team"+team+'_QB').text(player_name);
-                    draft_player(this_obj, round, pick, team, player_name, player_pos);
-                }
-                else{
-                    if (add_to_bench(team, player_pos, player_name) == 1){
-                        draft_player(this_obj, round, pick, team, player_name, player_pos);
-                        }
-                }
+            //!!! still need to add code to add bench spots when starters spots are filled !!!!//
+        if (player_pos == 'QB'){
+            if($("#Team"+team+'_QB').text() == ''){
+                $("#Team"+team+'_QB').text(player_name);
+                draft_player(this_obj, round, pick, team, player_name, player_pos);
             }
-            if (player_pos == 'TE'){
-                if($("#Team"+team+'_TE').text() == ''){
-                    $("#Team"+team+'_TE').text(player_name);
-                    draft_player(this_obj, round, pick, team, player_name, player_pos);
-                }
-                else{
-                    if (add_to_bench(team, player_pos, player_name) == 1){
-                        draft_player(this_obj, round, pick, team, player_name, player_pos);
-                        }
-                }
-            }
-            if (player_pos == 'PK'){
-                if($("#Team"+team+'_PK').text() == ''){
-                    $("#Team"+team+'_PK').text(player_name);
-                    draft_player(this_obj, round, pick, team, player_name, player_pos);
-                }
-                else{
-                    if (add_to_bench(team, player_pos, player_name) == 1){
-                        draft_player(this_obj, round, pick, team, player_name, player_pos);
-                        }
-                }
-            }
-            if (player_pos == 'DEF'){
-                if($("#Team"+team+'_DEF').text() == ''){
-                    $("#Team"+team+'_DEF').text(player_name);
-                    draft_player(this_obj, round, pick, team, player_name, player_pos);
-                }
-                else{
-                    if (add_to_bench(team, player_pos, player_name) == 1){
-                        draft_player(this_obj, round, pick, team, player_name, player_pos);
-                        }
-                }
-            }
-            if (player_pos == 'RB'){
-                if($("#Team"+team+'_RB1').text() == ''){
-                    $("#Team"+team+'_RB1').text(player_name);
+            else{
+                if (add_to_bench(team, player_pos, player_name) == 1){
                     draft_player(this_obj, round, pick, team, player_name, player_pos);
                     }
-                else if($("#Team"+team+'_RB2').text() == ''){
-                    $("#Team"+team+'_RB2').text(player_name);
-                    draft_player(this_obj, round, pick, team, player_name, player_pos);
-                    }
-                else if($("#Team"+team+'_Flex').text() == ''){
-                    $("#Team"+team+'_Flex').text(player_name);
-                    draft_player(this_obj, round, pick, team, player_name, player_pos);
-                    }
-                else{
-                        if (add_to_bench(team, player_pos, player_name) == 1){
-                            draft_player(this_obj, round, pick, team, player_name, player_pos);
-                            }
-                        }
             }
-            if (player_pos == 'WR'){
-                if($("#Team"+team+'_WR1').text() == ''){
-                    $("#Team"+team+'_WR1').text(player_name);
+        }
+        if (player_pos == 'TE'){
+            if($("#Team"+team+'_TE').text() == ''){
+                $("#Team"+team+'_TE').text(player_name);
+                draft_player(this_obj, round, pick, team, player_name, player_pos);
+            }
+            else{
+                if (add_to_bench(team, player_pos, player_name) == 1){
                     draft_player(this_obj, round, pick, team, player_name, player_pos);
-                        }
-                else if($("#Team"+team+'_WR2').text() == ''){
-                    $("#Team"+team+'_WR2').text(player_name);
+                    }
+            }
+        }
+        if (player_pos == 'PK'){
+            if($("#Team"+team+'_PK').text() == ''){
+                $("#Team"+team+'_PK').text(player_name);
+                draft_player(this_obj, round, pick, team, player_name, player_pos);
+            }
+            else{
+                if (add_to_bench(team, player_pos, player_name) == 1){
                     draft_player(this_obj, round, pick, team, player_name, player_pos);
-                        }
-                else if($("#Team"+team+'_Flex').text() == ''){
-                    $("#Team"+team+'_Flex').text(player_name);
+                    }
+            }
+        }
+        if (player_pos == 'DEF'){
+            if($("#Team"+team+'_DEF').text() == ''){
+                $("#Team"+team+'_DEF').text(player_name);
+                draft_player(this_obj, round, pick, team, player_name, player_pos);
+            }
+            else{
+                if (add_to_bench(team, player_pos, player_name) == 1){
                     draft_player(this_obj, round, pick, team, player_name, player_pos);
-                        }
-                else{
+                    }
+            }
+        }
+        if (player_pos == 'RB'){
+            if($("#Team"+team+'_RB1').text() == ''){
+                $("#Team"+team+'_RB1').text(player_name);
+                draft_player(this_obj, round, pick, team, player_name, player_pos);
+                }
+            else if($("#Team"+team+'_RB2').text() == ''){
+                $("#Team"+team+'_RB2').text(player_name);
+                draft_player(this_obj, round, pick, team, player_name, player_pos);
+                }
+            else if($("#Team"+team+'_Flex').text() == ''){
+                $("#Team"+team+'_Flex').text(player_name);
+                draft_player(this_obj, round, pick, team, player_name, player_pos);
+                }
+            else{
                     if (add_to_bench(team, player_pos, player_name) == 1){
                         draft_player(this_obj, round, pick, team, player_name, player_pos);
-                            }
-                    
-                        }                
+                        }
+                    }
+        }
+        if (player_pos == 'WR'){
+            if($("#Team"+team+'_WR1').text() == ''){
+                $("#Team"+team+'_WR1').text(player_name);
+                draft_player(this_obj, round, pick, team, player_name, player_pos);
+                    }
+            else if($("#Team"+team+'_WR2').text() == ''){
+                $("#Team"+team+'_WR2').text(player_name);
+                draft_player(this_obj, round, pick, team, player_name, player_pos);
+                    }
+            else if($("#Team"+team+'_Flex').text() == ''){
+                $("#Team"+team+'_Flex').text(player_name);
+                draft_player(this_obj, round, pick, team, player_name, player_pos);
+                    }
+            else{
+                if (add_to_bench(team, player_pos, player_name) == 1){
+                    draft_player(this_obj, round, pick, team, player_name, player_pos);
+                        }
                 
-            }
+                    }                
             
-            //if the pick is less than the number of teams
-            if(pick < (numTeams/100)){
-                pick = (((pick * 100) + 1) /100);
-                console.log('The current pick is '+ pick);
-                $('#draft_status').text("Round:"+round+" Pick:"+ Math.round(pick*100));
-                return;
-            }
-            if(pick == (numTeams/100)){
-                pick = .01;
-                round += 1;
-                console.log('The current pick is '+ pick);
-                $('#draft_status').text("Round:"+round+" Pick:"+ Math.round(pick*100));
-                return;
-            }   
+        }
+        
+        //increment the pick and our round based on current pick and number of teams 
+        if(pick < (numTeams/100)){
+            pick = (((pick * 100) + 1) /100);
+            console.log('The current pick is '+ pick);
+            $('#draft_status').text("Round:"+round+" Pick:"+ Math.round(pick*100));
+            //overall_pick = round + pick;
+            //not yet, team names first
+            return;
+        }
+        if(pick == (numTeams/100)){
+            pick = .01;
+            round += 1;
+            console.log('The current pick is '+ pick);
+            $('#draft_status').text("Round:"+round+" Pick:"+ Math.round(pick*100));
+            //overall_pick = round + pick;
+            //not yet, team names first
+            return;
+        }   
+    });
+    //function to change the name of a team
+    $('body').on('dblclick', '.team_name', function() {
+        $('.team_board').find('div').removeClass();
+        var team = $(this).text();
+        var this_thing = $(this);
+        $(this_thing).html('<input type="text" id="team'+team+'_name"></input><button id="change">change</button>');
+        $('#team'+team+'_name').focus();
+        $('body').on('click', '#change', function(){
+            $(this_thing).text($('#team'+team+'_name').val());
+            $('.team_board').find('div').addClass('team_name');
         });
+        $('body').on('keyup', '#team'+team+'_name', function(e){
+            if(e.keyCode == 13){
+                $(this_thing).text($('#team'+team+'_name').val());
+                $('.team_board').find('div').addClass('team_name');    
+            }
+        })
+    });
         
         function reset(){
            //use this function to reset the draft to a certain point

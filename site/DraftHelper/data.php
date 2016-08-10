@@ -87,7 +87,7 @@ if($_GET['resource'] == 'teams_display'){
     
     for($team = 1; $team <= $num_teams; $team++){
         echo "<table class='team_board' id='team_".$team."_board'>";
-        echo "<tr><th colspan=2><div class='rename_team'>Team".$team. "</td> Pick".$team."</th></tr>";
+        echo "<tr><th colspan=2><div class='team_name'>Team".$team. "</div></td> Pick".$team."</th></tr>";
         echo "<tr><td>QB</td><td id='Team".$team."_QB'></td></tr>";
         echo "<tr><td>RB1</td><td id='Team".$team."_RB1'></td></tr>";
         echo "<tr><td>RB2</td><td id='Team".$team."_RB2'></td></tr>";
