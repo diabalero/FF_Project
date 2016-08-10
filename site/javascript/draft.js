@@ -4,7 +4,10 @@
 //hidable right side bar to show pick, player and team. needs to be hidden unless clicked to show
 //code to undo a draft pick. should be able to click on a previous pick and reset draft to that point (undo that pick and all after it)
 //color available player rows based on how the current pick compares to thier highest and lowest pick 
-//add option to add bench rows to team boards instead of denying player drafting too many of a position 
+//add option to add bench rows to team boards instead of denying player drafting too many of a position
+//remove database element, make it rely on a csv
+//add ability to change teams name display
+//display teams name in header
 
 $(document).ready(function(){
     
