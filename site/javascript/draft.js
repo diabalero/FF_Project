@@ -16,12 +16,15 @@ $(document).ready(function(){
    var round = 1;
    var pick = .01;
    var draft_record = [];
-   console.log(num_bench_spots);
+   //console.log(num_bench_spots);
     
    //load the list of all the players into the side bar
    $('#player_list').load('../DraftHelper/data.php?resource=player_list');
    $('#teams_display').load('../DraftHelper/data.php?resource=teams_display&numTeams='+numTeams+'&numRounds='+numRounds);
-   $('#draft_status').text("Round:"+round+" Pick:"+ Math.round(pick*100));
+    current_team_id = Math.round(pick *100);
+    current_team_name = $('#team_'+current_team_id+'_board').find('.team_name').text();
+    console.log(current_team_id); //Im still not getting the team name here =(
+    $('#draft_status').text("Round:"+round+" Pick:"+ Math.round(pick*100)+" Picking: "+current_team_name);
    $.get('../DraftHelper/data.php?resource=drafted_players', function(data, status){
    //console.log("Data: " + data + "\nStatus: " + status);
    
@@ -138,8 +141,13 @@ $(document).ready(function(){
         //increment the pick and our round based on current pick and number of teams 
         if(pick < (numTeams/100)){
             pick = (((pick * 100) + 1) /100);
+            current_team_id = Math.round(pick *100);
+            current_team_name = $('#team_'+current_team_id+'_board').find('.team_name').text();
+            next_team_id = Math.round((pick *100)+1);
+            next_team_name = $('#team_'+next_team_id+'_board').find('.team_name').text();
             console.log('The current pick is '+ pick);
-            $('#draft_status').text("Round:"+round+" Pick:"+ Math.round(pick*100));
+            $('#draft_status').text("Round:"+round+" Pick:"+ Math.round(pick*100)+" Picking: "+current_team_name);
+            
             //overall_pick = round + pick;
             //not yet, team names first
             return;
@@ -149,6 +157,7 @@ $(document).ready(function(){
             round += 1;
             console.log('The current pick is '+ pick);
             $('#draft_status').text("Round:"+round+" Pick:"+ Math.round(pick*100));
+            
             //overall_pick = round + pick;
             //not yet, team names first
             return;
