@@ -14,19 +14,28 @@ $(document).ready(function(){
    var numRounds = 15;
    var num_bench_spots = numRounds - 9;
    var round = 1;
-   var pick = .01;
+   var pick = 1;
+   var dp_of_team_name_change;
    var draft_record = [];
    //console.log(num_bench_spots);
     
    //load the list of all the players into the side bar
    $('#player_list').load('../DraftHelper/data.php?resource=player_list');
    $('#teams_display').load('../DraftHelper/data.php?resource=teams_display&numTeams='+numTeams+'&numRounds='+numRounds, function(){
-    current_team_id = Math.round(pick *100);
+    current_team_id = 1;
     current_team_name = $('#team_'+current_team_id+'_board').find('.team_name').text();
     console.log(current_team_id); //Im still not getting the team name here =(
-    $('#draft_status').text("Round:"+round+" Pick:"+ Math.round(pick*100)+" Picking: "+current_team_name);
+    $('#draft_status').text("Round:"+round+" Pick:"+ pick +" Picking: "+current_team_name);
        });
    
+   
+   //create an array of team information
+   var teams_info = [];
+   for(i = 1; i <= numTeams; i++){
+       teams_info[i] = {'draft_position': i, 'team_name':'Team'+i, 'odd_round_pick':i,'even_round_pick':(numTeams+1)-i};
+       //console.log(team_info[i]);
+   }
+   var draft_record = [];
    
    //function to style the low and high picks to highlight value 
    
@@ -35,21 +44,18 @@ $(document).ready(function(){
         //create these variables for ease of use...
         var player_name = $(this).attr('player_name');
         var player_pos = $(this).attr('player_pos');
-        var this_obj = $(this);
-        var team_id = pick * 100;
-        var team_name = $('#team_'+team_id+'_board').find('.team_name').text();
-        console.log(team_name);
+        var this_obj = $(this); //just use this variable for styling selected player rows, dont have to use $(this) that way.
         
         // if its an odd round the team picking should coincide with the pick number 
         if(round%2!=0){
-            var team = Math.round(pick * 100);
+            var team_info = teams_info[pick];
         }
         //if its an even round the team picking should be inverse to the pick number
         if(round%2 == 0){
-            var team = ((numTeams + 1) - Math.round(pick * 100));
+            var team_info = teams_info[(numTeams+1) - pick];
         }
-
-            //!!! still need to add code to add bench spots when starters spots are filled !!!!//
+        var team = team_info['draft_position'];
+        
         if (player_pos == 'QB'){
             if($("#Team"+team+'_QB').text() == ''){
                 $("#Team"+team+'_QB').text(player_name);
@@ -136,44 +142,47 @@ $(document).ready(function(){
         }
         
         //increment the pick and our round based on current pick and number of teams 
-        if(pick < (numTeams/100)){
-            pick = (((pick * 100) + 1) /100);
-            console.log('The current pick is '+ pick);
+        if(pick < numTeams){
+            pick += 1;
             }
         else{
-            pick = .01;
+            pick = 1;
             round += 1;
             }
-        if(round%2!=0){
-            var team = Math.round(pick * 100);
-            }
-        //if its an even round the team picking should be inverse to the pick number
-        if(round%2 == 0){
-            var team = ((numTeams + 1) - Math.round(pick * 100));
-            }
-
-        current_team_name = $('#team_'+team+'_board').find('.team_name').text();
-        $('#draft_status').text("Round:"+round+" Pick:"+ Math.round(pick*100)+" Picking: "+current_team_name);
+            team_info = get_team_info(round, pick);
+            update_draft_status(round, pick);  
         
     });
     //function to change the name of a team
     $('body').on('dblclick', '.team_name', function() {
-        $('.team_board').find('div').removeClass();
-        var team = $(this).text();
-        var this_thing = $(this);
-        $(this_thing).html('<input type="text" id="team'+team+'_name"></input><button id="change">change</button>');
-        $('#team'+team+'_name').focus();
-        $('body').on('click', '#change', function(){
-            $(this_thing).text($('#team'+team+'_name').val());
-            $('.team_board').find('div').addClass('team_name');
+        
+        $('.team_board').find('div[purpose="team_name"]').removeClass(); //this disables the user from changing 2 team names simultaneously
+        $(this).html('<input type="text" id="new_team_name"></input><button id="change">change</button>');
+        $('#new_team_name').focus();
+        dp_of_team_name_change = $(this).attr('draft_position');
+            });
+    $('body').on('click', '#change', function(){
+        if ($('#new_team_name').val() != ''){
+        new_team_name = $('#new_team_name').val()
+        $('div[draft_position='+dp_of_team_name_change+']').text(new_team_name);
+        teams_info[dp_of_team_name_change]['team_name'] = new_team_name;
+        update_draft_status(round, pick);
+        $('.team_board').find('div[purpose="team_name"]').addClass('team_name');
+        }
+
         });
-        $('body').on('keyup', '#team'+team+'_name', function(e){
-            if(e.keyCode == 13){
-                $(this_thing).text($('#team'+team+'_name').val());
-                $('.team_board').find('div').addClass('team_name');    
+    $('body').on('keyup', '#new_team_name', function(e){
+        if(e.keyCode == 13){
+            if ($('#new_team_name').val() != ''){
+            new_team_name = $('#new_team_name').val();
+            $('div[draft_position='+dp_of_team_name_change+']').text(new_team_name);
+            teams_info[dp_of_team_name_change]['team_name'] = new_team_name;
+            update_draft_status(round, pick);
+            $('.team_board').find('div[purpose="team_name"]').addClass('team_name');
             }
-        })
+        }
     });
+
         
         function reset(){
            //use this function to reset the draft to a certain point
@@ -213,7 +222,20 @@ $(document).ready(function(){
             $(obj).parent().addClass('drafted');
             //figure out what team board table and cell to put the player in, and put him there.
         }
-                     
+        
+        function get_team_info(round, pick){
+            if (round % 2 != 0){ //applies to odd rounds
+                local_team_info = teams_info[pick];
+            }
+            else{ //applies to even rounds
+                local_team_info = teams_info[(numTeams+1) - pick];
+            }
+            return local_team_info;
+        }
+        function update_draft_status(round, pick){
+            var team_info = get_team_info(round, pick);
+            $('#draft_status').text("Round:"+round+" Pick:"+ pick+" Picking: "+team_info['team_name']);
+        }             
                  
             
 
