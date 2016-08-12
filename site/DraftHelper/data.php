@@ -86,8 +86,8 @@ if($_GET['resource'] == 'teams_display'){
     $num_bench_spots = $num_rounds - 9;
     
     for($team = 1; $team <= $num_teams; $team++){
-        echo "<table class='team_board' id='team_".$team."_board'>";
-        echo "<tr><th colspan=2><div class='team_name'>Team".$team. "</div></td> Pick".$team."</th></tr>";
+        echo "<table class='team_board' id='team_".$team."_board' draft_position='".$team."' team_name='Team ".$team."'>";
+        echo "<tr><th colspan=2><div purpose='team_name' draft_position='".$team."' class='team_name'>Team".$team. "</div></td> Pick".$team."</th></tr>";
         echo "<tr><td>QB</td><td id='Team".$team."_QB'></td></tr>";
         echo "<tr><td>RB1</td><td id='Team".$team."_RB1'></td></tr>";
         echo "<tr><td>RB2</td><td id='Team".$team."_RB2'></td></tr>";
@@ -105,5 +105,8 @@ if($_GET['resource'] == 'teams_display'){
     }
 }
 
-
+if($_GET['resource'] == 'player_list_from_csv'){
+    $data_as_string = file_get_contents('../resources/adp.csv');
+    
+}
 ?>
