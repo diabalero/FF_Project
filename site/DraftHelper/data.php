@@ -119,7 +119,7 @@ if($_GET['resource'] == 'player_list_from_csv'){
         echo "<tr class='player_row' id='row_for_" . str_replace(' ', '',$line[2]) . "'>
             <td>" . $line[3] . "</td>
             <td class='click_to_draft' player_name = '" . $line[2] . "' player_pos='".$line[3]."'>" . $line[2] . " ".  $line[4] . "</td>
-            <td>" . $line[1] . "</td>
+            <td class='adp' value='" . $line[1] . "'>" . $line[1] . "</td>
             <td class='low_pick' value='" . $line[9] . "'>" . $line[9] . "</td>
             <td class='high_pick' value='" . $line[8] . "'>" . $line[8] . "</td>
             <td>" . $line[5] . "</td>

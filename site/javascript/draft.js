@@ -21,11 +21,12 @@ $(document).ready(function(){
     
    //load the list of all the players into the side bar
    //$('#player_list').load('../DraftHelper/data.php?resource=player_list');
-   $('#player_list').load('../DraftHelper/data.php?resource=player_list_from_csv');
+   $('#player_list').load('../DraftHelper/data.php?resource=player_list_from_csv', function(){
+       color_the_player_table();
+   });
    $('#teams_display').load('../DraftHelper/data.php?resource=teams_display&numTeams='+numTeams+'&numRounds='+numRounds, function(){
     current_team_id = 1;
     current_team_name = $('#team_'+current_team_id+'_board').find('.team_name').text();
-    console.log(current_team_id); //Im still not getting the team name here =(
     $('#draft_status').text("Round:"+round+" Pick:"+ pick +" Picking: "+current_team_name);
        });
    
@@ -152,7 +153,7 @@ $(document).ready(function(){
             }
             team_info = get_team_info(round, pick);
             update_draft_status(round, pick);  
-        
+        color_the_player_table();
     });
     //function to change the name of a team
     $('body').on('dblclick', '.team_name', function() {
@@ -182,6 +183,7 @@ $(document).ready(function(){
             $('.team_board').find('div[purpose="team_name"]').addClass('team_name');
             }
         }
+        
     });
 
         
@@ -213,10 +215,6 @@ $(document).ready(function(){
         function draft_player(obj, round, pick, team, player_name, player_pos){
             // add the draft pick to the draft_record array
             draft_record.push({'round':round, 'pick':pick, 'team':team, 'player':player_name, 'pos':player_pos });
-            // logging to console what team just picked 
-            console.log('Team ' + team + ' just picked');
-            // remove the nth child CSS that alternates the color of rows in the player list
-            $('#player_list_table tr:nth-child(even)').removeAttr("background-color");
             // remove the 'click_to_draft class from the player name cell so he cant be drafted again
             $(obj).removeClass();
             //add the 'drafted' class to the player name cell so his name is styled with line-though
@@ -239,11 +237,27 @@ $(document).ready(function(){
         }
         //function to color player rows not working yet...
         function color_the_player_table(){
-            $.each('.player_row', function(){
-                    var low = $(this).find('.low_pick').text();
-                    //console.log(low);
-            });
-        }           
+            var current_pick = round + (pick/100);
+            console.log(current_pick);
+            $('.player_row').each(function(index){
+                var low_pick = $(this).find('.low_pick').text();
+                var high_pick = $(this).find('.high_pick').text();
+                var adp = $(this).find('.adp').text();
+                $(this).css('background-color','transparent');
+                
+
+                if(current_pick >= adp){
+                    $(this).css('background-color','#66ccff');
+                    }
+                if(current_pick < adp){
+                    $(this).css('background-color','#ff6666');
+                    }
+                /*if((current_pick > (adp - 0.02)) && (current_pick < (adp + 0.02))){
+                    $(this).css('background-color','orange');
+                    }*/
+                });
+                
+            }           
                  
             
 
