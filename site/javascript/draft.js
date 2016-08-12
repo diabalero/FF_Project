@@ -1,12 +1,25 @@
-//to do//
-//hide player rows drafted more than 10 players ago (only show last 10 players drafted, roll up the rest)
-//hidable right side bar to show pick, player and team. needs to be hidden unless clicked to show
+//TO DO//
+//add button to show hidden drafted players (currently players drafted more than 20 picks ago)
 //code to undo a draft pick. should be able to click on a previous pick and reset draft to that point (undo that pick and all after it)
-//color available player rows based on how the current pick compares to thier highest and lowest pick 
+//MAYBE color undrafted player rows individual cells to take advantage of lowest and highest pick data 
 //add option to add bench rows to team boards instead of denying player drafting too many of a position
-//remove database element, make it rely on a csv
-//add ability to change teams name display
-//display teams name in header
+    //bug here currently! if the tool denys a pick because there are no more bench spots, it still progresses the pick counter
+//somehow indicate to the user that you can rename teams by double clicking on them
+//allow customization of draft, number of rounds, teams
+//add feature for setting keepers
+//highlight table of currently picking team
+
+//STYLING TASK SUGGESTIONS FOR DEREK (just ideas)
+//make the pick number smaller in the team boards
+//style the team tables such that they dont look like generic html tables
+    //rounded corners?
+    //background colors
+    //no borders?
+    //border only on outside edges and between team name and picks?
+//change the font used on the page, probably need sans serif
+//color the background of the page, such that the tables stand out
+//highlight table of picking team
+
 
 $(document).ready(function(){
     
@@ -17,6 +30,7 @@ $(document).ready(function(){
    var pick = 1;
    var dp_of_team_name_change;
    var draft_record = [];
+   var overall_pick = 1;
    //console.log(num_bench_spots);
     
    //load the list of all the players into the side bar
@@ -138,21 +152,23 @@ $(document).ready(function(){
                 if (add_to_bench(team, player_pos, player_name) == 1){
                     draft_player(this_obj, round, pick, team, player_name, player_pos);
                         }
-                
                     }                
             
         }
         
-        //increment the pick and our round based on current pick and number of teams 
+        //increment the pick and our round based on current pick and number of teams
+        //BUG HERE! pick increments even in the case of an unsuccessful draft pick!!!            
         if(pick < numTeams){
             pick += 1;
+            console.log(pick);
             }
         else{
             pick = 1;
             round += 1;
+            console.log(pick);
             }
-            team_info = get_team_info(round, pick);
-            update_draft_status(round, pick);  
+        team_info = get_team_info(round, pick);
+        update_draft_status(round, pick);  
         color_the_player_table();
     });
     //function to change the name of a team
@@ -218,8 +234,11 @@ $(document).ready(function(){
             // remove the 'click_to_draft class from the player name cell so he cant be drafted again
             $(obj).removeClass();
             //add the 'drafted' class to the player name cell so his name is styled with line-though
-            $(obj).parent().addClass('drafted');
+            $(obj).parent().attr('drafted', 'true');
             //figure out what team board table and cell to put the player in, and put him there.
+            $(obj).parent().attr('overall_pick', overall_pick);
+
+            overall_pick += 1;
         }
         
         function get_team_info(round, pick){
@@ -240,6 +259,8 @@ $(document).ready(function(){
             var current_pick = round + (pick/100);
             console.log(current_pick);
             $('.player_row').each(function(index){
+                
+                if($(this).attr('drafted') != 'true'){
                 var low_pick = $(this).find('.low_pick').text();
                 var high_pick = $(this).find('.high_pick').text();
                 var adp = $(this).find('.adp').text();
@@ -247,15 +268,32 @@ $(document).ready(function(){
                 
 
                 if(current_pick >= adp){
-                    $(this).css('background-color','#66ccff');
+                    $(this).css('background-color','#4dffb8'); // #66ccff
                     }
                 if(current_pick < adp){
                     $(this).css('background-color','#ff6666');
                     }
-                /*if((current_pick > (adp - 0.02)) && (current_pick < (adp + 0.02))){
-                    $(this).css('background-color','orange');
-                    }*/
+                if((current_pick > (adp - 0.02)) && (current_pick < (adp + 0.02))){ //no idea why this doesnt work...
+                    $(this).css('background-color','yellow');
+                    }
+                
+                /*else{
+                    if(overall_pick - ($this).attr('overall_pick').val() > 9){
+                        console.log('we know it runs...');
+                        $(this).css('display', 'none');
+                */    
+                }
+                    
+                else{
+                    $(this).css('background-color', '#808080');
+                    $(this).css('color', '#404040');
+                    }
+                if(overall_pick - $(this).attr('overall_pick') > 20){
+                    $(this).css('display','none');
+                }
+                
                 });
+            
                 
             }           
                  

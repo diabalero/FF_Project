@@ -28,12 +28,13 @@
     border: 1px solid black;
     
 }
+/*
 #player_list_table tr{
-    margin: 0px, 2px;
+    
 }
+*/
 #player_list_table tr:nth-child(even){
     background-color:#d9d9d9;
-    
 }
 
 .click_to_draft:hover{
@@ -44,10 +45,10 @@
     color:white;
 }
 
-.drafted{
+tr[drafted]{
     background-color:#4d4d4d;
     color:#b3b3b3;
-    text-decoration: line-through;
+    /*text-decoration: line-through;*/
 }
 
 #teams_display{
