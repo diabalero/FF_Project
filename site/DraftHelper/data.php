@@ -106,7 +106,27 @@ if($_GET['resource'] == 'teams_display'){
 }
 
 if($_GET['resource'] == 'player_list_from_csv'){
-    $data_as_string = file_get_contents('../resources/adp.csv');
     
-}
+    echo "<table id='player_list_table'>
+    <tr><th>Pos</th><th>Player/Team</th><th>ADP</th><th>Low</th><th>High</th><th>Bye</th></tr>";
+    //$data_as_string = file_get_contents('../resources/adp.csv');
+    $lines = file('../resources/adp.csv');
+
+    foreach($lines as $key => $line){
+        if($key === 0){continue;}
+        
+        $line = explode(',', $line);
+        echo "<tr class='player_row' id='row_for_" . str_replace(' ', '',$line[2]) . "'>
+            <td>" . $line[3] . "</td>
+            <td class='click_to_draft' player_name = '" . $line[2] . "' player_pos='".$line[3]."'>" . $line[2] . " ".  $line[4] . "</td>
+            <td>" . $line[1] . "</td>
+            <td class='low_pick' value='" . $line[9] . "'>" . $line[9] . "</td>
+            <td class='high_pick' value='" . $line[8] . "'>" . $line[8] . "</td>
+            <td>" . $line[5] . "</td>
+            </tr>";
+        }
+    }
+
+
+
 ?>

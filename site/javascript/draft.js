@@ -20,7 +20,8 @@ $(document).ready(function(){
    //console.log(num_bench_spots);
     
    //load the list of all the players into the side bar
-   $('#player_list').load('../DraftHelper/data.php?resource=player_list');
+   //$('#player_list').load('../DraftHelper/data.php?resource=player_list');
+   $('#player_list').load('../DraftHelper/data.php?resource=player_list_from_csv');
    $('#teams_display').load('../DraftHelper/data.php?resource=teams_display&numTeams='+numTeams+'&numRounds='+numRounds, function(){
     current_team_id = 1;
     current_team_name = $('#team_'+current_team_id+'_board').find('.team_name').text();
@@ -235,7 +236,14 @@ $(document).ready(function(){
         function update_draft_status(round, pick){
             var team_info = get_team_info(round, pick);
             $('#draft_status').text("Round:"+round+" Pick:"+ pick+" Picking: "+team_info['team_name']);
-        }             
+        }
+        //function to color player rows not working yet...
+        function color_the_player_table(){
+            $.each('.player_row', function(){
+                    var low = $(this).find('.low_pick').text();
+                    //console.log(low);
+            });
+        }           
                  
             
 
