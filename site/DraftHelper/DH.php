@@ -19,7 +19,8 @@
         </div>
         
         <div id='player_list'>
-            </div>
+            
+        </div>
         <!-- do a jquery load or 3 to populate this list -->
         <div id='teams_display'>
             

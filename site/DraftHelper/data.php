@@ -7,12 +7,18 @@ if ($mysqli->connect_error) {
             . $mysqli->connect_error);
 }
 
-
+/*
 if ($_GET['resource'] == 'player_list'){
     $all_players_result_set = $mysqli->query("Select * FROM t_draft_player_list");
     while ($player_array = $all_players_result_set->fetch_array()){
         $arrays[] = $player_array;
     }
+    $teams = array('PIT','NYG','NYJ','LA','ATL','MIN','AZ','HOU','DAL','CIN','NE','JAC','KC','NO','GB','BUF','TB','SD','OAK','CHI','SEA','CAR','IND','DEN','TEN','MIA','SF','WAS','BAL','PHI','DET','CLE');
+    echo "hello?<div id=table_filters><select id='team_filter'>";
+    foreach($teams as $key =>$team){
+        echo "<option value='".$team."'>".$team."</option>";
+    }
+    echo "</select></div>";
     echo "<table id='player_list_table'><tr><th>Pos</th><th>Player/Team</th><th>ADP</th><th>Bye</th><th>Low</th><th>High</th></th></tr>";
     foreach($arrays as $array)
     {
@@ -21,6 +27,7 @@ if ($_GET['resource'] == 'player_list'){
     echo "</table>";
     $all_players_result_set->close();   
 }
+*/
 
 if ($_GET['resource'] == 'drafted_players'){
     $drafted_players_result_set = $mysqli->query("SELECT * FROM t_draft_record");
@@ -106,19 +113,33 @@ if($_GET['resource'] == 'teams_display'){
 }
 
 if($_GET['resource'] == 'player_list_from_csv'){
-    
+
+    $teams = array('PIT','NYG','NYJ','LA','ATL','MIN','AZ','HOU','DAL','CIN','NE','JAC','KC','NO','GB','BUF','TB','SD','OAK','CHI','SEA','CAR','IND','DEN','TEN','MIA','SF','WAS','BAL','PHI','DET','CLE');
+    asort($teams);
+    echo "<div id=table_filters>Team: <select id='team_filter'><option value='all'>All</option>";
+    foreach($teams as $team){
+        echo "<option value='".$team."'>".$team."</option>";
+    }
+    echo "</select> ";
+    $positions = array('QB','RB','WR','TE','DEF','PK');
+    echo "Position: <select id='position_filter'><option value='All'>All</option>";
+    foreach($positions as $position){
+        echo "<option value='$position'>$position</option>";
+    }
+    echo "</select></div>";
     echo "<table id='player_list_table'>
     <tr><th>Pos</th><th>Player/Team</th><th>ADP</th><th>Low</th><th>High</th><th>Bye</th></tr>";
     //$data_as_string = file_get_contents('../resources/adp.csv');
+
     $lines = file('../resources/adp.csv');
 
     foreach($lines as $key => $line){
         if($key === 0){continue;}
         
         $line = explode(',', $line);
-        echo "<tr class='player_row' id='row_for_" . str_replace(' ', '',$line[2]) . "'>
+        echo "<tr class='player_row' id='row_for_" . str_replace(' ', '',$line[2]) . "' player_team = '".$line[4]."' player_name = '" . $line[2] . "' player_pos='".$line[3]."'>
             <td>" . $line[3] . "</td>
-            <td class='click_to_draft' player_name = '" . $line[2] . "' player_pos='".$line[3]."'>" . $line[2] . " ".  $line[4] . "</td>
+            <td class='click_to_draft' player_team = '".$line[4]."' player_name = '" . $line[2] . "' player_pos='".$line[3]."'>" . $line[2] . " ".  $line[4] . "</td>
             <td class='adp' value='" . $line[1] . "'>" . $line[1] . "</td>
             <td class='low_pick' value='" . $line[9] . "'>" . $line[9] . "</td>
             <td class='high_pick' value='" . $line[8] . "'>" . $line[8] . "</td>

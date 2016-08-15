@@ -254,7 +254,7 @@ $(document).ready(function(){
             var team_info = get_team_info(round, pick);
             $('#draft_status').text("Round:"+round+" Pick:"+ pick+" Picking: "+team_info['team_name']);
         }
-        //function to color player rows not working yet...
+        
         function color_the_player_table(){
             var current_pick = round + (pick/100);
             console.log(current_pick);
@@ -290,12 +290,13 @@ $(document).ready(function(){
                     }
                 if(overall_pick - $(this).attr('overall_pick') > 20){
                     $(this).css('display','none');
-                }
-                
-                });
-            
-                
-            }           
+                }               
+            });
+        }
+        function filter_player_list(postion, team){
+            var current_tr_display = $('#player_list_table tr').css('display');
+            $('#player_list_table tr').css('display:none')
+        }           
                  
             
 
