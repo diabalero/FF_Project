@@ -1,11 +1,13 @@
 <?php
-
+/*
 $mysqli = new mysqli('localhost', 'root', 'usbw', 'ff');
 
 if ($mysqli->connect_error) {
     die('Connect Error (' . $mysqli->connect_errno . ') '
             . $mysqli->connect_error);
+            
 }
+*/
 
 /*
 if ($_GET['resource'] == 'player_list'){
@@ -13,7 +15,7 @@ if ($_GET['resource'] == 'player_list'){
     while ($player_array = $all_players_result_set->fetch_array()){
         $arrays[] = $player_array;
     }
-    $teams = array('PIT','NYG','NYJ','LA','ATL','MIN','AZ','HOU','DAL','CIN','NE','JAC','KC','NO','GB','BUF','TB','SD','OAK','CHI','SEA','CAR','IND','DEN','TEN','MIA','SF','WAS','BAL','PHI','DET','CLE');
+    $teams = array('PIT','NYG','NYJ','LA','ATL','MIN','ARI','HOU','DAL','CIN','NE','JAC','KC','NO','GB','BUF','TB','SD','OAK','CHI','SEA','CAR','IND','DEN','TEN','MIA','SF','WAS','BAL','PHI','DET','CLE');
     echo "hello?<div id=table_filters><select id='team_filter'>";
     foreach($teams as $key =>$team){
         echo "<option value='".$team."'>".$team."</option>";
@@ -114,9 +116,9 @@ if($_GET['resource'] == 'teams_display'){
 
 if($_GET['resource'] == 'player_list_from_csv'){
 
-    $teams = array('PIT','NYG','NYJ','LA','ATL','MIN','AZ','HOU','DAL','CIN','NE','JAC','KC','NO','GB','BUF','TB','SD','OAK','CHI','SEA','CAR','IND','DEN','TEN','MIA','SF','WAS','BAL','PHI','DET','CLE');
+    $teams = array('PIT','NYG','NYJ','LA','ATL','MIN','ARI','HOU','DAL','CIN','NE','JAC','KC','NO','GB','BUF','TB','SD','OAK','CHI','SEA','CAR','IND','DEN','TEN','MIA','SF','WAS','BAL','PHI','DET','CLE');
     asort($teams);
-    echo "<div id=table_filters>Team: <select id='team_filter'><option value='all'>All</option>";
+    echo "<div id=table_filters>Team: <select id='team_filter'><option value='All'>All</option>";
     foreach($teams as $team){
         echo "<option value='".$team."'>".$team."</option>";
     }
@@ -128,7 +130,7 @@ if($_GET['resource'] == 'player_list_from_csv'){
     }
     echo "</select></div>";
     echo "<table id='player_list_table'>
-    <tr><th>Pos</th><th>Player/Team</th><th>ADP</th><th>Low</th><th>High</th><th>Bye</th></tr>";
+    <tr id='player_list_header_row'><th>Pos</th><th>Player/Team</th><th>ADP</th><th>Low</th><th>High</th><th>Bye</th></tr>";
     //$data_as_string = file_get_contents('../resources/adp.csv');
 
     $lines = file('../resources/adp.csv');

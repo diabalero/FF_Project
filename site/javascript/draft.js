@@ -37,13 +37,13 @@ $(document).ready(function(){
    //$('#player_list').load('../DraftHelper/data.php?resource=player_list');
    $('#player_list').load('../DraftHelper/data.php?resource=player_list_from_csv', function(){
        color_the_player_table();
+       filter_player_list('All', 'All');
    });
    $('#teams_display').load('../DraftHelper/data.php?resource=teams_display&numTeams='+numTeams+'&numRounds='+numRounds, function(){
     current_team_id = 1;
     current_team_name = $('#team_'+current_team_id+'_board').find('.team_name').text();
     $('#draft_status').text("Round:"+round+" Pick:"+ pick +" Picking: "+current_team_name);
        });
-   
    
    //create an array of team information
    var teams_info = [];
@@ -193,6 +193,19 @@ $(document).ready(function(){
         }
         
     });
+    //implement function to filter the player list when the select boxes change
+    $('body').on('change', '#team_filter', function(){
+        position = $('#position_filter').val();
+        team = $('#team_filter').val();
+        filter_player_list(position, team);
+    });
+        $('body').on('change', '#position_filter', function(){
+        position = $('#position_filter').val();
+        team = $('#team_filter').val();
+        filter_player_list(position, team);
+    });
+        
+    
 
         
         function reset(){
@@ -205,7 +218,6 @@ $(document).ready(function(){
         }
         function add_to_bench(team, player_pos, player_name){
                  var i = 1;
-                 console.log(num_bench_spots);
                  while(i <= num_bench_spots){
                      if($('#team'+team+'_bench_'+i+' td:nth-child(2)').text() == ''){
                             $('#team'+team+'_bench_'+i+' td:nth-child(2)').text(player_name);
@@ -231,12 +243,10 @@ $(document).ready(function(){
             $(obj).parent().attr('overall_pick', overall_pick);
             if(pick < numTeams){
                 pick += 1;
-                console.log(pick);
                 }
             else{
                 pick = 1;
                 round += 1;
-                console.log(pick);
                 }
             overall_pick += 1;
         }
@@ -257,7 +267,6 @@ $(document).ready(function(){
         
         function color_the_player_table(){
             var current_pick = round + (pick/100);
-            console.log(current_pick);
             $('.player_row').each(function(index){
                 
                 if($(this).attr('drafted') != 'true'){
@@ -293,9 +302,31 @@ $(document).ready(function(){
                 }               
             });
         }
-        function filter_player_list(postion, team){
-            var current_tr_display = $('#player_list_table tr').css('display');
-            $('#player_list_table tr').css('display:none')
+        function filter_player_list(position, team){
+            //var visible_tr_display = $('#player_list_header_row').css('display');
+            //console.log(visible_tr_display);
+            if(team == 'All' && position == 'All'){
+                $('tr[class="player_row"]:hidden').css('display','table-row');
+            }
+            if(position == 'All' && team != 'All'){
+                $('tr[class="player_row"]').css('display','none');
+                $('tr[player_team="'+team+'"]').css('display','table-row');
+            }
+            if(team == 'All' && position != 'All'){
+                $('tr[class="player_row"]').css('display','none');
+                 $('tr[player_pos="'+position+'"]').css('display','table-row');
+            }
+            if(team != 'All' && position != 'All'){
+                $('tr[class="player_row"]').each(function(){
+                    if($(this).attr('player_pos') == position && $(this).attr('player_team') == team){
+                        $(this).css('display', 'table-row');
+                    }
+                    else($(this).css('display','none'));
+                });
+                
+            }
+
+            
         }           
                  
             
