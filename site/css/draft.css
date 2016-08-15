@@ -28,11 +28,11 @@
     border: 1px solid black;
     
 }
-/*
-#player_list_table tr{
-    
+
+#player_list_table {
+    width:100%;    
 }
-*/
+
 #player_list_table tr:nth-child(even){
     background-color:#d9d9d9;
 }

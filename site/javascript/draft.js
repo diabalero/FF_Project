@@ -39,6 +39,7 @@ $(document).ready(function(){
        color_the_player_table();
        filter_player_list('All', 'All');
    });
+   //player_list_from_nfl_com();
    $('#teams_display').load('../DraftHelper/data.php?resource=teams_display&numTeams='+numTeams+'&numRounds='+numRounds, function(){
     current_team_id = 1;
     current_team_name = $('#team_'+current_team_id+'_board').find('.team_name').text();
@@ -154,10 +155,7 @@ $(document).ready(function(){
                         }
                     }                
             
-        }
-        
-        //increment the pick and our round based on current pick and number of teams
-        //BUG HERE! pick increments even in the case of an unsuccessful draft pick!!!            
+        }     
 
         team_info = get_team_info(round, pick);
         update_draft_status(round, pick);  
@@ -297,9 +295,7 @@ $(document).ready(function(){
                     $(this).css('background-color', '#808080');
                     $(this).css('color', '#404040');
                     }
-                if(overall_pick - $(this).attr('overall_pick') > 20){
-                    $(this).css('display','none');
-                }               
+                hide_non_recent_drafted_players();
             });
         }
         function filter_player_list(position, team){
@@ -325,10 +321,41 @@ $(document).ready(function(){
                 });
                 
             }
-
-            
-        }           
-                 
-            
+        }
+        
+        function hide_non_recent_drafted_players(){
+            $('.player_row').each(function(){
+                if(overall_pick - $(this).attr('overall_pick') > 20){
+                    $(this).css('display','none');
+                }    
+            });
+        }
+        
+        function show_non_recent_drafted_players(){
+            $('.player_row').css('display', 'table-row');
+            position = $('#position_filter').val();
+            team = $('#team_filter').val();
+            filter_player_list(position, team);
+        }
+        
+        function player_list_from_nfl_com(){
+            var player_table_rows;
+            var html;
+            var temp;
+            var url = "http://api.fantasy.nfl.com/v1/players/userdraftranks?format=json&count=100&offset=";
+            $('#player_list').html('<table id="player_list_table"><tr><th>Pos</th><th>Player</th><th>Team</th><th>ADP</th></tr>');
+                for(i=0;i<501;i+=100){
+                //console.log(url+i);
+                
+                $.getJSON(url+i, function(data){
+                    $.each(data['players'], function(key, value){
+                    $('#player_list_table tr:last').after('<tr player_name="'+value['firstName']+' '+value['lastName']+'" player_pos="'+value['position']+'" player_team="'+value['teamAbbr']+'"><td>'+value['position']+'</td><td>'+value['firstName']+ ' '+value['lastName']+'</td><td>'+value['teamAbbr']+'</td><td>'+value['rank']+'</td></tr>');
+                    });
+                    
+                });
+                }
+        }
 
 }); //end document.ready
+
+// player_name="'+value['firstName']+' '+value['lastName']+'" player_pos="'+value['position']+'" player_team="'+value['teamAbbr']+'"
