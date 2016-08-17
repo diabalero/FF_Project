@@ -39,9 +39,8 @@ $(document).ready(function(){
        color_the_player_table();
        filter_player_list('All', 'All');
    }); */
-   console.log($('#player_list_table tr').length);
-   player_list_from_nfl_com();
-   console.log($('#player_list_table tr').length);
+   get_players();
+   //console.log(players_array[0]);
    $('#teams_display').load('../DraftHelper/data.php?resource=teams_display&numTeams='+numTeams+'&numRounds='+numRounds, function(){
     current_team_id = 1;
     current_team_name = $('#team_'+current_team_id+'_board').find('.team_name').text();
@@ -340,6 +339,7 @@ $(document).ready(function(){
             filter_player_list(position, team);
         }
         
+        //this doesnt work, but if I figure out how the functions that do work, work, maybe I can fix this...
         /*function player_list_from_nfl_com(){
             var url = "http://api.fantasy.nfl.com/v1/players/userdraftranks?format=json&count=100&offset=";
             $('#player_list').html('<table id="player_list_table"><tr><th>Pos</th><th>Player</th><th>Team</th><th>ADP</th></tr>');
@@ -355,31 +355,67 @@ $(document).ready(function(){
                 }
         }*/
 
-        function player_list_from_nfl_com(){
-            var html_array = [];
-            var url = "http://api.fantasy.nfl.com/v1/players/userdraftranks?format=json&count=10&offset=";
+  
+        function populate_player_list_via_json_queries(callback){
+            var players_array = [];        
+            var url = "http://api.fantasy.nfl.com/v1/players/userdraftranks?format=json&count=100&offset=";
             $('#player_list').html('<table id="player_list_table"><tr><th>Pos</th><th>Player</th><th>Team</th><th>ADP</th></tr>');
-                for(i=0;i<501;i+=10){
-                //console.log(url+i);
-                var jj = 0;
-                $.getJSON(url+i, function(data){
-                    $.each(data['players'], function(key, value){
-                    html_array[jj] = ('<tr player_name="'+value['firstName']+' '+value['lastName']+'" player_pos="'+value['position']+'" player_team="'+value['teamAbbr']+'"><td>'+value['position']+'</td><td>'+value['firstName']+ ' '+value['lastName']+'</td><td>'+value['teamAbbr']+'</td><td>'+value['rank']+'</td></tr>');
-                    jj += 1;
+
+            var players_needed = 500;
+            var players_retrieved = 0;
+            var players_per_request = 100;
+            while (players_needed > players_retrieved)
+            {
+                //console.log(url+players_retrieved);
+
+                $.getJSON(url+players_retrieved, function(data)
+                {
+                    $.each(data['players'], function(key, value)
+                    {
+                        players_array.push(this);
                     });
-                }); 
-                }
-                console.log(html_array);
-                html_array.forEach(function(index){
-                // $('#player_list_table tr:last').after(this);
-                console.log("hello");
+                
+                    //console.log(players_array[i]);
+                    //console.log("Inside JSON: " + players_array.length);
+                    
+                    if (players_array.length >= players_needed)
+                    {
+                        callback(players_array);
+                    }
                 });
-        }
-
-
                 
+                players_retrieved += players_per_request;
+            }
+          }
                 
 
+
+            //when you call populate_player_list_via_json_queries, it get's back the result:
+            function get_players(){
+
+                //get our JSON
+                populate_player_list_via_json_queries(function(player_array){
+
+                    //when we get our data, evaluate
+                    player_array.sort(function(a, b)
+                    {
+                        return( parseFloat(a.rank) - parseFloat(b.rank)); 
+                    })
+                    //console.log(player_array);
+                    for(i=0;i<player_array.length;i++){
+                        
+                        //console.log(player_array[i].firstName);
+                $('#player_list_table tr:last').after('<tr><td>'+player_array[i].position+'</td><td>'+player_array[i].firstName+ ' ' + player_array[i].lastName+'</td><td>'+player_array[i].teamAbbr+'</td><td>'+player_array[i].rank+'</td></tr>');
+                    }
+                    
+                    
+                });
+            }
+            //not going to need this...
+            /*function afterCall(){
+                alert('im also executed after');
+            }*/
+           
 }); //end document.ready
 
 
