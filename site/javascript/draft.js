@@ -35,11 +35,13 @@ $(document).ready(function(){
     
    //load the list of all the players into the side bar
    //$('#player_list').load('../DraftHelper/data.php?resource=player_list');
-   $('#player_list').load('../DraftHelper/data.php?resource=player_list_from_csv', function(){
+   /*$('#player_list').load('../DraftHelper/data.php?resource=player_list_from_csv', function(){
        color_the_player_table();
        filter_player_list('All', 'All');
-   });
-   //player_list_from_nfl_com();
+   }); */
+   console.log($('#player_list_table tr').length);
+   player_list_from_nfl_com();
+   console.log($('#player_list_table tr').length);
    $('#teams_display').load('../DraftHelper/data.php?resource=teams_display&numTeams='+numTeams+'&numRounds='+numRounds, function(){
     current_team_id = 1;
     current_team_name = $('#team_'+current_team_id+'_board').find('.team_name').text();
@@ -338,10 +340,7 @@ $(document).ready(function(){
             filter_player_list(position, team);
         }
         
-        function player_list_from_nfl_com(){
-            var player_table_rows;
-            var html;
-            var temp;
+        /*function player_list_from_nfl_com(){
             var url = "http://api.fantasy.nfl.com/v1/players/userdraftranks?format=json&count=100&offset=";
             $('#player_list').html('<table id="player_list_table"><tr><th>Pos</th><th>Player</th><th>Team</th><th>ADP</th></tr>');
                 for(i=0;i<501;i+=100){
@@ -354,8 +353,34 @@ $(document).ready(function(){
                     
                 });
                 }
+        }*/
+
+        function player_list_from_nfl_com(){
+            var html_array = [];
+            var url = "http://api.fantasy.nfl.com/v1/players/userdraftranks?format=json&count=10&offset=";
+            $('#player_list').html('<table id="player_list_table"><tr><th>Pos</th><th>Player</th><th>Team</th><th>ADP</th></tr>');
+                for(i=0;i<501;i+=10){
+                //console.log(url+i);
+                var jj = 0;
+                $.getJSON(url+i, function(data){
+                    $.each(data['players'], function(key, value){
+                    html_array[jj] = ('<tr player_name="'+value['firstName']+' '+value['lastName']+'" player_pos="'+value['position']+'" player_team="'+value['teamAbbr']+'"><td>'+value['position']+'</td><td>'+value['firstName']+ ' '+value['lastName']+'</td><td>'+value['teamAbbr']+'</td><td>'+value['rank']+'</td></tr>');
+                    jj += 1;
+                    });
+                }); 
+                }
+                console.log(html_array);
+                html_array.forEach(function(index){
+                // $('#player_list_table tr:last').after(this);
+                console.log("hello");
+                });
         }
 
+
+                
+                
+
 }); //end document.ready
+
 
 // player_name="'+value['firstName']+' '+value['lastName']+'" player_pos="'+value['position']+'" player_team="'+value['teamAbbr']+'"
