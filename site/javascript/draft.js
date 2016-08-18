@@ -42,7 +42,6 @@ $(document).ready(function(){
    $('#player_list_filter').load('../DraftHelper/data.php?resource=player_list_filter');
    get_players();
    filter_player_list('All', 'All');
-   color_the_player_table();
    //console.log(players_array[0]);
    $('#teams_display').load('../DraftHelper/data.php?resource=teams_display&numTeams='+numTeams+'&numRounds='+numRounds, function(){
     current_team_id = 1;
@@ -164,6 +163,7 @@ $(document).ready(function(){
         team_info = get_team_info(round, pick);
         update_draft_status(round, pick);  
         color_the_player_table();
+        highlight_picking_teams_table();
     });
     //function to change the name of a team
     $('body').on('dblclick', '.team_name', function() {
@@ -411,7 +411,8 @@ $(document).ready(function(){
                 {        
                 $('#player_list_table tr:last').after('<tr class="player_row" drafted="false" player_team="'+player_array[i]['teamAbbr']+'" player_pos="'+player_array[i]['position']+'"><td>'+(i+1)+'</td><td>'+player_array[i].position+'</td><td class="click_to_draft" player_name="'+player_array[i]['firstName']+ ' '+player_array[i]['lastName']+'" player_team="'+player_array[i]['teamAbbr']+'" player_pos="'+player_array[i]['position']+'">'+player_array[i].firstName+ ' ' + player_array[i].lastName+'</td><td>'+player_array[i].teamAbbr+'</td><td class="adp">'+player_array[i].rank+'</td></tr>');
                 }
-                color_the_player_table();    
+                color_the_player_table();
+                highlight_picking_teams_table();    
             });
         }
             
@@ -523,6 +524,11 @@ $(document).ready(function(){
                     }
                 }                
             } 
+        }
+        
+        function highlight_picking_teams_table(){
+            $('.team_board').css('background-color', 'transparent');
+            $('#team_'+pick+'_board').css('background-color', 'yellow');
         }
            
 }); //end document.ready
