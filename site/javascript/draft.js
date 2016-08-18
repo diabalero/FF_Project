@@ -206,6 +206,9 @@ $(document).ready(function(){
         team = $('#team_filter').val();
         filter_player_list(position, team);
     });
+    $('body').on('click', '#print_draft_results', function(){
+        print_draft_results();
+    });
         
     
 
@@ -260,7 +263,6 @@ $(document).ready(function(){
             else{ //applies to even rounds
                 local_team_info = teams_info[(numTeams+1) - pick];
             }
-            console.log(local_team_info);
             return local_team_info;
         }
         function update_draft_status(round, pick){
@@ -530,8 +532,14 @@ $(document).ready(function(){
         function highlight_picking_teams_table(){
             if(round%2!=0){ team = pick;}
             if(round%2==0) {team = (numTeams+1)-pick;}
-            $('.team_board').css('background-color', 'transparent');
-            $('#team_'+team+'_board').css('background-color', 'yellow');
+            $('.team_board th').css('background-color', 'transparent');
+            $('#team_'+team+'_board th').css('background-color', 'yellow');
+        }
+        function print_draft_results(){
+            for(i=0;i<draft_record.length;i++){
+                console.log('round:'+draft_record[i]['round']+' pick:'+draft_record[i]['pick']+' team:'+draft_record[i]['team']+' player:'+draft_record[i]['player']+ ' position:'+draft_record[i]['pos']);
+            }
+            
         }
            
 }); //end document.ready

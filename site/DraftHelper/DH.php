@@ -16,6 +16,7 @@
         <div id='outer_limits'>
             <div id='menu'>
                 <div id='draft_status'></div>
+                <button id='print_draft_results'>Print Results</button>
             </div>
             <div id='players'>
                 <div id='player_list_filter'></div>
