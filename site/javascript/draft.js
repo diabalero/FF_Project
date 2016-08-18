@@ -260,6 +260,7 @@ $(document).ready(function(){
             else{ //applies to even rounds
                 local_team_info = teams_info[(numTeams+1) - pick];
             }
+            console.log(local_team_info);
             return local_team_info;
         }
         function update_draft_status(round, pick){
@@ -527,8 +528,10 @@ $(document).ready(function(){
         }
         
         function highlight_picking_teams_table(){
+            if(round%2!=0){ team = pick;}
+            if(round%2==0) {team = (numTeams+1)-pick;}
             $('.team_board').css('background-color', 'transparent');
-            $('#team_'+pick+'_board').css('background-color', 'yellow');
+            $('#team_'+team+'_board').css('background-color', 'yellow');
         }
            
 }); //end document.ready
