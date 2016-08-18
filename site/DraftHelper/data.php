@@ -74,7 +74,7 @@ if($_GET['resource'] == 'teams_display'){
         echo "<tr><td>WR2</td><td id='Team".$team."_WR2'></td></tr>";
         echo "<tr><td>Flex</td><td id='Team".$team."_Flex'></td></tr>";
         echo "<tr><td>TE</td><td id='Team".$team."_TE'></td></tr>";
-        echo "<tr><td>PK</td><td id='Team".$team."_PK'></td></tr>";
+        echo "<tr><td>K</td><td id='Team".$team."_K'></td></tr>";
         echo "<tr><td>DEF</td><td id='Team".$team."_DEF'></td></tr>";
     for($i = 1; $i<= $num_bench_spots; $i++){
         echo "<tr id='team".$team."_bench_".$i."'><td>BN</td><td></td></tr>";
@@ -93,7 +93,7 @@ if($_GET['resource'] == 'player_list_from_csv'){
         echo "<option value='".$team."'>".$team."</option>";
     }
     echo "</select> ";
-    $positions = array('QB','RB','WR','TE','DEF','PK');
+    $positions = array('QB','RB','WR','TE','DEF','K');
     echo "Position: <select id='position_filter'><option value='All'>All</option>";
     foreach($positions as $position){
         echo "<option value='$position'>$position</option>";
@@ -122,4 +122,20 @@ if($_GET['resource'] == 'player_list_from_csv'){
 
 
 
+
+if($_GET['resource'] == 'player_list_filter'){
+    $teams = array('PIT','NYG','NYJ','LA','ATL','MIN','ARI','HOU','DAL','CIN','NE','JAC','KC','NO','GB','BUF','TB','SD','OAK','CHI','SEA','CAR','IND','DEN','TEN','MIA','SF','WAS','BAL','PHI','DET','CLE');
+    asort($teams);
+    echo "<div id=table_filters>Team: <select id='team_filter'><option value='All'>All</option>";
+    foreach($teams as $team){
+        echo "<option value='".$team."'>".$team."</option>";
+    }
+    echo "</select> ";
+    $positions = array('QB','RB','WR','TE','DEF','K');
+    echo "Position: <select id='position_filter'><option value='All'>All</option>";
+    foreach($positions as $position){
+        echo "<option value='$position'>$position</option>";
+    }
+    echo "</select></div>";
+}
 ?>

@@ -14,16 +14,12 @@
         
         
         <div id='outer_limits'>
-        <div id='menu'>
+            <div id='menu'>
                 <div id='draft_status'></div>
-        </div>
-        
-        <div id='player_list'>
-            
-        </div>
-        <!-- do a jquery load or 3 to populate this list -->
-        <div id='teams_display'>
-            
-            
             </div>
+            <div id='players'>
+                <div id='player_list_filter'></div>
+                <div id='player_list'></div>
+            </div>
+            <div id='teams_display'></div>
         </div>

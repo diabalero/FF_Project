@@ -15,12 +15,16 @@
     height:99%;
 }
 */
-#player_list{
+#players{
     border:1px solid green;
     float:left;
     height:85%;
     width:25%;
     overflow: scroll;   
+}
+
+#player_list_filter{
+    margin: 5px;
 }
 
 #player_list_table, td, th{
@@ -45,7 +49,7 @@
     color:white;
 }
 
-tr[drafted]{
+tr[drafted="true"]{
     background-color:#4d4d4d;
     color:#b3b3b3;
     /*text-decoration: line-through;*/

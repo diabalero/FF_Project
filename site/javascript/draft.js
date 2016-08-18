@@ -39,9 +39,10 @@ $(document).ready(function(){
        color_the_player_table();
        filter_player_list('All', 'All');
    }); */
+   $('#player_list_filter').load('../DraftHelper/data.php?resource=player_list_filter');
    get_players();
-    color_the_player_table();
-    filter_player_list('All', 'All');
+   filter_player_list('All', 'All');
+   color_the_player_table();
    //console.log(players_array[0]);
    $('#teams_display').load('../DraftHelper/data.php?resource=teams_display&numTeams='+numTeams+'&numRounds='+numRounds, function(){
     current_team_id = 1;
@@ -98,9 +99,9 @@ $(document).ready(function(){
                     }
             }
         }
-        if (player_pos == 'PK'){
-            if($("#Team"+team+'_PK').text() == ''){
-                $("#Team"+team+'_PK').text(player_name);
+        if (player_pos == 'K'){
+            if($("#Team"+team+'_K').text() == ''){
+                $("#Team"+team+'_K').text(player_name);
                 draft_player(this_obj, team, player_name, player_pos);
             }
             else{
@@ -200,7 +201,7 @@ $(document).ready(function(){
         team = $('#team_filter').val();
         filter_player_list(position, team);
     });
-        $('body').on('change', '#position_filter', function(){
+    $('body').on('change', '#position_filter', function(){
         position = $('#position_filter').val();
         team = $('#team_filter').val();
         filter_player_list(position, team);
@@ -267,23 +268,25 @@ $(document).ready(function(){
         }
         
         function color_the_player_table(){
-            var current_pick = round + (pick/100);
+            //var current_pick = round + (pick/100);
+                //console.log(overall_pick);
             $('.player_row').each(function(index){
                 
                 if($(this).attr('drafted') != 'true'){
-                var low_pick = $(this).find('.low_pick').text();
-                var high_pick = $(this).find('.high_pick').text();
-                var adp = $(this).find('.adp').text();
+                //var low_pick = $(this).find('.low_pick').text();
+                //var high_pick = $(this).find('.high_pick').text();
+                var adp = Math.round($(this).find('.adp').text());
+                
                 $(this).css('background-color','transparent');
                 
 
-                if(current_pick >= adp){
+                if(overall_pick > adp){
                     $(this).css('background-color','#4dffb8'); // #66ccff
                     }
-                if(current_pick < adp){
+                if(overall_pick <= adp){
                     $(this).css('background-color','#ff6666');
                     }
-                if((current_pick > (adp - 0.02)) && (current_pick < (adp + 0.02))){ //no idea why this doesnt work...
+                if((overall_pick > (adp - 0.02)) && (overall_pick < (adp + 0.02))){
                     $(this).css('background-color','yellow');
                     }
                 
@@ -360,12 +363,12 @@ $(document).ready(function(){
   
         function populate_player_list_via_json_queries(callback){
             var players_array = [];        
-            var url = "http://api.fantasy.nfl.com/v1/players/userdraftranks?format=json&count=100&offset=";
-            $('#player_list').html('<table id="player_list_table"><tr><th>Pos</th><th>Player</th><th>Team</th><th>ADP</th></tr>');
+            var url = "http://api.fantasy.nfl.com/v1/players/userdraftranks?format=json&count=50&offset=";
+            $('#player_list').html('<table id="player_list_table"><tr><th>no.</th><th>Pos</th><th>Player</th><th>Team</th><th>ADP</th></tr>');
 
-            var players_needed = 500;
+            var players_needed = 300;
             var players_retrieved = 0;
-            var players_per_request = 100;
+            var players_per_request = 50;
             while (players_needed > players_retrieved)
             {
                 //console.log(url+players_retrieved);
@@ -393,30 +396,134 @@ $(document).ready(function(){
 
 
             //when you call populate_player_list_via_json_queries, it get's back the result:
-            function get_players(){
+        function get_players(){
 
-                //get our JSON
-                populate_player_list_via_json_queries(function(player_array){
-
-                    //when we get our data, evaluate
-                    player_array.sort(function(a, b)
-                    {
-                        return( parseFloat(a.rank) - parseFloat(b.rank)); 
-                    })
-                    //console.log(player_array);
-                    for(i=0;i<player_array.length;i++){
-                        
-                        //console.log(player_array[i].firstName);
-                $('#player_list_table tr:last').after('<tr class="player_row"><td>'+player_array[i].position+'</td><td class="click_to_draft" player_name="'+player_array[i]['firstName']+ ' '+player_array[i]['lastName']+'" player_team="'+player_array[i]['teamAbbr']+'" player_pos="'+player_array[i]['position']+'">'+player_array[i].firstName+ ' ' + player_array[i].lastName+'</td><td>'+player_array[i].teamAbbr+'</td><td>'+player_array[i].rank+'</td></tr>');
+            //get our JSON
+            populate_player_list_via_json_queries(function(player_array)
+            {
+                //when we get our data, evaluate
+                player_array.sort(function(a, b)
+                {
+                    return( parseFloat(a.rank) - parseFloat(b.rank)); 
+                })
+                //console.log(player_array);
+                for(i=0;i<player_array.length;i++)
+                {        
+                $('#player_list_table tr:last').after('<tr class="player_row" drafted="false" player_team="'+player_array[i]['teamAbbr']+'" player_pos="'+player_array[i]['position']+'"><td>'+(i+1)+'</td><td>'+player_array[i].position+'</td><td class="click_to_draft" player_name="'+player_array[i]['firstName']+ ' '+player_array[i]['lastName']+'" player_team="'+player_array[i]['teamAbbr']+'" player_pos="'+player_array[i]['position']+'">'+player_array[i].firstName+ ' ' + player_array[i].lastName+'</td><td>'+player_array[i].teamAbbr+'</td><td class="adp">'+player_array[i].rank+'</td></tr>');
+                }
+                color_the_player_table();    
+            });
+        }
+            
+        function add_player_to_board(team, player_name, player_pos, pick){
+            if (player_pos == 'QB')
+            {
+                if($("#Team"+team+'_QB').text() == ''){
+                    $("#Team"+team+'_QB').text(player_name);
+                    draft_player(this_obj, team, player_name, player_pos);
+                }
+            else{
+                if (add_to_bench(team, player_pos, player_name) == 1){
+                    draft_player(this_obj, team, player_name, player_pos);
                     }
-                    
-                    
-                });
+                }
             }
-            //not going to need this...
-            /*function afterCall(){
-                alert('im also executed after');
-            }*/
+            if (player_pos == 'TE')
+            {
+                if($("#Team"+team+'_TE').text() == '')
+                {
+                $("#Team"+team+'_TE').text(player_name);
+                draft_player(this_obj, team, player_name, player_pos);
+                }
+                else
+                {
+                    if (add_to_bench(team, player_pos, player_name) == 1)
+                    {
+                        draft_player(this_obj, team, player_name, player_pos);
+                    }
+                }
+            }
+            if (player_pos == 'K')
+            {
+                if($("#Team"+team+'_K').text() == '')
+                {
+                    $("#Team"+team+'_K').text(player_name);
+                    draft_player(this_obj, team, player_name, player_pos);
+                }
+                else
+                {
+                    if (add_to_bench(team, player_pos, player_name) == 1)
+                    {
+                        draft_player(this_obj, team, player_name, player_pos);
+                    }
+                }
+            }
+            if (player_pos == 'DEF')
+            {
+                if($("#Team"+team+'_DEF').text() == '')
+                {
+                    $("#Team"+team+'_DEF').text(player_name);
+                    draft_player(this_obj, team, player_name, player_pos);
+                }
+                else
+                {
+                    if (add_to_bench(team, player_pos, player_name) == 1)
+                    {
+                        draft_player(this_obj, team, player_name, player_pos);
+                    }
+                }
+            }
+            if (player_pos == 'RB')
+            {
+                if($("#Team"+team+'_RB1').text() == '')
+                {
+                    $("#Team"+team+'_RB1').text(player_name);
+                    draft_player(this_obj, team, player_name, player_pos);
+                }
+                else if($("#Team"+team+'_RB2').text() == '')
+                {
+                    $("#Team"+team+'_RB2').text(player_name);
+                    draft_player(this_obj, team, player_name, player_pos);
+                }
+                else if($("#Team"+team+'_Flex').text() == '')
+                {
+                    $("#Team"+team+'_Flex').text(player_name);
+                    draft_player(this_obj, team, player_name, player_pos);
+                }
+                else
+                {
+                        if (add_to_bench(team, player_pos, player_name) == 1)
+                        {
+                            draft_player(this_obj, team, player_name, player_pos);
+                        }
+                }
+            }
+            if (player_pos == 'WR')
+            {
+                if($("#Team"+team+'_WR1').text() == '')
+                {
+                    $("#Team"+team+'_WR1').text(player_name);
+                    draft_player(this_obj, team, player_name, player_pos);
+                }
+                else if($("#Team"+team+'_WR2').text() == '')
+                {
+                    $("#Team"+team+'_WR2').text(player_name);
+                    draft_player(this_obj, team, player_name, player_pos);
+                }
+                else if($("#Team"+team+'_Flex').text() == '')
+                {
+                    $("#Team"+team+'_Flex').text(player_name);
+                    draft_player(this_obj, team, player_name, player_pos);
+                }
+                else
+                {
+                    if (add_to_bench(team, player_pos, player_name) == 1)
+                    {
+                        draft_player(this_obj, team, player_name, player_pos);
+                    }
+                }                
+            } 
+        }
            
 }); //end document.ready
 
