@@ -46,37 +46,7 @@ if ($_GET['resource'] == 'drafted_players'){
     echo $sql;
 } */
 
-//draft grid was a bad idea, probly has to go =(
-if($_GET['resource'] == 'draft_grid'){
-    $num_rounds = $_GET['numRounds'];
-    $num_teams = $_GET['numTeams'];
-    echo "<table id='draft_grid'>";
-    
-    for($round = 1; $round <=$num_rounds; $round++){
-        //odd numbered rounds
-        if($round % 2 != 0){
-            $pick = .01;
-            echo "<tr round='" . $round . "' >";
-            for($i=1; $i<=$num_teams; $i++){
-                echo "<td pick='" . ($round + $pick) . "'></td>";
-                $pick = ($pick + 0.01);
-                }
-                
-            }
-            echo "</tr>";
-            //even numbered rounds
-            if($round % 2 == 0){
-            $pick = ($num_teams/100);
-            echo "<tr>";
-            for($i=$num_teams; $i>=1; $i--){
-                echo "<td pick='" . ($round + $pick) . "'></td>";
-                $pick = ($pick - 0.01);
-                }
-            echo "</tr>";
-            }
-        }
-    echo "</table>";
-}
+
 
 if($_GET['resource'] == 'menu'){
     echo "<div id='draft_status'></div>";

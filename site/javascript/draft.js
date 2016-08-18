@@ -40,6 +40,8 @@ $(document).ready(function(){
        filter_player_list('All', 'All');
    }); */
    get_players();
+    color_the_player_table();
+    filter_player_list('All', 'All');
    //console.log(players_array[0]);
    $('#teams_display').load('../DraftHelper/data.php?resource=teams_display&numTeams='+numTeams+'&numRounds='+numRounds, function(){
     current_team_id = 1;
@@ -405,7 +407,7 @@ $(document).ready(function(){
                     for(i=0;i<player_array.length;i++){
                         
                         //console.log(player_array[i].firstName);
-                $('#player_list_table tr:last').after('<tr><td>'+player_array[i].position+'</td><td>'+player_array[i].firstName+ ' ' + player_array[i].lastName+'</td><td>'+player_array[i].teamAbbr+'</td><td>'+player_array[i].rank+'</td></tr>');
+                $('#player_list_table tr:last').after('<tr class="player_row"><td>'+player_array[i].position+'</td><td class="click_to_draft" player_name="'+player_array[i]['firstName']+ ' '+player_array[i]['lastName']+'" player_team="'+player_array[i]['teamAbbr']+'" player_pos="'+player_array[i]['position']+'">'+player_array[i].firstName+ ' ' + player_array[i].lastName+'</td><td>'+player_array[i].teamAbbr+'</td><td>'+player_array[i].rank+'</td></tr>');
                     }
                     
                     
