@@ -31,6 +31,7 @@ $(document).ready(function(){
    var dp_of_team_name_change;
    var draft_record = [];
    var overall_pick = 1;
+   var allowed_flex_positions = ['RB', 'WR'];
    //console.log(num_bench_spots);
     
    //load the list of all the players into the side bar
@@ -61,20 +62,20 @@ $(document).ready(function(){
    
    //function to draft a player
     $('body').on('click', '.click_to_draft', function () {
+        //Step 1. create variables from theplayers td properties
+        //Step 2. create a team_info array, based on what round and pick it is (determine whose pick it is and keep that teams info)
+        //step 3a. put the chosen player on the correct spot on the teams board. 
+        //step 3b. If the team does not have an appropriate spot, reject the pick
+        //step 4. Draft the player
         //create these variables for ease of use...
         var player_name = $(this).attr('player_name');
         var player_pos = $(this).attr('player_pos');
         var this_obj = $(this); //just use this variable for styling selected player rows, dont have to use $(this) that way.
-        
-        // if its an odd round the team picking should coincide with the pick number 
-        if(round%2!=0){
-            var team_info = teams_info[pick];
-        }
-        //if its an even round the team picking should be inverse to the pick number
-        if(round%2 == 0){
-            var team_info = teams_info[(numTeams+1) - pick];
-        }
+        var team_info = get_team_info(round, pick);
         var team = team_info['draft_position'];
+        console.log(team_info);
+        add_player_to_team_board(team, player_name, player_pos);
+        /*var team = team_info['draft_position'];
         
         if (player_pos == 'QB'){
             if($("#Team"+team+'_QB').text() == ''){
@@ -163,7 +164,7 @@ $(document).ready(function(){
         team_info = get_team_info(round, pick);
         update_draft_status(round, pick);  
         color_the_player_table();
-        highlight_picking_teams_table();
+        highlight_picking_teams_table();*/
     });
     //function to change the name of a team
     $('body').on('dblclick', '.team_name', function() {
@@ -214,23 +215,53 @@ $(document).ready(function(){
     });    
     
 
-
-        function add_to_bench(team, player_pos, player_name){
-                 var i = 1;
-                 while(i <= num_bench_spots){
-                     if($('#team'+team+'_bench_'+i+' td:nth-child(2)').text() == ''){
-                            $('#team'+team+'_bench_'+i+' td:nth-child(2)').text(player_name);
-                            return 1;    
-                                }
-                    else{
-                        i++;
+        function add_player_to_team_board(team, player_name, player_pos){
+            //step1. put the position into a variable
+            //step2. look for the first empty cell in that teams board with the class matching the position
+            //step3. if the position cells are filled, look for the first empty bench class cell
+            //step4. check to see if the player was added to a cell
+            //step5. return true if a player was added, return false if no applicable spots are available
+            if($('.Team_'+team+'_'+player_pos+'_cell:empty').first().text(player_name).length === 1)
+                {
+                    return 1;
+                }
+            else
+                {
+                    if(allowed_flex_positions.includes(player_pos)) //<---watch out for this, it might not work...
+                        {
+                        if($('.Team_'+team+'_Flex_cell:empty').first().text(player_name).length === 1)
+                            {
+                                return 1;
                             }
-                    if ($('#team'+team+'_bench_'+num_bench_spots+' td:nth-child(2)').text() != ''){
-                        alert('you cannot draft another '+player_pos);
-                        return 0;
+                        else
+                            {
+                                if($('.Team_'+team+'_BN_cell:empty').first().text(player_name).length === 1)
+                                    {
+                                        return 1;
+                                    }
+                                else
+                                    {
+                                        alert('You cannot draft any more '+player_pos+"'s");
+                                        return 0;
+                                    }
                             }
-                        }
+                }
+                else
+                    {
+                        if($('.Team_'+team+'_BN_cell:empty').first().text(player_name).length === 1)
+                            {
+                                return 1;
+                            }
+                        else
+                            {
+                                return 0;
+                            }
                     }
+            }
+            //console.log('.Team_'+team+'_'+player_pos+'_cell:contains("")');
+            //console.log(player_pos);
+        }
+        
         function draft_player(obj, team, player_name, player_pos){
             // add the draft pick to the draft_record array
             draft_record.push({'round':round, 'pick':pick, 'team':team, 'player':player_name, 'pos':player_pos });
