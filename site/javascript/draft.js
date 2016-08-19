@@ -74,7 +74,10 @@ $(document).ready(function(){
         var team_info = get_team_info(round, pick);
         var team = team_info['draft_position'];
         console.log(team_info);
-        add_player_to_team_board(team, player_name, player_pos);
+        if(add_player_to_team_board(team, player_name, player_pos) == 1){
+            draft_player(this_obj, team, player_name, player_pos);
+            update_draft_status(round, pick);
+        }
         /*var team = team_info['draft_position'];
         
         if (player_pos == 'QB'){
