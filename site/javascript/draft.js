@@ -342,6 +342,7 @@ $(document).ready(function(){
         }
 
         function undo_last_draft_pick(){
+            //0. if the overall_pick is 1, return.
             //1. erase player from team table
             //2. set tr drafted attribute to false
             //3. set tr overall_pick attribute to ''
@@ -351,6 +352,8 @@ $(document).ready(function(){
             //7. update the draft status
             //8. highlight the correct team board
             //9. color the player table
+            //step 0
+            if(overall_pick == 1){return;}
             var last_draft_pick = draft_record[draft_record.length - 1];
             //step 1 - done
             $('.team_board td:contains("'+last_draft_pick['player']+'")').text("");
