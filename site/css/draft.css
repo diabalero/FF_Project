@@ -66,9 +66,13 @@ tr[drafted="true"]{
     margin-bottom:20px;
     float:left;
     width:20%;
-    border-collapse: collapse;
-    
+    border-collapse: collapse;   
 }
+
 .postition_td{
     width:10%;
+}
+
+body{
+    font-family: PT Sans Narrow;
 }
