@@ -209,18 +209,12 @@ $(document).ready(function(){
     $('body').on('click', '#print_draft_results', function(){
         print_draft_results();
     });
-        
+    $('body').on('click', '#menu', function(){
+        undo_last_draft_pick();
+    });    
     
 
-        
-        function reset(){
-           //use this function to reset the draft to a certain point
-           /*for(var i = 0; i < draft_record.length; i++ )
-                {
-                    alert(draft_record[i]['pos']);
-                }*/
-            //
-        }
+
         function add_to_bench(team, player_pos, player_name){
                  var i = 1;
                  while(i <= num_bench_spots){
@@ -346,6 +340,50 @@ $(document).ready(function(){
             team = $('#team_filter').val();
             filter_player_list(position, team);
         }
+
+        function undo_last_draft_pick(){
+            //0. if the overall_pick is 1, return.
+            //1. erase player from team table
+            //2. set tr drafted attribute to false
+            //3. set tr overall_pick attribute to ''
+            //4. re-apply the .click_to_draft class to the td of the player in the player_list
+            //5. remove the draft record from the array
+            //6. move the pick back, move the round back if neccessary, subract one from overall pick
+            //7. update the draft status
+            //8. highlight the correct team board
+            //9. color the player table
+            //step 0
+            if(overall_pick == 1){return;}
+            var last_draft_pick = draft_record[draft_record.length - 1];
+            //step 1 - done
+            $('.team_board td:contains("'+last_draft_pick['player']+'")').text("");
+            //step 2 - done
+            console.log($('#player_list_table tr[player_name="'+last_draft_pick['player']+'"]').attr('drafted', false));
+            //step 3 - done
+            $('#player_list_table tr[player_name="'+last_draft_pick['player']+'"]').attr('overall_pick', '');
+            //step 4
+            $('#player_list_table td[player_name="'+last_draft_pick['player']+'"]').attr('class', 'click_to_draft');
+            //step 5
+            draft_record.pop();
+            //step 6
+            if(pick == 1){
+                pick = numTeams;
+                round = round - 1
+            }
+            else{
+                pick = pick - 1;
+            }
+            overall_pick--;
+            //step 7
+            update_draft_status(round, pick);
+            //step 8
+            highlight_picking_teams_table();
+            //step 9
+            color_the_player_table(); 
+            
+
+
+        }
         
         //this doesnt work, but if I figure out how the functions that do work, work, maybe I can fix this...
         /*function player_list_from_nfl_com(){
@@ -412,13 +450,14 @@ $(document).ready(function(){
                 //console.log(player_array);
                 for(i=0;i<player_array.length;i++)
                 {        
-                $('#player_list_table tr:last').after('<tr class="player_row" drafted="false" player_team="'+player_array[i]['teamAbbr']+'" player_pos="'+player_array[i]['position']+'"><td>'+(i+1)+'</td><td>'+player_array[i].position+'</td><td class="click_to_draft" player_name="'+player_array[i]['firstName']+ ' '+player_array[i]['lastName']+'" player_team="'+player_array[i]['teamAbbr']+'" player_pos="'+player_array[i]['position']+'">'+player_array[i].firstName+ ' ' + player_array[i].lastName+'</td><td>'+player_array[i].teamAbbr+'</td><td class="adp">'+player_array[i].rank+'</td></tr>');
+                $('#player_list_table tr:last').after('<tr class="player_row" drafted="false" player_name="'+player_array[i]['firstName']+ ' '+player_array[i]['lastName']+'" player_team="'+player_array[i]['teamAbbr']+'" player_pos="'+player_array[i]['position']+'"><td>'+(i+1)+'</td><td>'+player_array[i].position+'</td><td class="click_to_draft" player_name="'+player_array[i]['firstName']+ ' '+player_array[i]['lastName']+'" player_team="'+player_array[i]['teamAbbr']+'" player_pos="'+player_array[i]['position']+'">'+player_array[i].firstName+ ' ' + player_array[i].lastName+'</td><td>'+player_array[i].teamAbbr+'</td><td class="adp">'+player_array[i].rank+'</td></tr>');
                 }
                 color_the_player_table();
                 highlight_picking_teams_table();    
             });
         }
-            
+
+        //this is unused right now, but I want to separate it out into its own function eventually, so I will leave this here    
         function add_player_to_board(team, player_name, player_pos, pick){
             if (player_pos == 'QB')
             {
