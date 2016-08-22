@@ -1,4 +1,9 @@
 //TO DO//
+//coloring the table is what lags, paint everything red, then only color the nect 10 rows or so
+//fix the problem of the draft status not showing the picking team on load
+//write the on load function to change the pick and round with the controls
+//add the divisions of the menu: status, controls, etc
+
 //add button to show hidden drafted players (currently players drafted more than 20 picks ago)
 //code to undo a draft pick. should be able to click on a previous pick and reset draft to that point (undo that pick and all after it)
 //MAYBE color undrafted player rows individual cells to take advantage of lowest and highest pick data 
@@ -40,6 +45,7 @@ $(document).ready(function(){
        color_the_player_table();
        filter_player_list('All', 'All');
    }); */
+   
    $('#player_list_filter').load('../DraftHelper/data.php?resource=player_list_filter');
    get_players();
    filter_player_list('All', 'All');
@@ -47,8 +53,12 @@ $(document).ready(function(){
    $('#teams_display').load('../DraftHelper/data.php?resource=teams_display&numTeams='+numTeams+'&numRounds='+numRounds, function(){
     current_team_id = 1;
     current_team_name = $('#team_'+current_team_id+'_board').find('.team_name').text();
-    $('#draft_status').text("Round:"+round+" Pick:"+ pick +" Picking: "+current_team_name);
        });
+    $('#draft_status').load('../DraftHelper/data.php?resource=draft_status&num_rounds='+numRounds+'&num_teams='+numTeams, function(){
+        update_draft_status(round, pick);
+    });
+    
+    
    
    //create an array of team information
    var teams_info = [];
@@ -135,7 +145,8 @@ $(document).ready(function(){
     });
     $('body').on('click', '#menu', function(){
         undo_last_draft_pick();
-    });    
+    });
+    
     
 
         function add_player_to_team_board(team, player_name, player_pos){
@@ -181,8 +192,6 @@ $(document).ready(function(){
                             }
                     }
             }
-            //console.log('.Team_'+team+'_'+player_pos+'_cell:contains("")');
-            //console.log(player_pos);
         }
         
         function draft_player(obj, team, player_name, player_pos){
@@ -215,7 +224,10 @@ $(document).ready(function(){
         }
         function update_draft_status(round, pick){
             var team_info = get_team_info(round, pick);
-            $('#draft_status').text("Round:"+round+" Pick:"+ pick+" Picking: "+team_info['team_name']);
+            $('#draft_status_round').val(round);
+            $('#draft_status_pick').val(pick);
+            $('#picking_team').text(team_info['team_name']);
+            //console.log(team_info);
         }
         
         function color_the_player_table(){
