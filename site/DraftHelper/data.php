@@ -46,17 +46,19 @@ if ($_GET['resource'] == 'drafted_players'){
     echo $sql;
 } */
 
-
-
-if($_GET['resource'] == 'menu'){
-    echo "<div id='draft_status'></div>";
-    echo "<span id='round'></span><span id='pick'>";
-    echo "Create New Draft";
-    echo "Number of Teams: <select>";
-    for($i=1; $i<=16; $i++){
-        echo "<option value=$i>$i</option>";
+if($_GET['resource'] == 'draft_status'){
+    $num_teams = $_GET['num_teams'];
+    $num_rounds = $_GET['num_rounds'];
+    echo 'Round: <select id="draft_status_round">';
+    for($i=1; $i<=$num_rounds; $i++){
+        echo '<option value='."$i".'>'.$i.'</option>';
     }
-    echo "</select>";
+    echo '</select> Pick: <select id="draft_status_pick">';
+    for($i=1; $i<=$num_teams; $i++){
+        echo '<option value='."$i".'>'.$i.'</option>';
+    }
+    echo '</select> Picking Team: <span id="picking_team"></span>';
+
 }
 
 if($_GET['resource'] == 'teams_display'){
@@ -67,17 +69,17 @@ if($_GET['resource'] == 'teams_display'){
     for($team = 1; $team <= $num_teams; $team++){
         echo "<table class='team_board' id='team_".$team."_board' draft_position='".$team."' team_name='Team ".$team."'>";
         echo "<tr><th colspan=2><div purpose='team_name' draft_position='".$team."' class='team_name'>Team".$team. "</div></td> Pick".$team."</th></tr>";
-        echo "<tr><td>QB</td><td id='Team".$team."_QB'></td></tr>";
-        echo "<tr><td>RB1</td><td id='Team".$team."_RB1'></td></tr>";
-        echo "<tr><td>RB2</td><td id='Team".$team."_RB2'></td></tr>";
-        echo "<tr><td>WR1</td><td id='Team".$team."_WR1'></td></tr>";
-        echo "<tr><td>WR2</td><td id='Team".$team."_WR2'></td></tr>";
-        echo "<tr><td>Flex</td><td id='Team".$team."_Flex'></td></tr>";
-        echo "<tr><td>TE</td><td id='Team".$team."_TE'></td></tr>";
-        echo "<tr><td>K</td><td id='Team".$team."_K'></td></tr>";
-        echo "<tr><td>DEF</td><td id='Team".$team."_DEF'></td></tr>";
+        echo "<tr><td >QB</td><td class='Team_".$team."_QB_cell' id='Team_".$team."_QB'></td></tr>";
+        echo "<tr><td>RB1</td><td  class='Team_".$team."_RB_cell' id='Team_".$team."_RB1'></td></tr>";
+        echo "<tr><td>RB2</td><td class='Team_".$team."_RB_cell' id='Team_".$team."_RB2'></td></tr>";
+        echo "<tr><td>WR1</td><td class='Team_".$team."_WR_cell' id='Team_".$team."_WR1'></td></tr>";
+        echo "<tr><td>WR2</td><td class='Team_".$team."_WR_cell' id='Team_".$team."_WR2'></td></tr>";
+        echo "<tr><td>Flex</td><td class='Team_".$team."_Flex_cell' id='_Team".$team."_Flex'></td></tr>";
+        echo "<tr><td>TE</td><td class='Team_".$team."_TE_cell' id='Team_".$team."_TE'></td></tr>";
+        echo "<tr><td>K</td><td class='Team_".$team."_K_cell' id='Team_".$team."_K'></td></tr>";
+        echo "<tr><td>DEF</td><td class='Team_".$team."_DEF_cell' id='Team_".$team."_DEF_cell'></td></tr>";
     for($i = 1; $i<= $num_bench_spots; $i++){
-        echo "<tr id='team".$team."_bench_".$i."'><td>BN</td><td></td></tr>";
+        echo "<tr id='team".$team."_bench_".$i."'><td>BN</td><td class='Team_".$team."_BN_cell'></td></tr>";
     }
         
         echo "</table>";
