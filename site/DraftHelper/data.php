@@ -49,11 +49,11 @@ if ($_GET['resource'] == 'drafted_players'){
 if($_GET['resource'] == 'draft_status'){
     $num_teams = $_GET['num_teams'];
     $num_rounds = $_GET['num_rounds'];
-    echo 'Round: <select id="draft_status_round">';
+    echo 'Round: <select class="draft_status_select" id="draft_status_round">';
     for($i=1; $i<=$num_rounds; $i++){
         echo '<option value='."$i".'>'.$i.'</option>';
     }
-    echo '</select> Pick: <select id="draft_status_pick">';
+    echo '</select> Pick: <select class="draft_status_select" id="draft_status_pick">';
     for($i=1; $i<=$num_teams; $i++){
         echo '<option value='."$i".'>'.$i.'</option>';
     }
