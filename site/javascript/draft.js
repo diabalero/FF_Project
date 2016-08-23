@@ -152,7 +152,7 @@ $(document).ready(function(){
         var _round = $('#draft_status_round').val();
         pick = parseInt(_pick);
         round = parseInt(_round);
-        _overall_pick = (round -1 ) * numTeams + pick;
+        overall_pick = (round -1 ) * numTeams + pick;
         console.log(_overall_pick);
         console.log(_round);
         console.log(_pick);
@@ -216,16 +216,7 @@ $(document).ready(function(){
             $(obj).parent().attr('drafted', 'true');
             //figure out what team board table and cell to put the player in, and put him there.
             $(obj).parent().attr('overall_pick', overall_pick);
-            progress_to_next_open_overall_pick();
-            if(pick < numTeams){
-                pick += 1;
-                }
-            else{
-                pick = 1;
-                round += 1;
-                }
-            overall_pick += 1;
-            
+            progress_to_next_open_overall_pick();            
         }
         
         function get_team_info(round, pick){
@@ -426,7 +417,7 @@ $(document).ready(function(){
         //what i want is a function that safely progresses picks, accounting for keepers
         //so if there was a keeper set, and the draft progresses to a pick that was chosen, it skips over that team and pick. 
         function progress_to_next_open_overall_pick(){
-            if(overall_pick in draft_record){
+            while((overall_pick in draft_record) && (overall_pick <= (numRounds * numTeams))){
                 if(pick < numTeams){
                     pick += 1;
                     }
@@ -435,9 +426,8 @@ $(document).ready(function(){
                     round += 1;
                     }
                 overall_pick += 1;
+                    }
                 }
-            
-        }
         
         function highlight_picking_teams_table(){
             if(round%2!=0){ team = pick;}
