@@ -45,16 +45,12 @@ text-align:center;
     max-height:84%;
     overflow: scroll;
 }
-/*Removed the TH from the specification since it overlapped the other border*/
+
 #player_list_table{
     border-collapse: separate;
-    border: 1px solid black; 
+    border-radius: .5em; 
+}
 
-}
-/*Adding this as a separate line item allows the rounded outer border*/
-#player_list_table{
-    border-radius: 1em;   
-}
 
 #player_list_table {
     width:100%;
@@ -93,14 +89,11 @@ tr[drafted="true"]{
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     border-radius: 5px;
-}
-
-.team_board th{
-    background-color: green;
+    background-color: #D7CEC7;
 }
 
 .team_board tr:nth-child(even){
-    background-color: #dde3ee;
+    background-color: #CAEBF2;
 }
 
 .postition_td{
@@ -110,6 +103,7 @@ tr[drafted="true"]{
 body{
     font-family: Ubuntu;
     overflow: hidden;
+    background-color: #EFEFEF;
 }
 
 #undo_button{
