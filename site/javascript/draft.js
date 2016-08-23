@@ -1,17 +1,18 @@
 //TO DO//
-//coloring the table is what lags, paint everything red, then only color the nect 10 rows or so
-//fix the problem of the draft status not showing the picking team on load
-//write the on load function to change the pick and round with the controls
-//add the divisions of the menu: status, controls, etc
+//add the divisions of the menu: status, controls, configuration, etc
 
-//add button to show hidden drafted players (currently players drafted more than 20 picks ago)
 //code to undo a draft pick. should be able to click on a previous pick and reset draft to that point (undo that pick and all after it)
-//MAYBE color undrafted player rows individual cells to take advantage of lowest and highest pick data 
-//add option to add bench rows to team boards instead of denying player drafting too many of a position
-    //bug here currently! if the tool denys a pick because there are no more bench spots, it still progresses the pick counter
+
+
+//add option to change position rows into bench rows to team boards instead of denying player drafting too many of a position
+
 //somehow indicate to the user that you can rename teams by double clicking on them
+    //add (i) icon to menu tools to get user instructions!!
+
 //allow customization of draft, number of rounds, teams
+
 //add feature for setting keepers
+    //added! now just need to fix undo pick
 //highlight table of currently picking team
 
 //STYLING TASK SUGGESTIONS FOR DEREK (just ideas)
@@ -95,7 +96,8 @@ $(document).ready(function(){
         //console.log(team_info);
         if(add_player_to_team_board(team, player_name, player_pos) == 1){
             draft_player(this_obj, team, player_name, player_pos);
-            progress_pick();
+            last_pick = overall_pick;
+            go_to_first_available_pick();
             update_draft_status(round, pick);
             color_the_player_table();
             highlight_picking_teams_table();
@@ -317,8 +319,8 @@ $(document).ready(function(){
         }
 
         function undo_last_draft_pick(){
-            if(overall_pick == 1){return;}
-            var last_draft_pick = draft_record[draft_record.length - 1];
+            last_draft_pick = draft_record[last_pick];
+            
             //step 1 - erase player from team table
             $('.team_board td:contains("'+last_draft_pick['player']+'")').text("");
             //step 2 - set tr drafted attribute to false
@@ -328,25 +330,15 @@ $(document).ready(function(){
             //step 4 re-apply the .click_to_draft class to the td of the player in the player_list
             $('#player_list_table td[player_name="'+last_draft_pick['player']+'"]').attr('class', 'click_to_draft');
             //step 5 remove the draft record from the array
-            draft_record.pop();
-            //step 6 move the pick back, move the round back if neccessary, subract one from overall pick
-            if(pick == 1){
-                pick = numTeams;
-                round = round - 1
-            }
-            else{
-                pick = pick - 1;
-            }
-            overall_pick--;
+            draft_record.splice(last_pick, 1);
+            //step 6 move the draft position to the first empty pick
+            go_to_first_available_pick();
             //step 7 update the draft status
             update_draft_status(round, pick);
             //step 8 highlight the correct team board
             highlight_picking_teams_table();
             //step 9 color the player table
-            color_the_player_table(); 
-            
-
-
+            color_the_player_table();
         }
         
         //this doesnt work, but if I figure out how the functions that do work, work, maybe I can fix this...
@@ -421,7 +413,10 @@ $(document).ready(function(){
             });
         }
         
-        function progress_pick(){
+        function go_to_first_available_pick(){
+            overall_pick = 1;
+            pick = 1;
+            round = 1;
             while(draft_record[overall_pick]){
                 if(pick < numTeams){
                     pick += 1;
