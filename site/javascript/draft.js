@@ -438,7 +438,16 @@ $(document).ready(function(){
             if(round%2!=0){ team = pick;}
             if(round%2==0) {team = (numTeams+1)-pick;}
             $('.team_board th').css('background-color', 'transparent');
+<<<<<<< HEAD
             $('#team_'+team+'_board th').css('background-color', 'yellow');
+=======
+            $('#team_'+team+'_board th').css('background-color', '#E37222');
+            $('#team_'+team+'_board th').css('border-radius', '.5em');
+            /*Trying to get the header of team on the clock to flash*/
+            for(i=5; i >= 1; i--){
+                $('#team_'+team+'_board th').fadeOut(500).fadeIn(500);
+            }    
+>>>>>>> TableDesignImprovements
         }
         function print_draft_results(){
             for(i=0;i<draft_record.length;i++){
