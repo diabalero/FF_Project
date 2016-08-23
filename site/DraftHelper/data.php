@@ -46,17 +46,19 @@ if ($_GET['resource'] == 'drafted_players'){
     echo $sql;
 } */
 
-
-
-if($_GET['resource'] == 'menu'){
-    echo "<div id='draft_status'></div>";
-    echo "<span id='round'></span><span id='pick'>";
-    echo "Create New Draft";
-    echo "Number of Teams: <select>";
-    for($i=1; $i<=16; $i++){
-        echo "<option value=$i>$i</option>";
+if($_GET['resource'] == 'draft_status'){
+    $num_teams = $_GET['num_teams'];
+    $num_rounds = $_GET['num_rounds'];
+    echo 'Round: <select class="draft_status_select" id="draft_status_round">';
+    for($i=1; $i<=$num_rounds; $i++){
+        echo '<option value='."$i".'>'.$i.'</option>';
     }
-    echo "</select>";
+    echo '</select> Pick: <select class="draft_status_select" id="draft_status_pick">';
+    for($i=1; $i<=$num_teams; $i++){
+        echo '<option value='."$i".'>'.$i.'</option>';
+    }
+    echo '</select> Picking Team: <span id="picking_team"></span>';
+
 }
 
 if($_GET['resource'] == 'teams_display'){

@@ -1,4 +1,9 @@
 //TO DO//
+//coloring the table is what lags, paint everything red, then only color the nect 10 rows or so
+//fix the problem of the draft status not showing the picking team on load
+//write the on load function to change the pick and round with the controls
+//add the divisions of the menu: status, controls, etc
+
 //add button to show hidden drafted players (currently players drafted more than 20 picks ago)
 //code to undo a draft pick. should be able to click on a previous pick and reset draft to that point (undo that pick and all after it)
 //MAYBE color undrafted player rows individual cells to take advantage of lowest and highest pick data 
@@ -40,6 +45,7 @@ $(document).ready(function(){
        color_the_player_table();
        filter_player_list('All', 'All');
    }); */
+   
    $('#player_list_filter').load('../DraftHelper/data.php?resource=player_list_filter');
    get_players();
    filter_player_list('All', 'All');
@@ -47,8 +53,12 @@ $(document).ready(function(){
    $('#teams_display').load('../DraftHelper/data.php?resource=teams_display&numTeams='+numTeams+'&numRounds='+numRounds, function(){
     current_team_id = 1;
     current_team_name = $('#team_'+current_team_id+'_board').find('.team_name').text();
-    $('#draft_status').text("Round:"+round+" Pick:"+ pick +" Picking: "+current_team_name);
        });
+    $('#draft_status').load('../DraftHelper/data.php?resource=draft_status&num_rounds='+numRounds+'&num_teams='+numTeams, function(){
+        update_draft_status(round, pick);
+    });
+    
+    
    
    //create an array of team information
    var teams_info = [];
@@ -93,11 +103,11 @@ $(document).ready(function(){
     $('body').on('dblclick', '.team_name', function() {
         
         $('.team_board').find('div[purpose="team_name"]').removeClass(); //this disables the user from changing 2 team names simultaneously
-        $(this).html('<input type="text" id="new_team_name"></input><button id="change">change</button>');
+        $(this).html('<input type="text" id="new_team_name"></input><button id="team_name_change">change</button>');
         $('#new_team_name').focus();
         dp_of_team_name_change = $(this).attr('draft_position');
             });
-    $('body').on('click', '#change', function(){
+    $('body').on('click', '#team_name_change', function(){
         if ($('#new_team_name').val() != ''){
         new_team_name = $('#new_team_name').val()
         $('div[draft_position='+dp_of_team_name_change+']').text(new_team_name);
@@ -134,8 +144,21 @@ $(document).ready(function(){
         print_draft_results();
     });
     $('body').on('click', '#menu', function(){
-        undo_last_draft_pick();
-    });    
+        //undo_last_draft_pick();
+    });
+
+    $('body').on('change', '.draft_status_select', function(){
+        var _pick = $('#draft_status_pick').val();
+        var _round = $('#draft_status_round').val();
+        pick = parseInt(_pick);
+        round = parseInt(_round);
+        overall_pick = (round -1 ) * numTeams + pick;
+        console.log(_overall_pick);
+        console.log(_round);
+        console.log(_pick);
+        print_draft_results();
+    });
+    
     
 
         function add_player_to_team_board(team, player_name, player_pos){
@@ -181,27 +204,19 @@ $(document).ready(function(){
                             }
                     }
             }
-            //console.log('.Team_'+team+'_'+player_pos+'_cell:contains("")');
-            //console.log(player_pos);
         }
         
         function draft_player(obj, team, player_name, player_pos){
             // add the draft pick to the draft_record array
-            draft_record.push({'round':round, 'pick':pick, 'team':team, 'player':player_name, 'pos':player_pos });
+            //draft_record.push({'overall_pick':overall_pick, 'round':round, 'pick':pick, 'team':team, 'player':player_name, 'pos':player_pos });
+            draft_record[overall_pick] = ({'overall_pick':overall_pick, 'round':round, 'pick':pick, 'team':team, 'player':player_name, 'pos':player_pos });
             // remove the 'click_to_draft class from the player name cell so he cant be drafted again
             $(obj).removeClass();
             //add the 'drafted' class to the player name cell so his name is styled with line-though
             $(obj).parent().attr('drafted', 'true');
             //figure out what team board table and cell to put the player in, and put him there.
             $(obj).parent().attr('overall_pick', overall_pick);
-            if(pick < numTeams){
-                pick += 1;
-                }
-            else{
-                pick = 1;
-                round += 1;
-                }
-            overall_pick += 1;
+            progress_to_next_open_overall_pick();            
         }
         
         function get_team_info(round, pick){
@@ -215,7 +230,10 @@ $(document).ready(function(){
         }
         function update_draft_status(round, pick){
             var team_info = get_team_info(round, pick);
-            $('#draft_status').text("Round:"+round+" Pick:"+ pick+" Picking: "+team_info['team_name']);
+            $('#draft_status_round').val(round);
+            $('#draft_status_pick').val(pick);
+            $('#picking_team').text(team_info['team_name']);
+            //console.log(team_info);
         }
         
         function color_the_player_table(){
@@ -395,8 +413,21 @@ $(document).ready(function(){
                 highlight_picking_teams_table();    
             });
         }
-
-        
+        //this isnt done
+        //what i want is a function that safely progresses picks, accounting for keepers
+        //so if there was a keeper set, and the draft progresses to a pick that was chosen, it skips over that team and pick. 
+        function progress_to_next_open_overall_pick(){
+            while((overall_pick in draft_record) && (overall_pick <= (numRounds * numTeams))){
+                if(pick < numTeams){
+                    pick += 1;
+                    }
+                else{
+                    pick = 1;
+                    round += 1;
+                    }
+                overall_pick += 1;
+                    }
+                }
         
         function highlight_picking_teams_table(){
             if(round%2!=0){ team = pick;}
@@ -406,10 +437,11 @@ $(document).ready(function(){
         }
         function print_draft_results(){
             for(i=0;i<draft_record.length;i++){
-                console.log('round:'+draft_record[i]['round']+' pick:'+draft_record[i]['pick']+' team:'+draft_record[i]['team']+' player:'+draft_record[i]['player']+ ' position:'+draft_record[i]['pos']);
+                console.log('Overall Pick:'+draft_record[i]['overall_pick']+ ' round:'+draft_record[i]['round']+' pick:'+draft_record[i]['pick']+' team:'+draft_record[i]['team']+' player:'+draft_record[i]['player']+ ' position:'+draft_record[i]['pos']);
             }
             
         }
+
            
 }); //end document.ready
 
