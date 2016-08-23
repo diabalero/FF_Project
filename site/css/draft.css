@@ -14,16 +14,34 @@ body{
     
 }
 
+.menu_div{
+    width:23%;
+    height: 98%;
+    float:left;
+    border-right:1px solid black;
+}
+
+.menu_div_title{
+font-weight: bold;
+padding:5px;
+}
+
 #players{
     border:1px solid green;
     float:left;
-    height:85%;
+    max-height:85%;
     width:25%;
-    overflow: scroll;   
+     
 }
 
 #player_list_filter{
     margin: 5px;
+    max-height:14%;
+}
+
+#player_list{
+    max-height:84%;
+    overflow: scroll;
 }
 
 #player_list_table, td, th{
@@ -33,7 +51,7 @@ body{
 }
 
 #player_list_table {
-    width:100%;  
+    width:100%;
 }
 
 #player_list_table tr:nth-child(even){
@@ -72,5 +90,17 @@ tr[drafted="true"]{
 
 .postition_td{
     width:10%;
+}
+
+body{
+    font-family: PT Sans Narrow;
+}
+
+#undo_button{
+    height:30px;
+    width:30px;
+}
+#undo_button:hover{
+    cursor: pointer;
 }
 

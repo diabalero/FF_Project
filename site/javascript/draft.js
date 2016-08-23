@@ -57,6 +57,8 @@ $(document).ready(function(){
     $('#draft_status').load('../DraftHelper/data.php?resource=draft_status&num_rounds='+numRounds+'&num_teams='+numTeams, function(){
         update_draft_status(round, pick);
     });
+    $('#draft_configuration').load('../DraftHelper/data.php?resource=draft_configuration');
+    $('#draft_controls').load('../DraftHelper/data.php?resource=draft_controls');
     
     
    
@@ -103,11 +105,11 @@ $(document).ready(function(){
     $('body').on('dblclick', '.team_name', function() {
         
         $('.team_board').find('div[purpose="team_name"]').removeClass(); //this disables the user from changing 2 team names simultaneously
-        $(this).html('<input type="text" id="new_team_name"></input><button id="change">change</button>');
+        $(this).html('<input type="text" id="new_team_name"></input><button id="team_name_change">change</button>');
         $('#new_team_name').focus();
         dp_of_team_name_change = $(this).attr('draft_position');
             });
-    $('body').on('click', '#change', function(){
+    $('body').on('click', '#team_name_change', function(){
         if ($('#new_team_name').val() != ''){
         new_team_name = $('#new_team_name').val()
         $('div[draft_position='+dp_of_team_name_change+']').text(new_team_name);
@@ -143,8 +145,17 @@ $(document).ready(function(){
     $('body').on('click', '#print_draft_results', function(){
         print_draft_results();
     });
-    $('body').on('click', '#menu', function(){
+    $('body').on('click', '#undo_button', function(){
         undo_last_draft_pick();
+    });
+
+    $('body').on('change', '.draft_status_select', function(){
+        pick = $('#draft_status_pick').val();
+        round = $('#draft_status_round').val();
+        overall_pick = (round -1 ) * numTeams + pick;
+        update_draft_status(round, pick);
+        color_the_player_table();
+        highlight_picking_teams_table();
     });
     
     
@@ -196,21 +207,15 @@ $(document).ready(function(){
         
         function draft_player(obj, team, player_name, player_pos){
             // add the draft pick to the draft_record array
-            draft_record.push({'round':round, 'pick':pick, 'team':team, 'player':player_name, 'pos':player_pos });
+            //draft_record.push({'overall_pick':overall_pick, 'round':round, 'pick':pick, 'team':team, 'player':player_name, 'pos':player_pos });
+            draft_record[overall_pick] = ({'overall_pick':overall_pick, 'round':round, 'pick':pick, 'team':team, 'player':player_name, 'pos':player_pos });
             // remove the 'click_to_draft class from the player name cell so he cant be drafted again
             $(obj).removeClass();
             //add the 'drafted' class to the player name cell so his name is styled with line-though
             $(obj).parent().attr('drafted', 'true');
             //figure out what team board table and cell to put the player in, and put him there.
             $(obj).parent().attr('overall_pick', overall_pick);
-            if(pick < numTeams){
-                pick += 1;
-                }
-            else{
-                pick = 1;
-                round += 1;
-                }
-            overall_pick += 1;
+            progress_to_next_open_overall_pick();            
         }
         
         function get_team_info(round, pick){
@@ -260,7 +265,7 @@ $(document).ready(function(){
                     $(this).css('background-color', '#808080');
                     $(this).css('color', '#404040');
                     }
-                hide_non_recent_drafted_players();
+                //hide_non_recent_drafted_players();
             });
         }
         function filter_player_list(position, team){
@@ -408,7 +413,18 @@ $(document).ready(function(){
             });
         }
 
-        
+        function progress_to_next_open_overall_pick(){
+            while((overall_pick in draft_record) && (overall_pick <= (numRounds * numTeams))){
+                if(pick < numTeams){
+                    pick += 1;
+                    }
+                else{
+                    pick = 1;
+                    round += 1;
+                    }
+                overall_pick += 1;
+                    }
+                }
         
         function highlight_picking_teams_table(){
             if(round%2!=0){ team = pick;}
@@ -418,10 +434,11 @@ $(document).ready(function(){
         }
         function print_draft_results(){
             for(i=0;i<draft_record.length;i++){
-                console.log('round:'+draft_record[i]['round']+' pick:'+draft_record[i]['pick']+' team:'+draft_record[i]['team']+' player:'+draft_record[i]['player']+ ' position:'+draft_record[i]['pos']);
+                console.log('Overall Pick:'+draft_record[i]['overall_pick']+ ' round:'+draft_record[i]['round']+' pick:'+draft_record[i]['pick']+' team:'+draft_record[i]['team']+' player:'+draft_record[i]['player']+ ' position:'+draft_record[i]['pos']);
             }
             
         }
+
            
 }); //end document.ready
 
