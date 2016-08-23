@@ -1,3 +1,7 @@
+body{
+    font-family: PT Sans Narrow;
+}
+
 #outer_limits{
     max-height:100vh;
     max-width:100vw;
@@ -9,6 +13,7 @@
     width:98%;
     
 }
+
 .menu_div{
     width:23%;
     height: 98%;
@@ -22,8 +27,6 @@ font-weight: bold;
 padding:5px;
 text-align:center;
 }
-
-
 
 #players{
     border:1px solid green;
@@ -68,7 +71,6 @@ text-align:center;
 tr[drafted="true"]{
     background-color:#4d4d4d;
     color:#b3b3b3;
-    /*text-decoration: line-through;*/
 }
 
 #teams_display{
@@ -82,7 +84,10 @@ tr[drafted="true"]{
     margin-bottom:20px;
     float:left;
     width:20%;
-    border-collapse: collapse;   
+    border-collapse: collapse;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
 }
 
 .postition_td{
@@ -100,3 +105,4 @@ body{
 #undo_button:hover{
     cursor: pointer;
 }
+
