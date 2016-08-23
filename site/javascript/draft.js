@@ -265,7 +265,7 @@ $(document).ready(function(){
                     $(this).css('background-color', '#808080');
                     $(this).css('color', '#404040');
                     }
-                hide_non_recent_drafted_players();
+                //hide_non_recent_drafted_players();
             });
         }
         function filter_player_list(position, team){
