@@ -14,11 +14,13 @@
     height: 98%;
     float:left;
     border-right:1px solid black;
+    /*text-align:center;*/
 }
 
 .menu_div_title{
 font-weight: bold;
 padding:5px;
+text-align:center;
 }
 
 
