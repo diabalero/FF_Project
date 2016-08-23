@@ -1,17 +1,18 @@
 //TO DO//
-//coloring the table is what lags, paint everything red, then only color the nect 10 rows or so
-//fix the problem of the draft status not showing the picking team on load
-//write the on load function to change the pick and round with the controls
-//add the divisions of the menu: status, controls, etc
+//add the divisions of the menu: status, controls, configuration, etc
 
-//add button to show hidden drafted players (currently players drafted more than 20 picks ago)
 //code to undo a draft pick. should be able to click on a previous pick and reset draft to that point (undo that pick and all after it)
-//MAYBE color undrafted player rows individual cells to take advantage of lowest and highest pick data 
-//add option to add bench rows to team boards instead of denying player drafting too many of a position
-    //bug here currently! if the tool denys a pick because there are no more bench spots, it still progresses the pick counter
+
+
+//add option to change position rows into bench rows to team boards instead of denying player drafting too many of a position
+
 //somehow indicate to the user that you can rename teams by double clicking on them
+    //add (i) icon to menu tools to get user instructions!!
+
 //allow customization of draft, number of rounds, teams
+
 //add feature for setting keepers
+    //added! now just need to fix undo pick
 //highlight table of currently picking team
 
 //STYLING TASK SUGGESTIONS FOR DEREK (just ideas)
@@ -37,19 +38,26 @@ $(document).ready(function(){
    var draft_record = [];
    var overall_pick = 1;
    var allowed_flex_positions = ['RB', 'WR'];
-   //console.log(num_bench_spots);
+   var last_pick; //I will just set last_pick to overall_pick after a selection, 
+   //then the undo function will just erase that from the draft record, and restyle what needs it
+   
     
-   //load the list of all the players into the side bar
+   //load the list of all the players into the side bar from the database
    //$('#player_list').load('../DraftHelper/data.php?resource=player_list');
+   
+   //load the list of all the players from a CSV (ffcalculator is the source)
    /*$('#player_list').load('../DraftHelper/data.php?resource=player_list_from_csv', function(){
        color_the_player_table();
        filter_player_list('All', 'All');
    }); */
    
+   //load the list of players from nfl.com's api
    $('#player_list_filter').load('../DraftHelper/data.php?resource=player_list_filter');
    get_players();
    filter_player_list('All', 'All');
-   //console.log(players_array[0]);
+   
+   //load the team tables based on number of teams and rounds (# of rounds effects bench spots)
+   //I need to add configuration for how many of each position and what can be in a flex spot using the allowed flex positions array
    $('#teams_display').load('../DraftHelper/data.php?resource=teams_display&numTeams='+numTeams+'&numRounds='+numRounds, function(){
     current_team_id = 1;
     current_team_name = $('#team_'+current_team_id+'_board').find('.team_name').text();
@@ -85,9 +93,11 @@ $(document).ready(function(){
         var this_obj = $(this); //just use this variable for styling selected player rows, dont have to use $(this) that way.
         var team_info = get_team_info(round, pick);
         var team = team_info['draft_position'];
-        console.log(team_info);
+        //console.log(team_info);
         if(add_player_to_team_board(team, player_name, player_pos) == 1){
             draft_player(this_obj, team, player_name, player_pos);
+            last_pick = overall_pick;
+            go_to_first_available_pick();
             update_draft_status(round, pick);
             color_the_player_table();
             highlight_picking_teams_table();
@@ -150,6 +160,7 @@ $(document).ready(function(){
     });
 
     $('body').on('change', '.draft_status_select', function(){
+        console.log('a draft status select box change fired, did we want it to?');
         pick = $('#draft_status_pick').val();
         round = $('#draft_status_round').val();
         overall_pick = (round -1 ) * numTeams + pick;
@@ -214,8 +225,7 @@ $(document).ready(function(){
             //add the 'drafted' class to the player name cell so his name is styled with line-though
             $(obj).parent().attr('drafted', 'true');
             //figure out what team board table and cell to put the player in, and put him there.
-            $(obj).parent().attr('overall_pick', overall_pick);
-            progress_to_next_open_overall_pick();            
+            $(obj).parent().attr('overall_pick', overall_pick);      
         }
         
         function get_team_info(round, pick){
@@ -309,8 +319,8 @@ $(document).ready(function(){
         }
 
         function undo_last_draft_pick(){
-            if(overall_pick == 1){return;}
-            var last_draft_pick = draft_record[draft_record.length - 1];
+            last_draft_pick = draft_record[last_pick];
+            
             //step 1 - erase player from team table
             $('.team_board td:contains("'+last_draft_pick['player']+'")').text("");
             //step 2 - set tr drafted attribute to false
@@ -320,25 +330,15 @@ $(document).ready(function(){
             //step 4 re-apply the .click_to_draft class to the td of the player in the player_list
             $('#player_list_table td[player_name="'+last_draft_pick['player']+'"]').attr('class', 'click_to_draft');
             //step 5 remove the draft record from the array
-            draft_record.pop();
-            //step 6 move the pick back, move the round back if neccessary, subract one from overall pick
-            if(pick == 1){
-                pick = numTeams;
-                round = round - 1
-            }
-            else{
-                pick = pick - 1;
-            }
-            overall_pick--;
+            draft_record.splice(last_pick, 1);
+            //step 6 move the draft position to the first empty pick
+            go_to_first_available_pick();
             //step 7 update the draft status
             update_draft_status(round, pick);
             //step 8 highlight the correct team board
             highlight_picking_teams_table();
             //step 9 color the player table
-            color_the_player_table(); 
-            
-
-
+            color_the_player_table();
         }
         
         //this doesnt work, but if I figure out how the functions that do work, work, maybe I can fix this...
@@ -412,19 +412,23 @@ $(document).ready(function(){
                 highlight_picking_teams_table();    
             });
         }
-
-        function progress_to_next_open_overall_pick(){
-            while((overall_pick in draft_record) && (overall_pick <= (numRounds * numTeams))){
+        
+        function go_to_first_available_pick(){
+            overall_pick = 1;
+            pick = 1;
+            round = 1;
+            while(draft_record[overall_pick]){
                 if(pick < numTeams){
                     pick += 1;
-                    }
+                }
                 else{
                     pick = 1;
                     round += 1;
-                    }
-                overall_pick += 1;
-                    }
                 }
+            overall_pick += 1;
+            }
+        }
+
         
         function highlight_picking_teams_table(){
             if(round%2!=0){ team = pick;}
