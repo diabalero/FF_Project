@@ -5,7 +5,7 @@
 <HTML>
     <TITLE>Draft Helper</TITLE>
     <HEAD>
-        <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=PT+Sans+Narrow"/>
+        <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Ubuntu"/>
         <link rel="stylesheet" type="text/css" href="../css/draft.css">
         <script src='../javascript/jquery.js'></script>
         <!--<script src='../javascript/draft.js'></script>-->
