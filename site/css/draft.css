@@ -29,7 +29,7 @@ text-align:center;
 }
 
 #players{
-    border:1px solid green;
+    /*border:1px solid green;*/
     float:left;
     max-height:85%;
     width:25%;
@@ -113,4 +113,5 @@ body{
 #undo_button:hover{
     cursor: pointer;
 }
+
 
