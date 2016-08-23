@@ -57,6 +57,8 @@ $(document).ready(function(){
     $('#draft_status').load('../DraftHelper/data.php?resource=draft_status&num_rounds='+numRounds+'&num_teams='+numTeams, function(){
         update_draft_status(round, pick);
     });
+    $('#draft_configuration').load('../DraftHelper/data.php?resource=draft_configuration');
+    $('#draft_controls').load('../DraftHelper/data.php?resource=draft_controls');
     
     
    
@@ -148,15 +150,12 @@ $(document).ready(function(){
     });
 
     $('body').on('change', '.draft_status_select', function(){
-        var _pick = $('#draft_status_pick').val();
-        var _round = $('#draft_status_round').val();
-        pick = parseInt(_pick);
-        round = parseInt(_round);
+        pick = $('#draft_status_pick').val();
+        round = $('#draft_status_round').val();
         overall_pick = (round -1 ) * numTeams + pick;
-        console.log(_overall_pick);
-        console.log(_round);
-        console.log(_pick);
-        print_draft_results();
+        update_draft_status(round, pick);
+        color_the_player_table();
+        highlight_picking_teams_table();
     });
     
     
@@ -413,9 +412,7 @@ $(document).ready(function(){
                 highlight_picking_teams_table();    
             });
         }
-        //this isnt done
-        //what i want is a function that safely progresses picks, accounting for keepers
-        //so if there was a keeper set, and the draft progresses to a pick that was chosen, it skips over that team and pick. 
+
         function progress_to_next_open_overall_pick(){
             while((overall_pick in draft_record) && (overall_pick <= (numRounds * numTeams))){
                 if(pick < numTeams){

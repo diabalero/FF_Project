@@ -9,12 +9,12 @@
     width:98%;
     
 }
-/*draft grid was a bad idea and probly has to go =(
-/*#draft_grid{
-    width:99%;
-    height:99%;
+.menu_div{
+    width:25%;
+    height: 98%;
+    float:left;
+    border-right:1px solid black;
 }
-*/
 #players{
     border:1px solid green;
     float:left;
@@ -75,4 +75,9 @@ tr[drafted="true"]{
 
 body{
     font-family: PT Sans Narrow;
+}
+
+#undo_button{
+    height:30px;
+    width:30px;
 }
