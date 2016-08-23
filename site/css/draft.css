@@ -10,11 +10,19 @@
     
 }
 .menu_div{
-    width:25%;
+    width:23%;
     height: 98%;
     float:left;
     border-right:1px solid black;
 }
+
+.menu_div_title{
+font-weight: bold;
+padding:5px;
+}
+
+
+
 #players{
     border:1px solid green;
     float:left;
@@ -80,4 +88,7 @@ body{
 #undo_button{
     height:30px;
     width:30px;
+}
+#undo_button:hover{
+    cursor: pointer;
 }

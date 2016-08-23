@@ -145,8 +145,8 @@ $(document).ready(function(){
     $('body').on('click', '#print_draft_results', function(){
         print_draft_results();
     });
-    $('body').on('click', '#menu', function(){
-        //undo_last_draft_pick();
+    $('body').on('click', '#undo_button', function(){
+        undo_last_draft_pick();
     });
 
     $('body').on('change', '.draft_status_select', function(){
