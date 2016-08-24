@@ -47,15 +47,17 @@ if ($_GET['resource'] == 'drafted_players'){
 } */
 
 if($_GET['resource'] == 'quick_draft_configuration'){
-    echo "<span class='menu_div_title'>Start New Draft</span><br><hr>";
+    echo "<span class='menu_div_title'>Start New Draft (Quick Config)</span><br><hr>";
     echo "<form id='draft_configuration_form' method='post'>";
     echo "Teams: <select id='draft_configuration_select_teams'>";
     for($i=1;$i<21;$i++){echo "<option value='$i'>$i</option>";    }
-    echo "</select>";
+    echo "</select><br>";
     echo "Rounds: <select id='draft_configuration_select_rounds'>";
     for($i=1;$i<21;$i++){echo "<option value='$i'>$i</option>";    }
-    echo "</select>";
-    echo "<button>Submit</button>";
+    echo "</select><br>";
+    echo "Flex: <select id='draft_configuration_select_flex'><option value='WRRB'>WR, RB</option><option value='WRRBTE'>WR, RB, TE</option></select><br>";
+    
+    echo "<button>Launch New Draft</button>";
     echo "</form>";
 }
 
