@@ -57,7 +57,7 @@ if($_GET['resource'] == 'quick_draft_configuration'){
     echo "</select><br>";
     echo "Flex: <select id='draft_configuration_select_flex'><option value='WRRB'>WR, RB</option><option value='WRRBTE'>WR, RB, TE</option></select><br>";
     
-    echo "<button>Submit</button>";
+    echo "<button>Launch New Draft</button>";
     echo "</form>";
 }
 
