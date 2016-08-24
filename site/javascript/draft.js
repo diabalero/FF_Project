@@ -65,7 +65,7 @@ $(document).ready(function(){
     $('#draft_status').load('../DraftHelper/data.php?resource=draft_status&num_rounds='+numRounds+'&num_teams='+numTeams, function(){
         update_draft_status(round, pick);
     });
-    $('#draft_configuration').load('../DraftHelper/data.php?resource=draft_configuration');
+    $('#quick_draft_configuration').load('../DraftHelper/data.php?resource=quick_draft_configuration');
     $('#draft_controls').load('../DraftHelper/data.php?resource=draft_controls');
     
     

@@ -18,7 +18,7 @@
             <div id='menu'>
                 <div class='menu_div' id='draft_status'></div>
                 <div class='menu_div' id='draft_controls'></div>
-                <div class='menu_div' id='draft_configuration'></div>
+                <div class='menu_div' id='quick_draft_configuration'></div>
                    <!--move this to data.php <button id='print_draft_results'>Print Results</button> -->
                 </div>
                 
