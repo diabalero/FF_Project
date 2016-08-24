@@ -43,7 +43,7 @@ text-align:center;
 
 #player_list{
     max-height:84%;
-    overflow: scroll;
+    /*overflow: scroll;*/
 }
 
 #player_list_table{
@@ -55,6 +55,18 @@ text-align:center;
 #player_list_table {
     width:100%;
 }
+
+#player_list_table thead{
+    position: fixed;
+    display: block;
+}
+
+#player_list_table tbody{
+    display: block;
+    overflow: scroll;
+    max-height: 84%;
+}
+
 
 #player_list_table tr:nth-child(even){
     background-color:#d9d9d9;

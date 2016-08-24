@@ -444,6 +444,7 @@ $(document).ready(function(){
             for(i=5; i >= 1; i--){
                 $('#team_'+team+'_board th').fadeOut(500).fadeIn(500);
             }   */ 
+            $('#team_'+team+'_board th').fadeToggle("slow", "linear");
         }
         function print_draft_results(){
             for(i=0;i<draft_record.length;i++){
