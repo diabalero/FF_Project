@@ -46,7 +46,7 @@ if ($_GET['resource'] == 'drafted_players'){
     echo $sql;
 } */
 
-if($_GET['resource'] == 'draft_configuration'){
+if($_GET['resource'] == 'quick_draft_configuration'){
     echo "<span class='menu_div_title'>Start New Draft</span><br><hr>";
     echo "<form id='draft_configuration_form' method='post'>";
     echo "Teams: <select id='draft_configuration_select_teams'>";

@@ -38,7 +38,7 @@ $(document).ready(function(){
    var draft_record = [];
    var overall_pick = 1;
    var allowed_flex_positions = ['RB', 'WR'];
-   var last_pick; //I will just set last_pick to overall_pick after a selection, 
+   var last_pick = []; //I will just set last_pick to overall_pick after a selection, 
    //then the undo function will just erase that from the draft record, and restyle what needs it
    
     
@@ -65,7 +65,7 @@ $(document).ready(function(){
     $('#draft_status').load('../DraftHelper/data.php?resource=draft_status&num_rounds='+numRounds+'&num_teams='+numTeams, function(){
         update_draft_status(round, pick);
     });
-    $('#draft_configuration').load('../DraftHelper/data.php?resource=draft_configuration');
+    $('#quick_draft_configuration').load('../DraftHelper/data.php?resource=quick_draft_configuration');
     $('#draft_controls').load('../DraftHelper/data.php?resource=draft_controls');
     
     
@@ -96,7 +96,7 @@ $(document).ready(function(){
         //console.log(team_info);
         if(add_player_to_team_board(team, player_name, player_pos) == 1){
             draft_player(this_obj, team, player_name, player_pos);
-            last_pick = overall_pick;
+            last_pick.push(overall_pick);
             go_to_first_available_pick();
             update_draft_status(round, pick);
             color_the_player_table();
@@ -319,18 +319,21 @@ $(document).ready(function(){
         }
 
         function undo_last_draft_pick(){
-            last_draft_pick = draft_record[last_pick];
+            var last_draft_pick_overall_pick = last_pick.pop();
+            console.log(last_draft_pick_overall_pick);
+            var last_draft_pick = draft_record[last_draft_pick_overall_pick];
             
             //step 1 - erase player from team table
             $('.team_board td:contains("'+last_draft_pick['player']+'")').text("");
+            
             //step 2 - set tr drafted attribute to false
-            console.log($('#player_list_table tr[player_name="'+last_draft_pick['player']+'"]').attr('drafted', false));
+            ($('#player_list_table tr[player_name="'+last_draft_pick['player']+'"]').attr('drafted', false));
             //step 3 - set tr overall_pick attribute to ''
             $('#player_list_table tr[player_name="'+last_draft_pick['player']+'"]').attr('overall_pick', '');
             //step 4 re-apply the .click_to_draft class to the td of the player in the player_list
             $('#player_list_table td[player_name="'+last_draft_pick['player']+'"]').attr('class', 'click_to_draft');
             //step 5 remove the draft record from the array
-            draft_record.splice(last_pick, 1);
+            draft_record.splice(last_draft_pick_overall_pick, 1);
             //step 6 move the draft position to the first empty pick
             go_to_first_available_pick();
             //step 7 update the draft status
@@ -339,6 +342,7 @@ $(document).ready(function(){
             highlight_picking_teams_table();
             //step 9 color the player table
             color_the_player_table();
+            
         }
         
         //this doesnt work, but if I figure out how the functions that do work, work, maybe I can fix this...
