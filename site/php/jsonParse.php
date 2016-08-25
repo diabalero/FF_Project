@@ -107,12 +107,10 @@ function set_proxy(){
     /*
     insert_t_stats_from_nfl_api()
     */
-<<<<<<< HEAD
     for($week = 1; $week < 18; $week++){
         //insert_t_nfl_player_from_v1_api($week, '2010', true, $mysqli);        
     }
-=======
->>>>>>> parent of f969f8d... update jsonParse.php add ff.sql file
+
 
     
 ?>
