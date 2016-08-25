@@ -6,6 +6,7 @@ body{
     border:1px solid black;
     background-color:#d9d9d9;
     height:20vh;
+    min-height:125px;
     width:99vw;
 }
     .menu_div{
