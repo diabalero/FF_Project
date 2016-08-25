@@ -14,18 +14,17 @@
     <body>
         
         
-        <div id='outer_limits'>
+
             <div id='menu'>
                 <div class='menu_div' id='draft_status'></div>
                 <div class='menu_div' id='draft_controls'></div>
                 <div class='menu_div' id='quick_draft_configuration'></div>
-                   <!--move this to data.php <button id='print_draft_results'>Print Results</button> -->
+            </div>
+            <div id="content">
+                <div id='players'>
+                    <div id='player_list_filter'></div>
+                    <div id='player_list'></div>
                 </div>
-                
+                <div id='teams_display'></div>
             </div>
-            <div id='players'>
-                <div id='player_list_filter'></div>
-                <div id='player_list'></div>
-            </div>
-            <div id='teams_display'></div>
-        </div>
+        

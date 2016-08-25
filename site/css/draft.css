@@ -2,75 +2,92 @@ body{
     font-family: PT Sans Narrow;
 }
 
-#outer_limits{
-    max-height:100vh;
-    max-width:100vw;
-}
 #menu{
     border:1px solid black;
     background-color:#d9d9d9;
-    height:15%;
-    width:98%;
-    
+    height:20vh;
+    width:99vw;
 }
+    .menu_div{
+        width:23%;
+        height:100%;
+        float:left;
+        border-right:1px solid black;
+        /*text-align:center;*/
+        }
+    .menu_div_title{
+        font-weight: bold;
+        padding:5px;
+        text-align:center;
+        } 
 
-.menu_div{
-    width:23%;
-    height: 98%;
-    float:left;
-    border-right:1px solid black;
-    /*text-align:center;*/
-}
-
-.menu_div_title{
-font-weight: bold;
-padding:5px;
-text-align:center;
+#content{
+    height:78vh;
+    width:100vw;
 }
 
 #players{
     /*border:1px solid green;*/
     float:left;
-    max-height:85%;
-    width:25%;
-     
+    height:99%;
+    width:25%;    
 }
 
-#player_list_filter{
-    margin: 5px;
-    max-height:14%;
+    #player_list_filter{
+        margin: 5px;
+        height:10%;
+    }
+
+    #player_list{
+        height:89%;
+        overflow: scroll;
+    }
+
+    #player_list_table{
+        border-collapse: separate;
+        border-radius: .5em;
+
+        width:100%;
+    }
+
+
+    #player_list_table thead{
+        position: fixed;
+        display: block;
+    }
+
+    /*#player_list_table tbody{
+        display: block;
+        max-height: 84%;
+    }*/
+
+
+    #player_list_table tr:nth-child(even){
+        background-color:#d9d9d9;
+    }
+
+#teams_display{
+    float:left;
+    height:99%;
+    width:73%;
+    overflow:scroll;
 }
 
-#player_list{
-    max-height:84%;
-    /*overflow: scroll;*/
-}
+    .team_board{
+        margin: 20px;
+        margin-bottom:20px;
+        float:left;
+        width:20%;
+        border-collapse: collapse;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        background-color: #D7CEC7;
+    }
 
-#player_list_table{
-    border-collapse: separate;
-    border-radius: .5em; 
-}
-
-
-#player_list_table {
-    width:100%;
-}
-
-#player_list_table thead{
-    position: fixed;
-    display: block;
-}
-
-#player_list_table tbody{
-    display: block;
-    overflow: scroll;
-    max-height: 84%;
-}
-
-
-#player_list_table tr:nth-child(even){
-    background-color:#d9d9d9;
-}
+    .team_board tr:nth-child(even){
+        background-color: #CAEBF2;
+    }
 
 .click_to_draft:hover{
     font-size: 1.1em;
@@ -85,28 +102,7 @@ tr[drafted="true"]{
     color:#b3b3b3;
 }
 
-#teams_display{
-    float:left;
-    height:85%;
-    width:73%;
-    overflow:scroll;
-}
 
-.team_board{
-    margin: 20px;
-    margin-bottom:20px;
-    float:left;
-    width:20%;
-    border-collapse: collapse;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    background-color: #D7CEC7;
-}
-
-.team_board tr:nth-child(even){
-    background-color: #CAEBF2;
-}
 
 .postition_td{
     width:10%;
