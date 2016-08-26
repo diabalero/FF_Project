@@ -76,13 +76,6 @@ function insert_t_stats_from_nfl_api(){
                 }        
             }
     }
-  
-
-
-
-
-
-
 
 //function to configure the proxy at HP
 function set_proxy(){
@@ -96,22 +89,45 @@ function set_proxy(){
     return $cxContext;
     }
 
-//Execute functions here
-    
-    //this populates the database with players stats. this has been done, probably no reason to execute this again.
-    /*for($week = 1; $week < 18; $week++){
-        insert_t_players_stats_from_nfl_api($week, '2010', true, $mysqli);    
-    }*/
-    
-    //this populates the database with stats. probably no reason to execute this again
-    /*
-    insert_t_stats_from_nfl_api()
-    */
-    for($week = 1; $week < 18; $week++){
-        //insert_t_nfl_player_from_v1_api($week, '2010', true, $mysqli);        
+function add_players_to_database($offset){
+    $cxContext = set_proxy();
+    $url = 'http://api.fantasy.nfl.com/v1/players/editordraftranks?format=json&count=100&offset='.$offset;
+    $json = json_decode(file_get_contents($url, true, $cxContext), true);
+    $players = $json['players'];
+    //echo "<table><tr><th>Player_id</th><th>Position</th><th>Name</th><th>Team</th><th>Rank</th></tr>";
+    foreach($players as $player){
+        echo "<tr><td>".$player['id']."</td>
+                <td>".$player['position']."</td>
+                <td>".$player['firstName'] ." ".$player['lastName']."</td>
+                <td>".$player['teamAbbr']."</td>
+                <td>".$player['rank']."</td></tr>";           
     }
-
+}
+function outer_layer(){
+    echo "<table><tr><th>Player_id</th><th>Position</th><th>Name</th><th>Team</th><th>Rank</th></tr>";
+    for($i=0;$i<1000;$i+=100){
+    add_players_to_database($i);
+    }
+    echo "</table>";
+}
 
     
+/*Array ( 
+    [id] => 2508061 
+    [firstName] => Antonio 
+    [lastName] => Brown 
+    [esbid] => BRO000001 
+    [gsisPlayerId] => 00-0027793 
+    [rank] => 1 
+    [auction] => 62 
+    [stock] => even 
+    [teamAbbr] => PIT 
+    [position] => WR 
+    )      
+}*/
+
+//Execute functions here
+//insert_t_stats_from_nfl_api();
+outer_layer();
 ?>
 

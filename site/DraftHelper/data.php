@@ -64,6 +64,7 @@ if($_GET['resource'] == 'quick_draft_configuration'){
 if($_GET['resource']=='draft_controls'){
     echo "<span class='menu_div_title'>Draft Controls</span><br><hr>";
     echo '<img src="../images/undo.png" alt="undo" id="undo_button">';
+    echo '<img src="../images/sk.jpg" alt="set keepers" id="set_keepers">';
 }
 
 if($_GET['resource'] == 'draft_status'){
@@ -161,4 +162,10 @@ if($_GET['resource'] == 'player_list_filter'){
     }
     echo "</select></div>";
 }
+
+/*if($_GET['resource'] == 'player_list_from_nfl'){
+    for($i=1;$i<301$i+=100){
+        $100_players = json_decode(file_get_contents());
+    }
+}*/
 ?>

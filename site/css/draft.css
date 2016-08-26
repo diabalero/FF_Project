@@ -1,5 +1,8 @@
 body{
     font-family: PT Sans Narrow;
+    font-family: Ubuntu;
+    overflow: hidden;
+    background-color: #EFEFEF;
 }
 
 #menu{
@@ -36,7 +39,7 @@ body{
 
     #player_list_filter{
         margin: 5px;
-        height:10%;
+        height:5%;
     }
 
     #player_list{
@@ -110,16 +113,14 @@ tr[drafted="true"]{
 }
 
 body{
-    font-family: Ubuntu;
-    overflow: hidden;
-    background-color: #EFEFEF;
+
 }
 
-#undo_button{
+#undo_button, #set_keepers{
     height:30px;
     width:30px;
 }
-#undo_button:hover{
+#undo_button:hover, #set_keepers:hover{
     cursor: pointer;
 }
 
