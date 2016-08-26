@@ -500,7 +500,9 @@ $(document).ready(function(){
             keeper.push({'overall_pick': '168', 'player': 'Doug Baldwin', 'pos': 'WR', 'team': '2', 'round':'15', 'pick':'2' });
             keeper.push({'overall_pick': '172', 'player': 'Thomas Rawls', 'pos': 'RB', 'team': '6', 'round':'15', 'pick':'6' });
             keeper.push({'overall_pick': '173', 'player': 'Kelvin Benjamin', 'pos': 'WR', 'team': '7', 'round':'15', 'pick':'7' });
+            keeper.push({'overall_pick': '174', 'player': 'Blake Bortles', 'pos': 'QB', 'team': '8', 'round':'15', 'pick':'8' });
             keeper.push({'overall_pick': '179', 'player': 'Jordy Nelson', 'pos': 'WR', 'team': '11', 'round':'15', 'pick':'11' });
+            
             $.each(keeper, function(){
                var _round = round = this.round;
                var _pick = this.pick;
