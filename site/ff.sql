@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 29, 2016 at 09:41 PM
+-- Generation Time: Aug 29, 2016 at 11:41 PM
 -- Server version: 5.6.13
 -- PHP Version: 5.4.17
 
@@ -96,7 +96,7 @@ CREATE TABLE IF NOT EXISTS `t_players` (
 
 CREATE TABLE IF NOT EXISTS `t_player_stats` (
   `player_id` int(11) NOT NULL,
-  `stat_id` tinyint(4) NOT NULL,
+  `stat_id` varchar(25) NOT NULL,
   `season` smallint(6) NOT NULL,
   `week` tinyint(4) NOT NULL,
   `value` smallint(6) NOT NULL,
