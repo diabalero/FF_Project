@@ -1,0 +1,22 @@
+#menu{
+    height:15vh;
+    width:100vw;
+    background-color:blue;
+}
+#content{
+    height:85vh;
+    width:100vw;
+}
+#left_gutter, #right_gutter{
+    height:100%;
+    width:15%;
+    background-color:green;
+    float:left;
+}
+#main{
+    height:100%;
+    width:70%;
+    background-color: orange;
+    float:left;
+}
+
