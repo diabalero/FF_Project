@@ -1,6 +1,7 @@
 <?php
 //configure the credentials to your database in mysql.php 
 require('mysql.php');
+set_time_limit(600);
 //print_r($mysqli);
 
 //function to configure the proxy at HP
@@ -83,80 +84,21 @@ function insert_t_players_stats_from_nfl_api($week, $season, $mysqli){
 // after creating the database, populate it with content by commenting out and running these functions one at a time, in order
 
 // #1) uncomment this block to add players to the players table in the database
-/*
+
 for($i = 0; $i < 1000; $i+=100){
     add_players_to_database($i, $mysqli);
 }
-*/
 
-// #2) uncomment these blocks one at a time to add players stats to the data base
-//season 2010
-///*
+
+// #2) uncomment these blocks one at a time to add players stats to the database
+
+for ($season = 2010; $season < 2016; $season++){
     for($week = 1; $week < 10; $week++){
-        insert_t_players_stats_from_nfl_api($week, 2010, $mysqli);
+        insert_t_players_stats_from_nfl_api($week,$season,$mysqli);
     }
-//*/
-/*
-    for($week = 10; $week < 18; $week++){
-        insert_t_players_stats_from_nfl_api($week, 2010, $mysqli);
-    }
-*/  
-//season 2011
-/*
-    for($week = 1; $week < 10; $week++){
-        insert_t_players_stats_from_nfl_api($week, 2011, $mysqli);
-    }
-*/
-/*
-    for($week = 10; $week < 18; $week++){
-        insert_t_players_stats_from_nfl_api($week, 2011, $mysqli);
-    }
-*/
-//season 2012
-/*
-    for($week = 1; $week < 10; $week++){
-        insert_t_players_stats_from_nfl_api($week, 2012, $mysqli);
-    }
-*/
-/*
-    for($week = 10; $week < 18; $week++){
-        insert_t_players_stats_from_nfl_api($week, 2012, $mysqli);
-    }
-/*
-*/
-//season 2013
-/*
-    for($week = 1; $week < 10; $week++){
-        insert_t_players_stats_from_nfl_api($week, 2013, $mysqli);
-    }
-*/
-/*
-    for($week = 10; $week < 18; $week++){
-        insert_t_players_stats_from_nfl_api($week, 2013, $mysqli);
-    }
-*/
-//season 2014
-/*
-    for($week = 1; $week < 10; $week++){
-        insert_t_players_stats_from_nfl_api($week, 2014, $mysqli);
-    }
-*/
-/*
-    for($week = 10; $week < 18; $week++){
-        insert_t_players_stats_from_nfl_api($week, 2014, $mysqli);
-    }
-*/
-//season 2015
-/*
-    for($week = 1; $week < 10; $week++){
-        insert_t_players_stats_from_nfl_api($week, 2015, $mysqli);
-    }
-*/
-/*
-    for($week = 10; $week < 18; $week++){
-        insert_t_players_stats_from_nfl_api($week, 2015, $mysqli);
-    }
-*/
+}
+
+
 
 
 ?>
