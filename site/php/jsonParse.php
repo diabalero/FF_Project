@@ -111,23 +111,12 @@ function outer_layer(){
     echo "</table>";
 }
 
-    
-/*Array ( 
-    [id] => 2508061 
-    [firstName] => Antonio 
-    [lastName] => Brown 
-    [esbid] => BRO000001 
-    [gsisPlayerId] => 00-0027793 
-    [rank] => 1 
-    [auction] => 62 
-    [stock] => even 
-    [teamAbbr] => PIT 
-    [position] => WR 
-    )      
-}*/
-
 //Execute functions here
 //insert_t_stats_from_nfl_api();
-outer_layer();
+if($mysqli){
+    print_r($mysqli);
+    outer_layer();    
+}
+
 ?>
 
