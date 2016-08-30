@@ -63,8 +63,10 @@ if($_GET['resource'] == 'quick_draft_configuration'){
 
 if($_GET['resource']=='draft_controls'){
     echo "<span class='menu_div_title'>Draft Controls</span><br><hr>";
-    echo '<img src="../images/undo.png" alt="undo" id="undo_button">';
-    echo '<img src="../images/sk.jpg" alt="set keepers" id="set_keepers">';
+    /*echo '<img src="../images/undo.png" alt="undo" id="undo_button">';
+    echo '<img src="../images/sk.jpg" alt="set keepers" id="set_keepers">';*/
+    echo "<button class='w3-btn w3-round w3-green' alt='undo' id='undo_button'>Undo</button>";
+    echo "<button class='w3-btn w3-round w3-indigo' alt='set keepers' id='set_keepers'>Set Keepers</button>";
 }
 
 if($_GET['resource'] == 'draft_status'){
@@ -89,8 +91,8 @@ if($_GET['resource'] == 'teams_display'){
     $num_bench_spots = $num_rounds - 9;
     
     for($team = 1; $team <= $num_teams; $team++){
-        echo "<table class='team_board' id='team_".$team."_board' draft_position='".$team."' team_name='Team ".$team."'>";
-        echo "<tr><th colspan=2><div purpose='team_name' draft_position='".$team."' class='team_name'>Team".$team. "</div></td> Pick".$team."</th></tr>";
+        echo "<table class='team_board w3-table-all w3-card-4 w3-tiny w3-col s4 w3-margin-left w3-margin-top' id='team_".$team."_board' draft_position='".$team."' team_name='Team ".$team."'>";
+        echo "<tr class='w3-blue'><th colspan=2><div purpose='team_name' draft_position='".$team."' class='team_name'>Team".$team. "</div></td> Pick".$team."</th></tr>";
         echo "<tr><td >QB</td><td class='Team_".$team."_QB_cell' id='Team_".$team."_QB'></td></tr>";
         echo "<tr><td>RB1</td><td  class='Team_".$team."_RB_cell' id='Team_".$team."_RB1'></td></tr>";
         echo "<tr><td>RB2</td><td class='Team_".$team."_RB_cell' id='Team_".$team."_RB2'></td></tr>";
@@ -123,7 +125,7 @@ if($_GET['resource'] == 'player_list_from_csv'){
         echo "<option value='$position'>$position</option>";
     }
     echo "</select></div>";
-    echo "<table id='player_list_table'>
+    echo "<table id='player_list_table' class='w3-table-all w3-card-4 w3-tiny w3-col s4 w3-margin-left w3-margin-top'>
     <tr id='player_list_header_row'><th>Pos</th><th>Player/Team</th><th>ADP</th><th>Low</th><th>High</th><th>Bye</th></tr>";
     //$data_as_string = file_get_contents('../resources/adp.csv');
 
