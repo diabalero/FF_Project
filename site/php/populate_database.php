@@ -81,16 +81,12 @@ function insert_t_players_stats_from_nfl_api($week, $season, $mysqli){
 }
 
 
-// after creating the database, populate it with content by commenting out and running these functions one at a time, in order
+// after creating the database, populate it with this script
 
-// #1) uncomment this block to add players to the players table in the database
 
 for($i = 0; $i < 1000; $i+=100){
     add_players_to_database($i, $mysqli);
 }
-
-
-// #2) uncomment these blocks one at a time to add players stats to the database
 
 for ($season = 2010; $season < 2016; $season++){
     for($week = 1; $week < 10; $week++){
