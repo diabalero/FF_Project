@@ -163,7 +163,6 @@ function update_player_table_adps($mysqli){
 
 //this function adds the players statistics to the database, weeks 1 thru 17, no playoff stats, though we could add those by changing the week for-loop.
 //insert_t_players_stats_from_nfl_api($mysqli);
-
 //updates the players with current ranks
 //update_player_table_ranks($mysqli);
 //updates the players with current adps
