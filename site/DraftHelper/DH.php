@@ -15,7 +15,7 @@
         
         
 
-            <div id='menu'>
+            <div id='menu' class='w3-row'>
                 <div class='menu_div' id='draft_status'></div>
                 <div class='menu_div' id='draft_controls'></div>
                 <div class='menu_div' id='quick_draft_configuration'></div>
