@@ -80,19 +80,50 @@ function insert_t_players_stats_from_nfl_api($week, $season, $mysqli){
 
 }
 
+function insert_t_stats_from_nfl_api($mysqli){
+    $cxContext = set_proxy();
+    $url = 'http://api.fantasy.nfl.com/v1/game/stats?format=json';
+    $content = file_get_contents($url, False, $cxContext);
+    $json = json_decode($content, true); 
+    if($mysqli){
+        foreach ($json["stats"] as $stat){
+            $stat_id = mysqli_real_escape_string($mysqli,$stat['id']);
+            $stat_abbr = mysqli_real_escape_string($mysqli,$stat['abbr']);
+            $stat_name = mysqli_real_escape_string($mysqli,$stat['name']);
+            $stat_short_name = mysqli_real_escape_string($stat['shortName']);
+            echo "I would insert: stat_id: $stat_id, stat_abbr: $stat_abbr, stat_name: $stat_name, stat_short_name: $stat_short_name <br>";
+            $insert = "INSERT INTO t_stats(stat_id, abbr, name, shortname) 
+                VALUES('" . $stat_id . "', '" . $stat_abbr . "', '" . $stat_name . "', '" . $stat_short_name . "')";
+            if($mysqli->query($insert) === TRUE){
+                echo "inserted stat_id: $stat_id, stat_abbr: $stat_abbr, stat_name: $stat_name, stat_short_name: $stat_short_name <br>";
+            }
+            else{
+                printf("Error: %s\n", $mysqli->error);
+            }
+                }        
+            }
+    }
+
 
 // after creating the database, populate it with this script
 
+/*
+//this function adds the stats definition to the database, stat_id, stat name etc, no actual player stats 
+insert_t_stats_from_nfl_api($mysqli);
 
+//this function adds the players to the database, player_id, name, position, team, and some other id that might be used for a feed or something
 for($i = 0; $i < 1000; $i+=100){
     add_players_to_database($i, $mysqli);
 }
 
+//this function adds the players statistics to the database, weeks 1 thru 17, no playoff stats, though we could add those by changing the week for-loop.
 for ($season = 2010; $season < 2016; $season++){
-    for($week = 1; $week < 10; $week++){
+    for($week = 11; $week < 18; $week++){
         insert_t_players_stats_from_nfl_api($week,$season,$mysqli);
     }
 }
+*/
+
 
 
 
