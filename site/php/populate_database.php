@@ -116,7 +116,11 @@ for($i = 0; $i < 1000; $i+=100){
 }
 
 //this function adds the players statistics to the database, weeks 1 thru 17, no playoff stats, though we could add those by changing the week for-loop.
+<<<<<<< HEAD
 for ($season = 2015; $season < 2016; $season++){
+=======
+for ($season = 2010; $season < 2016; $season++){
+>>>>>>> 4473054a3aeed85219f56e125e12d3b13c09ae82
     for($week = 1; $week < 18; $week++){
         insert_t_players_stats_from_nfl_api($week,$season,$mysqli);
     }
