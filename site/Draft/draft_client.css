@@ -1,5 +1,5 @@
 body{
-    height:100vh;
+    max-height:100vh;
     width:100vw;
 }
 #menu{
@@ -8,12 +8,15 @@ body{
 }
 #left_gutter, #right_gutter{
     height:85%;
-    background-color:green;
     float:left;
+    overflow:scroll;
 }
 #main{
     height:85%;
     background-color: orange;
     float:left;
+}
+#player_list_table{
+
 }
 

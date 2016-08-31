@@ -19,8 +19,8 @@ function set_proxy(){
 //function to add players to the database
 function add_players_to_database($mysqli){
     //set $cxContect to null if you are at home by uncommenting the second line below
-    $cxContext = set_proxy();
-    //$cxContext = null;
+    //$cxContext = set_proxy();
+    $cxContext = null;
         for($offset=0;$offset<1000;$offset+=100){
         $url = 'http://api.fantasy.nfl.com/v1/players/editordraftranks?format=json&count=100&offset='.$offset;
         $json = json_decode(file_get_contents($url, true, $cxContext), true);
@@ -43,10 +43,10 @@ function add_players_to_database($mysqli){
             }
         }    
 }   
-function insert_t_players_stats_from_nfl_api($week, $season, $mysqli){
+function insert_t_players_stats_from_nfl_api($mysqli){
     //set $cxContect to null if you are at home by uncommenting the second line below
-    $cxContext = set_proxy();        
-    //$cxContext = null;
+    //$cxContext = set_proxy();        
+    $cxContext = null;
     for($season = 2010; $season<2016; $season++){
         for($week=1;$week<18;$week++){
             //here is the URL, I will loop through all the weeks of seasons 2010 to Present
@@ -81,7 +81,8 @@ function insert_t_players_stats_from_nfl_api($week, $season, $mysqli){
 }
 
 function insert_t_stats_from_nfl_api($mysqli){
-    $cxContext = set_proxy();
+    //$cxContext = set_proxy();
+    $cxContect = null;
     $url = 'http://api.fantasy.nfl.com/v1/game/stats?format=json';
     $content = file_get_contents($url, False, $cxContext);
     $json = json_decode($content, true); 
@@ -110,8 +111,8 @@ function insert_t_nfl_schedule($mysqli){
 
 function update_player_table_ranks($mysqli){
     //set $cxContect to null if you are at home by uncommenting the second line below
-    $cxContext = set_proxy();
-    //$cxContext = null;
+    //$cxContext = set_proxy();
+    $cxContext = null;
     for($offset = 0;$offset<1000;$offset+=100){
         $url = 'http://api.fantasy.nfl.com/v1/players/editordraftranks?format=json&count=100&offset='.$offset;
         $json = json_decode(file_get_contents($url, true, $cxContext), true);
@@ -133,8 +134,8 @@ function update_player_table_ranks($mysqli){
 }
 function update_player_table_adps($mysqli){
     //set $cxContect to null if you are at home by uncommenting the second line below
-    $cxContext = set_proxy();
-    //$cxContext = null;
+    //$cxContext = set_proxy();
+    $cxContext = null;
     for($offset = 0;$offset<1000;$offset+=100){
         $url = 'http://api.fantasy.nfl.com/v1/players/userdraftranks?format=json&count=100&offset='.$offset;
         $json = json_decode(file_get_contents($url, true, $cxContext), true);
@@ -164,9 +165,9 @@ function update_player_table_adps($mysqli){
 //this function adds the players statistics to the database, weeks 1 thru 17, no playoff stats, though we could add those by changing the week for-loop.
 //insert_t_players_stats_from_nfl_api($mysqli);
 //updates the players with current ranks
-//update_player_table_ranks($mysqli);
+update_player_table_ranks($mysqli);
 //updates the players with current adps
-//update_player_table_adps($mysqli);
+update_player_table_adps($mysqli);
 
 
 
