@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+/* W3.CSS 2.74 by Jan Egil and Borge Refsnes */
+=======
 /* W3.CSS 2.75 by Jan Egil and Borge Refsnes */
+>>>>>>> TableDesignImprovements
 *{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
 /* Extract from normalize.css by Nicolas Gallagher and Jonathan Neal git.io/normalize */
 html{-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0}
@@ -32,8 +36,13 @@ h1,h2,h3,h4,h5,h6{font-weight:400;margin:10px 0}.w3-wide{letter-spacing:4px}
 h1 a,h2 a,h3 a,h4 a,h5 a,h6 a{font-weight:inherit}
 hr{height:0;border:0;border-top:1px solid #eee;margin:20px 0}
 img{margin-bottom:-5px}a{color:inherit}
+<<<<<<< HEAD
+table{border-collapse:collapse;border-spacing:0;width:100%;display:table}
+table,th,td{border:none}.w3-table-all{border:1px solid #ccc}
+=======
 .w3-table,.w3-table-all{border-collapse:collapse;border-spacing:0;width:100%;display:table}
 .w3-table-all{border:1px solid #ccc}
+>>>>>>> TableDesignImprovements
 .w3-bordered tr,.w3-table-all tr{border-bottom:1px solid #ddd}
 .w3-striped tbody tr:nth-child(even){background-color:#f1f1f1}
 .w3-table-all tr:nth-child(odd){background-color:#fff}
