@@ -24,16 +24,18 @@ function player_list_table($mysqli){
 
 function get_league_info($mysqli, $league_id, $request_source){
     $league = array();
-    $sql = "SELECT * FROM t_league WHERE league_id = '".$league_id."'";
+    $sql = "SELECT * FROM t_leagues WHERE league_id = '".$league_id."'";
     $result = $mysqli->query($sql);
+    
     while($row = $result->fetch_array(MYSQLI_ASSOC)){
-        $league[] = $row
+        $league[] = $row;
     }
+    
     if($request_source = 'php'){
         return json_encode($league);
     }
     if($request_source = 'js'){
-        echo json_encode($league);
+        print_r($league);
     }
     
     
@@ -53,6 +55,9 @@ function get_league_teams($mysqli, $league_id, $logged_in_team_id) {
     }
 }
 
+if($_GET){
+    
+
 if($_GET['resource'] == 'player_list_table'){
     player_list_table($mysqli);
 }
@@ -63,4 +68,5 @@ if($_GET['resource']=='league_teams'){
     
    
 }
-
+}
+get_league_info($mysqli, 1, 'js');
