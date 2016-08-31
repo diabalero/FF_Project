@@ -384,7 +384,7 @@ $(document).ready(function(){
         function populate_player_list_via_json_queries(callback){
             var players_array = [];        
             var url = "http://api.fantasy.nfl.com/v1/players/editordraftranks?format=json&count=50&offset=";
-            $('#player_list').html('<table id="player_list_table"><tr><th>no.</th><th>Pos</th><th>Player</th><th>Team</th><th>ADP</th></tr><tbody id=player_rows_tbody>');
+            $('#player_list').html('<table id="player_list_table"><thead class="w3-light-blue"><tr><th>no.</th><th>Pos</th><th>Player</th><th>Team</th><th>ADP</th></thead></tr><tbody id=player_rows_tbody>');
 
             var players_needed = 300;
             var players_retrieved = 0;
