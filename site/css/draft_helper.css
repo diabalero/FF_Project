@@ -2,7 +2,23 @@ html, body {
     font-family: Ubuntu;
 }
 
+#player_list{
+    overflow-y: scroll;
+    height: 75vh;
+}
 
+#draft_status{
+    height: 30vh;
+    overflow-y: auto;
+}
+#draft_controls{
+    height: 30vh;
+    overflow-y: auto;
+}
+#quick_draft_configuration{
+    height: 30vh;
+    overflow-y: auto;
+}
 /*Below is the old CSS*/
 /*body{
     font-family: PT Sans Narrow;

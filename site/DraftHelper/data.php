@@ -55,9 +55,9 @@ if($_GET['resource'] == 'quick_draft_configuration'){
     echo "Rounds: <select id='draft_configuration_select_rounds'>";
     for($i=1;$i<21;$i++){echo "<option value='$i'>$i</option>";    }
     echo "</select><br>";
-    echo "Flex: <select id='draft_configuration_select_flex'><option value='WRRB'>WR, RB</option><option value='WRRBTE'>WR, RB, TE</option></select><br>";
+    echo "Flex: <select id='draft_configuration_select_flex'><option value='WRRB'>WR, RB</option><option value='WRRBTE'>WR, RB, TE</option></select>";
     
-    echo "<button>Launch New Draft</button>";
+    echo "<br><button>Launch New Draft</button>";
     echo "</form>";
 }
 
@@ -65,7 +65,7 @@ if($_GET['resource']=='draft_controls'){
     echo "<span class='menu_div_title'>Draft Controls</span><br><hr>";
     /*echo '<img src="../images/undo.png" alt="undo" id="undo_button">';
     echo '<img src="../images/sk.jpg" alt="set keepers" id="set_keepers">';*/
-    echo "<button class='w3-btn w3-round w3-green' alt='undo' id='undo_button'>Undo</button>";
+    echo "<button class='w3-btn w3-round w3-green' alt='undo' id='undo_button'>Undo</button><br><br>";
     echo "<button class='w3-btn w3-round w3-indigo' alt='set keepers' id='set_keepers'>Set Keepers</button>";
 }
 
@@ -77,11 +77,11 @@ if($_GET['resource'] == 'draft_status'){
     for($i=1; $i<=$num_rounds; $i++){
         echo '<option value='."$i".'>'.$i.'</option>';
     }
-    echo '</select> Pick: <select class="draft_status_select" id="draft_status_pick">';
+    echo '</select><br><br> Pick: <select class="draft_status_select" id="draft_status_pick">';
     for($i=1; $i<=$num_teams; $i++){
         echo '<option value='."$i".'>'.$i.'</option>';
     }
-    echo '</select><br> Picking Team: <span id="picking_team"></span>';
+    echo '</select><br><br> Picking Team: <span id="picking_team"></span>';
 
 }
 
