@@ -1,20 +1,23 @@
 <HTML>
     <title>Next Level Fantasy Draft Client</title>
     <head>
+        <script src='../javascript/jquery.js'></script>
+        <script src='draft_client.js'></script>
         <link rel="stylesheet" href="../lib/w3.css">
         <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Ubuntu"/>
         <link rel="stylesheet" type="text/css" href="draft_client.css">        
-        <script src='../javascript/jquery.js'></script>
-        <script src='draft_client.js'></script>
     </head>
     <body>
         <div class='w3-row'>
             <div id='menu' class='w3-col'></div>
         </div>
         <div class='w3-row'>
-            <div id='left_gutter' class='w3-col l2'></div>
-            <div id='main' class='w3-col l8'></div>
-            <div id= 'right_gutter' class='w3-col l2'></div>
+            <div id='left_gutter'>
+                <div id='player_list_filter'></div>
+                <div id='player_list'></div>
+            </div>
+            <div id='main'></div>
+            <div id= 'right_gutter'></div>
         </div>
 
     </body>
