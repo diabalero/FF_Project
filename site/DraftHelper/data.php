@@ -55,9 +55,9 @@ if($_GET['resource'] == 'quick_draft_configuration'){
     echo "Rounds: <select id='draft_configuration_select_rounds'>";
     for($i=1;$i<21;$i++){echo "<option value='$i'>$i</option>";    }
     echo "</select><br>";
-    echo "Flex: <select id='draft_configuration_select_flex'><option value='WRRB'>WR, RB</option><option value='WRRBTE'>WR, RB, TE</option></select><br>";
+    echo "Flex: <select id='draft_configuration_select_flex'><option value='WRRB'>WR, RB</option><option value='WRRBTE'>WR, RB, TE</option></select>";
     
-    echo "<button>Launch New Draft</button>";
+    echo "<br><button>Launch New Draft</button>";
     echo "</form>";
 }
 
@@ -65,7 +65,7 @@ if($_GET['resource']=='draft_controls'){
     echo "<span class='menu_div_title'>Draft Controls</span><br><hr>";
     /*echo '<img src="../images/undo.png" alt="undo" id="undo_button">';
     echo '<img src="../images/sk.jpg" alt="set keepers" id="set_keepers">';*/
-    echo "<button class='w3-btn w3-round w3-green' alt='undo' id='undo_button'>Undo</button>";
+    echo "<button class='w3-btn w3-round w3-green' alt='undo' id='undo_button'>Undo</button><br><br>";
     echo "<button class='w3-btn w3-round w3-indigo' alt='set keepers' id='set_keepers'>Set Keepers</button>";
 }
 
@@ -77,11 +77,11 @@ if($_GET['resource'] == 'draft_status'){
     for($i=1; $i<=$num_rounds; $i++){
         echo '<option value='."$i".'>'.$i.'</option>';
     }
-    echo '</select> Pick: <select class="draft_status_select" id="draft_status_pick">';
+    echo '</select><br><br> Pick: <select class="draft_status_select" id="draft_status_pick">';
     for($i=1; $i<=$num_teams; $i++){
         echo '<option value='."$i".'>'.$i.'</option>';
     }
-    echo '</select><br> Picking Team: <span id="picking_team"></span>';
+    echo '</select><br><br> Picking Team: <span id="picking_team"></span>';
 
 }
 
@@ -91,7 +91,7 @@ if($_GET['resource'] == 'teams_display'){
     $num_bench_spots = $num_rounds - 9;
     
     for($team = 1; $team <= $num_teams; $team++){
-        echo "<table class='team_board w3-table-all w3-card-4 w3-tiny w3-col s4 w3-margin-left w3-margin-top' id='team_".$team."_board' draft_position='".$team."' team_name='Team ".$team."'>";
+        echo "<table class='team_board w3-table-all w3-card-4 w3-tiny w3-margin-left w3-margin-top w3-col m3' id='team_".$team."_board' draft_position='".$team."' team_name='Team ".$team."'>";
         echo "<tr class='w3-blue'><th colspan=2><div purpose='team_name' draft_position='".$team."' class='team_name'>Team".$team. "</div></td> Pick".$team."</th></tr>";
         echo "<tr><td >QB</td><td class='Team_".$team."_QB_cell' id='Team_".$team."_QB'></td></tr>";
         echo "<tr><td>RB1</td><td  class='Team_".$team."_RB_cell' id='Team_".$team."_RB1'></td></tr>";
@@ -125,8 +125,8 @@ if($_GET['resource'] == 'player_list_from_csv'){
         echo "<option value='$position'>$position</option>";
     }
     echo "</select></div>";
-    echo "<table id='player_list_table' class='w3-table-all w3-card-4 w3-tiny w3-col s4 w3-margin-left w3-margin-top'>
-    <tr id='player_list_header_row'><th>Pos</th><th>Player/Team</th><th>ADP</th><th>Low</th><th>High</th><th>Bye</th></tr>";
+    echo "<table id='player_list_table' class='w3-table-all w3-tiny w3-margin-top'>
+    <tr id='player_list_header_row' class='w3-blue'><th>Pos</th><th>Player/Team</th><th>ADP</th><th>Low</th><th>High</th><th>Bye</th></tr>";
     //$data_as_string = file_get_contents('../resources/adp.csv');
 
     $lines = file('../resources/adp.csv');
