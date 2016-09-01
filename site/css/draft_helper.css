@@ -1,7 +1,28 @@
-body{
+html, body {
+    font-family: Ubuntu;
+}
+
+#player_list{
+    overflow-y: scroll;
+    height: 75vh;
+}
+
+#draft_status{
+    height: 30vh;
+    overflow-y: auto;
+}
+#draft_controls{
+    height: 30vh;
+    overflow-y: auto;
+}
+#quick_draft_configuration{
+    height: 30vh;
+    overflow-y: auto;
+}
+/*Below is the old CSS*/
+/*body{
     font-family: PT Sans Narrow;
     font-family: Ubuntu;
-    /*overflow: hidden;*/
     background-color: #EFEFEF;
 }
 
@@ -17,7 +38,6 @@ body{
         height:100%;
         float:left;
         border-right:1px solid black;
-        /*text-align:center;*/
         }
     .menu_div_title{
         font-weight: bold;
@@ -31,7 +51,6 @@ body{
 }
 
 #players{
-    /*border:1px solid green;*/
     float:left;
     height:99%;
     width:25%;    
@@ -60,17 +79,11 @@ body{
         display: block;
     }
 
-    /*#player_list_table tbody{
-        display: block;
-        max-height: 84%;
-    }*/
-
-
     #player_list_table tr:nth-child(even){
         background-color:#d9d9d9;
     }
 
-/*#teams_display{
+#teams_display{
     float:left;
     height:99%;
     width:73%;
@@ -91,7 +104,7 @@ body{
 
     .team_board tr:nth-child(even){
         background-color: #CAEBF2;
-    }*/
+    }
 
 .click_to_draft:hover{
     font-size: 1.1em;
@@ -112,16 +125,12 @@ tr[drafted="true"]{
     width:10%;
 }
 
-body{
-
-}
-
 #undo_button, #set_keepers{
     height:30px;
     width:30px;
 }
 #undo_button:hover, #set_keepers:hover{
     cursor: pointer;
-}
+}*/
 
 
