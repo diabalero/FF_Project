@@ -1,10 +1,21 @@
 html, body {
     font-family: Ubuntu;
 }
+body{
+    overflow: hidden;
+    position: fixed;
+}
 
 #player_list{
     overflow-y: scroll;
-    height: 75vh;
+    height: 65vh;
+}
+#player_list_table{
+
+}
+#player_list_table tr:hover{
+    background-color: #87CEFA;
+    cursor: pointer;
 }
 
 #draft_status{
@@ -18,6 +29,10 @@ html, body {
 #quick_draft_configuration{
     height: 30vh;
     overflow-y: auto;
+}
+#teams_display{
+    overflow: auto;
+    height: 70vh
 }
 /*Below is the old CSS*/
 /*body{
