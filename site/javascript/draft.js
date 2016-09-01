@@ -274,13 +274,13 @@ $(document).ready(function(){
                 
 
                 if(overall_pick > adp){
-                    $(this).css('background-color','#4dffb8'); // #66ccff
+                    $(this).css('background-color','#90EE90'); // #66ccff
                     }
                 if(overall_pick <= adp){
-                    $(this).css('background-color','#ff6666');
+                    $(this).css('background-color','#F08080');
                     }
                 if((overall_pick > (adp - 0.02)) && (overall_pick < (adp + 0.02))){
-                    $(this).css('background-color','yellow');
+                    $(this).css('background-color','#FAFAD2');
                     }
                 
                 /*else{
