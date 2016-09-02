@@ -34,12 +34,12 @@ $(document).ready(function(){
    var round = 1;
    var pick = 1;
    var dp_of_team_name_change;
-   var draft_record = {};
+   var draft_record = [];
    var overall_pick = 1;
    var allowed_flex_positions = ['RB', 'WR'];
    var last_pick = []; //I will just set last_pick to overall_pick after a selection, 
    //then the undo function will just erase that from the draft record, and restyle what needs it
-   initialize_overall_draft_record();
+   
    
     
    //load the list of all the players into the side bar from the database
@@ -97,11 +97,12 @@ $(document).ready(function(){
             add_player_to_draft_record(overall_pick, team, player_name, player_pos);
             restyle_player_list_row_for_drafted_player(this_obj);
             last_pick.push(overall_pick);
-            console.log(last_pick);
+            //console.log(last_pick);
             go_to_first_available_pick();
             update_draft_status(round, pick);
             color_the_player_table();
             highlight_picking_teams_table();
+            console.log(last_pick);
         }
         
     });
@@ -213,7 +214,7 @@ $(document).ready(function(){
         }
         
         function add_player_to_draft_record(overall_pick, team, player_name, player_pos){
-            draft_record.overall_pick = ({'overall_pick':overall_pick, 'round':round, 'pick':pick, 'team':team, 'player':player_name, 'pos':player_pos });
+            draft_record[overall_pick] = ({'overall_pick':overall_pick, 'round':round, 'pick':pick, 'team':team, 'player':player_name, 'pos':player_pos });
         }
         
         function restyle_player_list_row_for_drafted_player(obj){
@@ -255,12 +256,6 @@ $(document).ready(function(){
                 if((overall_pick > (adp - 0.02)) && (overall_pick < (adp + 0.02))){
                     $(this).css('background-color','#FAFAD2');
                     }
-                
-                /*else{
-                    if(overall_pick - ($this).attr('overall_pick').val() > 9){
-                        console.log('we know it runs...');
-                        $(this).css('display', 'none');
-                */    
                 }
                     
                 else{
@@ -311,9 +306,12 @@ $(document).ready(function(){
         }
 
         function undo_last_draft_pick(){
-            var last_draft_pick_overall_pick = last_pick.pop();
-            console.log(last_draft_pick_overall_pick);
-            var last_draft_pick = draft_record[last_draft_pick_overall_pick];
+            
+            
+            var undid_pick = last_pick.pop();
+            var last_draft_pick = draft_record[undid_pick];
+            console.log(last_draft_pick);
+            console.log(undid_pick);
             
             //step 1 - erase player from team table
             $('.team_board td:contains("'+last_draft_pick['player']+'")').text("");
@@ -325,7 +323,7 @@ $(document).ready(function(){
             //step 4 set drafted attribute of player row to false
             $('#player_list_table td[player_name="'+last_draft_pick['player']+'"]').parent().attr('drafted', 'false');
             //step 5 remove the draft record from the array
-            draft_record.splice(last_draft_pick_overall_pick, 1);
+            draft_record.splice(undid_pick, 1);
             //step 6 move the draft position to the first empty pick
             go_to_first_available_pick();
             //step 7 update the draft status
@@ -414,18 +412,22 @@ $(document).ready(function(){
                 overall_pick = 1;
                 pick = 1;
                 round = 1;
-                console.log(draft_record.overall_pick.length);
-                    }            
-                
-        function initialize_overall_draft_record(){
-            total_picks = numTeams * numRounds;
-            for(i=1;i<=total_pick;i++){
-                draft_record.i = {};
-            }
-        }    
-        
+                while(draft_record[overall_pick]){
+                    if(pick < numTeams){
+                        pick++;
+                        overall_pick++
+                    }
+                    else{
+                        pick = 1;
+                        round ++;
+                        overall_pick++;
+                    }
+                }
 
-        
+
+
+            }            
+               
         function highlight_picking_teams_table(){
             if(round%2!=0){ team = pick;}
             if(round%2==0) {team = (numTeams+1)-pick;}
@@ -440,62 +442,63 @@ $(document).ready(function(){
         }
         function print_draft_results(){
             for(i=0;i<draft_record.length;i++){
-                console.log('Overall Pick:'+draft_record[i]['overall_pick']+ ' round:'+draft_record[i]['round']+' pick:'+draft_record[i]['pick']+' team:'+draft_record[i]['team']+' player:'+draft_record[i]['player']+ ' position:'+draft_record[i]['pos']);
+                //console.log('Overall Pick:'+draft_record[i]['overall_pick']+ ' round:'+draft_record[i]['round']+' pick:'+draft_record[i]['pick']+' team:'+draft_record[i]['team']+' player:'+draft_record[i]['player']+ ' position:'+draft_record[i]['pos']);
             }
             
         }
         
         function set_keepers(){
             var keeper =  [];
-            keeper.push({'overall_pick': '12', 'player': 'Antonio Brown', 'pos': 'WR', 'team': '12', 'round':'1', 'pick':'12' });
-            keeper.push({'overall_pick': '10', 'player': 'Rob Gronkowski', 'pos': 'TE', 'team': '10', 'round':'1', 'pick':'10' });
-            keeper.push({'overall_pick': '14', 'player': 'Odell Beckham', 'pos': 'WR', 'team': '11', 'round':'2', 'pick':'2' });
-            keeper.push({'overall_pick': '22', 'player': 'A.J. Green', 'pos': 'WR', 'team': '3', 'round':'2', 'pick':'10' });
-            keeper.push({'overall_pick': '27', 'player': 'Mike Evans', 'pos': 'WR', 'team': '3', 'round':'3', 'pick':'3' });
-            keeper.push({'overall_pick': '31', 'player': 'DeAndre Hopkins', 'pos': 'WR', 'team': '7', 'round':'3', 'pick':'7' });
-            keeper.push({'overall_pick': '37', 'player': 'Amari Cooper', 'pos': 'WR', 'team': '12', 'round':'4', 'pick':'1' });
-            keeper.push({'overall_pick': '49', 'player': 'Julian Edelman', 'pos': 'WR', 'team': '1', 'round':'5', 'pick':'1' });
-            keeper.push({'overall_pick': '50', 'player': 'Todd Gurley', 'pos': 'RB', 'team': '2', 'round':'5', 'pick':'2' });
-            keeper.push({'overall_pick': '58', 'player': 'Jarvis Landry', 'pos': 'WR', 'team': '10', 'round':'5', 'pick':'10' });
-            keeper.push({'overall_pick': '59', 'player': 'Brandon Marshall', 'pos': 'WR', 'team': '11', 'round':'5', 'pick':'11' });
-            keeper.push({'overall_pick': '61', 'player': 'Tom Brady', 'pos': 'QB', 'team': '12', 'round':'6', 'pick':'1' });
-            keeper.push({'overall_pick': '65', 'player': 'Allen Robinson', 'pos': 'WR', 'team': '8', 'round':'6', 'pick':'5' });
-            keeper.push({'overall_pick': '80', 'player': 'Ryan Mathews', 'pos': 'RB', 'team': '8', 'round':'7', 'pick':'8' });
-            keeper.push({'overall_pick': '98', 'player': 'Devonta Freeman', 'pos': 'RB', 'team': '2', 'round':'9', 'pick':'2' });
-            keeper.push({'overall_pick': '114', 'player': 'Cam Newton', 'pos': 'QB', 'team': '7', 'round':'10', 'pick':'6' });
-            keeper.push({'overall_pick': '123', 'player': 'Julius Thomas', 'pos': 'TE', 'team': '3', 'round':'11', 'pick':'3' });
-            keeper.push({'overall_pick': '125', 'player': 'David Johnson', 'pos': 'RB', 'team': '5', 'round':'11', 'pick':'5' });
-            keeper.push({'overall_pick': '130', 'player': 'DeAngelo Williams', 'pos': 'RB', 'team': '10', 'round':'11', 'pick':'10' });
-            keeper.push({'overall_pick': '145', 'player': 'Tyler Lockett', 'pos': 'WR', 'team': '1', 'round':'13', 'pick':'1' });
-            keeper.push({'overall_pick': '167', 'player': 'Jay Ajayi', 'pos': 'RB', 'team': '1', 'round':'15', 'pick':'1' });
-            keeper.push({'overall_pick': '168', 'player': 'Doug Baldwin', 'pos': 'WR', 'team': '2', 'round':'15', 'pick':'2' });
-            keeper.push({'overall_pick': '172', 'player': 'Thomas Rawls', 'pos': 'RB', 'team': '6', 'round':'15', 'pick':'6' });
-            keeper.push({'overall_pick': '173', 'player': 'Kelvin Benjamin', 'pos': 'WR', 'team': '7', 'round':'15', 'pick':'7' });
-            keeper.push({'overall_pick': '174', 'player': 'Blake Bortles', 'pos': 'QB', 'team': '8', 'round':'15', 'pick':'8' });
-            keeper.push({'overall_pick': '179', 'player': 'Jordy Nelson', 'pos': 'WR', 'team': '11', 'round':'15', 'pick':'11' });
+            keeper.push({'overall_pick': 12, 'player': 'Antonio Brown', 'pos': 'WR', 'team': 12, 'round':1, 'pick':12 });
+            keeper.push({'overall_pick': 10, 'player': 'Rob Gronkowski', 'pos': 'TE', 'team': 10, 'round':1, 'pick':10 });
+            keeper.push({'overall_pick': 14, 'player': 'Odell Beckham', 'pos': 'WR', 'team': 11, 'round':2, 'pick':2 });
+            keeper.push({'overall_pick': 22, 'player': 'A.J. Green', 'pos': 'WR', 'team': 3, 'round':2, 'pick':10 });
+            keeper.push({'overall_pick': 27, 'player': 'Mike Evans', 'pos': 'WR', 'team': '3', 'round':'3', 'pick':'3' });
+            keeper.push({'overall_pick': 31, 'player': 'DeAndre Hopkins', 'pos': 'WR', 'team': '7', 'round':'3', 'pick':'7' });
+            keeper.push({'overall_pick': 37, 'player': 'Amari Cooper', 'pos': 'WR', 'team': '12', 'round':'4', 'pick':'1' });
+            keeper.push({'overall_pick': 49, 'player': 'Julian Edelman', 'pos': 'WR', 'team': '1', 'round':'5', 'pick':'1' });
+            keeper.push({'overall_pick': 50, 'player': 'Todd Gurley', 'pos': 'RB', 'team': '2', 'round':'5', 'pick':'2' });
+            keeper.push({'overall_pick': 58, 'player': 'Jarvis Landry', 'pos': 'WR', 'team': '10', 'round':'5', 'pick':'10' });
+            keeper.push({'overall_pick': 59, 'player': 'Brandon Marshall', 'pos': 'WR', 'team': '11', 'round':'5', 'pick':'11' });
+            keeper.push({'overall_pick': 61, 'player': 'Tom Brady', 'pos': 'QB', 'team': '12', 'round':'6', 'pick':'1' });
+            keeper.push({'overall_pick': 65, 'player': 'Allen Robinson', 'pos': 'WR', 'team': '8', 'round':'6', 'pick':'5' });
+            keeper.push({'overall_pick': 80, 'player': 'Ryan Mathews', 'pos': 'RB', 'team': '8', 'round':'7', 'pick':'8' });
+            keeper.push({'overall_pick': 98, 'player': 'Devonta Freeman', 'pos': 'RB', 'team': '2', 'round':'9', 'pick':'2' });
+            keeper.push({'overall_pick': 114, 'player': 'Cam Newton', 'pos': 'QB', 'team': '7', 'round':'10', 'pick':'6' });
+            keeper.push({'overall_pick': 123, 'player': 'Julius Thomas', 'pos': 'TE', 'team': '3', 'round':'11', 'pick':'3' });
+            keeper.push({'overall_pick': 125, 'player': 'David Johnson', 'pos': 'RB', 'team': '5', 'round':'11', 'pick':'5' });
+            keeper.push({'overall_pick': 130, 'player': 'DeAngelo Williams', 'pos': 'RB', 'team': '10', 'round':'11', 'pick':'10' });
+            keeper.push({'overall_pick': 145, 'player': 'Tyler Lockett', 'pos': 'WR', 'team': '1', 'round':'13', 'pick':'1' });
+            keeper.push({'overall_pick': 167, 'player': 'Jay Ajayi', 'pos': 'RB', 'team': '1', 'round':'15', 'pick':'1' });
+            keeper.push({'overall_pick': 168, 'player': 'Doug Baldwin', 'pos': 'WR', 'team': '2', 'round':'15', 'pick':'2' });
+            keeper.push({'overall_pick': 172, 'player': 'Thomas Rawls', 'pos': 'RB', 'team': '6', 'round':'15', 'pick':'6' });
+            keeper.push({'overall_pick': 173, 'player': 'Kelvin Benjamin', 'pos': 'WR', 'team': '7', 'round':'15', 'pick':'7' });
+            keeper.push({'overall_pick': 174, 'player': 'Blake Bortles', 'pos': 'QB', 'team': '8', 'round':'15', 'pick':'8' });
+            keeper.push({'overall_pick': 179, 'player': 'Jordy Nelson', 'pos': 'WR', 'team': '11', 'round':'15', 'pick':'11' });
             
             $.each(keeper, function(){
-               var _round = round = this.round;
-               var _pick = this.pick;
+               round = round = this.round;
+               pick = this.pick;
                var player_name = this.player;
                var player_pos = this.pos;
-               var _overall_pick = this.overall_pick;
+               overall_pick = this.overall_pick;
                var team = this.team;
-               var obj = $("td[player_name='"+player_name+"']");
-               add_player_to_draft_record(_overall_pick, team, player_name, player_pos);
-               //console.log(overall_pick, team, player_name, player_pos);
+               var obj = $("tr[player_name='"+player_name+"']");
+               add_player_to_draft_record(overall_pick, team, player_name, player_pos);
+               //console.log(last_pick);
                add_player_to_team_board(team, player_name, player_pos);
                restyle_player_list_row_for_drafted_player(obj);
-               last_pick.push(_overall_pick);
+               last_pick.push(overall_pick);
                go_to_first_available_pick();
-               update_draft_status(round, pick);
+               update_draft_status();
                color_the_player_table();
                highlight_picking_teams_table();
             });
+            console.log(draft_record[179]);
         }
 
            
 }); //end document.ready
 
 
-// player_name="'+value['firstName']+' '+value['lastName']+'" player_pos="'+value['position']+'" player_team="'+value['teamAbbr']+'"
+// player_name="'+value['firstName']+' '+value['lastName']+'" player_pos="'+value['position']+'" player_team="'+value['teamAbbr']+'";
