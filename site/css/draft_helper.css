@@ -13,8 +13,7 @@ body{
 #player_list_table{
 
 }
-#player_list_table tr:hover{
-    background-color: #87CEFA;
+tr[drafted=false]:hover{
     cursor: pointer;
 }
 

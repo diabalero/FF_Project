@@ -1,5 +1,5 @@
 body{
-    height:100vh;
+    max-height:100vh;
     width:100vw;
 }
 #menu{
@@ -8,12 +8,54 @@ body{
 }
 #left_gutter, #right_gutter{
     height:85%;
-    background-color:green;
+    width:20%;
     float:left;
 }
 #main{
     height:85%;
+    width:60%;
     background-color: orange;
     float:left;
 }
+#player_list_filter{
+    height:5%;
+    width:100%;
+    background-color:#87bdd8;    
+}
+#player_list{
+    height:95%;
+    overflow:scroll;
+    }
+
+#player_list_table{
+    font-size:12px;
+    height:100%;
+    width:100%;
+    border-collapse: collapse;
+}
+
+#player_list_table tr{
+    text-align: left;    
+}
+#player_list_table tbody tr:hover{
+    background-color:#f1e3dd;  
+}
+
+#player_list_table td, #player_list_table th{
+    padding-top:5px;
+    padding-bottom:5px;    
+}
+
+#player_list_table tr:nth-child(odd){
+    background-color:#cfe0e8
+}
+#player_list_table tr:nth-child(even){
+    background-color:#b7d7e8
+}
+#player_list_table #real_tbody tr:hover{
+    background-color:transparent;
+}
+
+
+
 
