@@ -7,8 +7,8 @@
     <TITLE>Draft Helper</TITLE>
     <HEAD>
         <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Ubuntu"/>
-        <link rel="stylesheet" type="text/css" href="../css/draft_helper.css">
         <link rel="stylesheet" href="../lib/w3.css">
+        <link rel="stylesheet" type="text/css" href="../css/draft_helper.css">
         <script src='../javascript/jquery.js'></script>
         <!--<script src='../javascript/draft.js'></script>-->
         <script src='../javascript/draft.js'></script>

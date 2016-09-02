@@ -125,7 +125,7 @@ if($_GET['resource'] == 'player_list_from_csv'){
         echo "<option value='$position'>$position</option>";
     }
     echo "</select></div>";
-    echo "<table id='player_list_table' class='w3-table-all w3-tiny w3-margin-top'>
+    echo "<table id='player_list_table' class='w3-table-all w3-tiny w3-margin-top w3-hoverable'>
     <tr id='player_list_header_row' class='w3-blue'><th>Pos</th><th>Player/Team</th><th>ADP</th><th>Low</th><th>High</th><th>Bye</th></tr>";
     //$data_as_string = file_get_contents('../resources/adp.csv');
 
