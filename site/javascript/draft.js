@@ -62,6 +62,7 @@ $(document).ready(function(){
     current_team_id = 1;
     current_team_name = $('#team_'+current_team_id+'_board').find('.team_name').text();
        });
+    $('#draft_record').load('../DraftHelper/data.php?resource=draft_record&numTeams='+numTeams+'&numRounds='+numRounds);
     $('#draft_status').load('../DraftHelper/data.php?resource=draft_status&num_rounds='+numRounds+'&num_teams='+numTeams, function(){
         update_draft_status(round, pick);
     });
@@ -90,6 +91,7 @@ $(document).ready(function(){
         //console.log(team_info);
         if(add_player_to_team_board(team, player_name, player_pos) == 1){ //this if statement shoudl be replaced with functionality that allows you to draft whoever you want, not limited by position
             draft_record.push({'overall_pick':overall_pick, 'round':round, 'pick':pick, 'team':team, 'player_name':player_name, 'player_position':player_pos, 'player_team':player_team });
+            add_player_to_draft_record(team, player_name, player_pos);
             restyle_player_list_row_for_drafted_player(this_obj);
             go_to_first_available_pick();
             update_draft_status(round, pick);
@@ -159,6 +161,10 @@ $(document).ready(function(){
         highlight_picking_teams_table();
     });
     
+    $('body').on('click', '.hide_round', function(){
+       round_to_hide = $(this).attr('round_to_hide');
+       $('div[round='+round_to_hide+']').slideToggle(150);
+    });
     
 
         function add_player_to_team_board(team, player_name, player_pos){
@@ -204,6 +210,10 @@ $(document).ready(function(){
                             }
                     }
             }
+        }
+        
+        function add_player_to_draft_record(team, player_name, player_pos){
+            $('span[overall_pick='+overall_pick+']').text(player_name+' '+player_pos);
         }
         
         function restyle_player_list_row_for_drafted_player(obj){
@@ -287,6 +297,10 @@ $(document).ready(function(){
             });
         }
         
+        function hide_draft_record(){
+            
+        }
+        
         function show_non_recent_drafted_players(){
             $('.player_row').css('display', 'table-row');
             position = $('#position_filter').val();
@@ -296,8 +310,11 @@ $(document).ready(function(){
 
         function undo_last_draft_pick(){
             last_draft_pick = draft_record.pop();
-            //step 1 - erase player from team table
+            //step 1 - erase player from team table, and draft record display
             $('.team_board td:contains("'+last_draft_pick['player_name']+'")').text("");
+            //$('span[overall_pick='+overall_pick+']').text(player_name+' '+player_pos);
+            $('span[overall_pick='+last_draft_pick['overall_pick']+']').text("");
+            console.log();
             //step 2 - set tr drafted attribute to false
             ($('#player_list_table tr[player_name="'+last_draft_pick['player_name']+'"]').attr('drafted', false));
             //step 3 - set tr overall_pick attribute to ''
@@ -457,10 +474,14 @@ $(document).ready(function(){
             draft_record.push({'overall_pick': 179, 'round':15, 'pick':11, 'team': 11, 'player_name': 'Jordy Nelson', 'player_position': 'WR', 'player_team': 'GB'});
             
             $.each(draft_record, function(){
+               overall_pick = this.overall_pick;
+               round = this.round;
+               pick = this.pick; 
                var obj = $("tr[player_name='"+this.player_name+"']");
                //console.log(last_pick);
                add_player_to_team_board(this.team, this.player_name, this.player_position);
                restyle_player_list_row_for_drafted_player(obj);
+               add_player_to_draft_record(this.team, this.player_name, this.player_position);
             });
             go_to_first_available_pick();
             update_draft_status();

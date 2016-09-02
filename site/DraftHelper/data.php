@@ -31,6 +31,24 @@ if ($_GET['resource'] == 'player_list'){
 }
 */
 
+if($_GET['resource'] == 'draft_record'){
+    $num_teams = $_GET['numTeams'];
+    $num_rounds = $_GET['numRounds'];
+    $overall_pick = 1;
+    for($round=1; $round <= $num_rounds; $round++){
+        echo "<div class='w3-panel w3-yellow w3-round-large hide_round' round_to_hide='".$round."'>Round".$round."</div>";
+        echo "<div round='".$round."'>";
+        for($pick=1;$pick<=$num_teams;$pick++){
+            echo "<div class='w3-panel w3-blue w3-round-large w3-margin-bottom' overall_pick='".$overall_pick."' round='".$round."' pick='".$pick."'>
+                <span class='w3-badge'>".$overall_pick."</span>
+                <span overall_pick='".$overall_pick."'></span>
+                </div>";
+            $overall_pick++;
+        }
+        echo "</div>";
+    }
+}
+
 if ($_GET['resource'] == 'drafted_players'){
     $drafted_players_result_set = $mysqli->query("SELECT * FROM t_draft_record");
     $drafted_players_json = json_encode($drafted_players_result_set->fetch_array());
@@ -91,7 +109,7 @@ if($_GET['resource'] == 'teams_display'){
     $num_bench_spots = $num_rounds - 9;
     
     for($team = 1; $team <= $num_teams; $team++){
-        echo "<table class='team_board w3-table-all w3-card-4 w3-tiny w3-margin-left w3-margin-top w3-col m3' id='team_".$team."_board' draft_position='".$team."' team_name='Team ".$team."'>";
+        echo "<table class='team_board w3-table-all w3-card-4 w3-tiny w3-margin-left w3-margin-right w3-margin-top w3-col m3' id='team_".$team."_board' draft_position='".$team."' team_name='Team ".$team."'>";
         echo "<tr class='w3-blue'><th colspan=2><div purpose='team_name' draft_position='".$team."' class='team_name'>Team".$team. "</div></td> Pick".$team."</th></tr>";
         echo "<tr><td >QB</td><td class='Team_".$team."_QB_cell' id='Team_".$team."_QB'></td></tr>";
         echo "<tr><td>RB1</td><td  class='Team_".$team."_RB_cell' id='Team_".$team."_RB1'></td></tr>";

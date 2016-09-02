@@ -10,33 +10,28 @@ body{
     overflow-y: scroll;
     height: 65vh;
 }
-#player_list_table{
 
-}
 tr[drafted=false]:hover{
     cursor: pointer;
 }
 
-#draft_status{
+#draft_status, #draft_controls, #quick_draft_configuration{
     height: 30vh;
     overflow-y: auto;
 }
-#draft_controls{
-    height: 30vh;
-    overflow-y: auto;
-}
-#quick_draft_configuration{
-    height: 30vh;
-    overflow-y: auto;
-}
+
 #teams_display{
     overflow: auto;
-    height: 70vh
+    height: 70vh;
 }
 
 #league_creator{
     overflow: auto;
     height: 100vh;
+}
+#draft_record{
+    overflow:auto;
+    height: 70vh;
 }
 /*Below is the old CSS*/
 /*body{

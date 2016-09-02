@@ -15,15 +15,16 @@
     </HEAD>
     <body>
             <div id='menu' class="w3-row">
-                <div class='menu_div w3-col s4 w3-dark-grey' id='draft_status'></div>
-                <div class='menu_div w3-col s4 w3-dark-grey' id='draft_controls'></div>
-                <div class='menu_div w3-col s4 w3-dark-grey' id='quick_draft_configuration'></div>
+                <div class='menu_div w3-col l4 w3-dark-grey' id='draft_status'></div>
+                <div class='menu_div w3-col l4 w3-dark-grey' id='draft_controls'></div>
+                <div class='menu_div w3-col l4 w3-dark-grey' id='quick_draft_configuration'></div>
             </div>
             <div id="content">
-                <div id='players' class='w3-third w3-left'>
+                <div id='players' class='w3-quarter'>
                     <div id='player_list_filter' class='w3-panel'></div>
                     <div id='player_list' class='w3-card-4'></div>
                 </div>
-                <div id='teams_display' class='w3-twothird w3-responsive'></div>
+                <div id='teams_display' class='w3-half w3-responsive'></div>
+                <div id='draft_record' class='w3-quarter w3-responsive'></div>
             </div>
         
