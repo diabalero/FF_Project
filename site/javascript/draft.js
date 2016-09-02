@@ -404,7 +404,7 @@ $(document).ready(function(){
             });
         }
         
-        function go_to_first_available_pick(){
+        function go_to_first_available_pick(){ //this doesnt work =(
                 overall_pick = 1;
                 round = 1;
                 pick = 1;
@@ -413,11 +413,13 @@ $(document).ready(function(){
                             if(pick < numTeams){
                                 pick++;
                                 overall_pick++;
+                                
                             }
                             else{
                                 pick = 1;
                                 round++;
                                 overall_pick++;
+                                
                             }
                         }
                         else{
