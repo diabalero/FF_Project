@@ -51,8 +51,6 @@ $(document).ready(function(){
     });
     $('#quick_draft_configuration').load('../DraftHelper/data.php?resource=quick_draft_configuration');
     $('#draft_controls').load('../DraftHelper/data.php?resource=draft_controls');
-
-    $('')
     
     
    
