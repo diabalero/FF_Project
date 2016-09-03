@@ -7,6 +7,7 @@
     //force page to be 100% wide (why is it stopping short on wide monitors?)
 //improvements:
     //need a better query or algorythm for showing draftable players. Top x # of ranked players isnt good enough. (dont want players from 10 years ago, but need all the TEs and DEFs to show)
+    //load the player list, rankings, etc.
 
 
 $(document).ready(function(){
@@ -52,7 +53,7 @@ $(document).ready(function(){
     $('#quick_draft_configuration').load('../DraftHelper/data.php?resource=quick_draft_configuration');
     $('#draft_controls').load('../DraftHelper/data.php?resource=draft_controls');
     
-    
+   
    
    //create an array of team information
    var teams_info = [];
@@ -61,7 +62,11 @@ $(document).ready(function(){
        //console.log(team_info[i]);
    }
    
-   //function to style the low and high picks to highlight value 
+   //launch new draft
+   $('body').on('click', '#launch_new_draft', function(e){
+       e.preventDefault();
+       alert('default was prevented');
+   });
    
    //function to draft a player
     $('body').on('click', 'tr[drafted=false]', function () {
