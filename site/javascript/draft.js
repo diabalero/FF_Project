@@ -1,30 +1,13 @@
 //TO DO//
-//add the divisions of the menu: status, controls, configuration, etc
+//Features: 
+    //export and import keeper list
+    //enable the quick config menu
+//style:
+    //center the team tables in thier container, right now they lean to the left
+    //force page to be 100% wide (why is it stopping short on wide monitors?)
+//improvements:
+    //need a better query or algorythm for showing draftable players. Top x # of ranked players isnt good enough. (dont want players from 10 years ago, but need all the TEs and DEFs to show)
 
-//code to undo a draft pick. should be able to click on a previous pick and reset draft to that point (undo that pick and all after it)
-
-
-//add option to change position rows into bench rows to team boards instead of denying player drafting too many of a position
-
-//somehow indicate to the user that you can rename teams by double clicking on them
-    //add (i) icon to menu tools to get user instructions!!
-
-//allow customization of draft, number of rounds, teams
-
-//add feature for setting keepers
-    //added! now just need to fix undo pick
-//highlight table of currently picking team
-
-//STYLING TASK SUGGESTIONS FOR DEREK (just ideas)
-//make the pick number smaller in the team boards
-//style the team tables such that they dont look like generic html tables
-    //rounded corners?
-    //background colors
-    //no borders?
-    //border only on outside edges and between team name and picks?
-//change the font used on the page, probably need sans serif
-//color the background of the page, such that the tables stand out
-//highlight table of picking team
 
 $(document).ready(function(){
     
@@ -68,6 +51,8 @@ $(document).ready(function(){
     });
     $('#quick_draft_configuration').load('../DraftHelper/data.php?resource=quick_draft_configuration');
     $('#draft_controls').load('../DraftHelper/data.php?resource=draft_controls');
+
+    $('')
     
     
    
