@@ -404,29 +404,26 @@ $(document).ready(function(){
             });
         }
         
-        function go_to_first_available_pick(){ //this doesnt work =(
-                overall_pick = 1;
-                round = 1;
-                pick = 1;
-                $.each(draft_record, function(){
-                        if(this.pick == pick && this.round == round){
-                            if(pick < numTeams){
-                                pick++;
-                                overall_pick++;
-                                
-                            }
-                            else{
-                                pick = 1;
-                                round++;
-                                overall_pick++;
-                                
-                            }
-                        }
-                        else{
-                            console.log('I checked draft_record '+this.overall_pick+' , did find a match so lets leave the pick at'+pick+' the round at '+round+ 'and the overall at '+overall_pick);
-                        } 
-                });
-            }            
+        function go_to_first_available_pick(){
+            var temp_array = [];
+            $.each(draft_record, function(){
+                temp_array.push(this.overall_pick);
+            });
+            overall_pick = 1;
+            round = 1;
+            pick = 1;
+            while($.inArray(overall_pick, temp_array)> -1){
+                if(pick < numTeams){
+                    pick++;
+                    overall_pick++;
+                }
+                else{
+                    pick = 1;
+                    round++;
+                    overall_pick++;
+                }
+            }
+        }            
                
         function highlight_picking_teams_table(){
             if(round%2!=0){ team = pick;}
