@@ -93,7 +93,7 @@ $(document).ready(function(){
             draft_record.push({'overall_pick':overall_pick, 'round':round, 'pick':pick, 'team':team, 'player_name':player_name, 'player_position':player_pos, 'player_team':player_team });
             add_player_to_draft_record(team, player_name, player_pos);
             restyle_player_list_row_for_drafted_player(this_obj);
-            go_to_first_available_pick();
+            go_to_first_available_pick(1,1);
             update_draft_status(round, pick);
             color_the_player_table();
             highlight_picking_teams_table();
@@ -155,7 +155,7 @@ $(document).ready(function(){
         //console.log('a draft status select box change fired, did we want it to?');
         pick = $('#draft_status_pick').val();
         round = $('#draft_status_round').val();
-        overall_pick = parseInt((round -1 ) * numTeams + pick);
+        go_to_first_available_pick(pick, round);
         update_draft_status(round, pick);
         color_the_player_table();
         highlight_picking_teams_table();
@@ -321,7 +321,7 @@ $(document).ready(function(){
             //step 3 - set tr overall_pick attribute to ''
             $('#player_list_table tr[player_name="'+last_draft_pick['player']+'"]').attr('overall_pick', '');            
             //step 6 move the draft position to the first empty pick
-            go_to_first_available_pick();
+            go_to_first_available_pick(1,1);
             //step 7 update the draft status
             update_draft_status(round, pick);
             //step 8 highlight the correct team board
@@ -405,14 +405,14 @@ $(document).ready(function(){
             });
         }
         
-        function go_to_first_available_pick(){
+        function go_to_first_available_pick(starting_round, starting_pick){
             var temp_array = [];
             $.each(draft_record, function(){
                 temp_array.push(this.overall_pick);
             });
-            overall_pick = 1;
-            round = 1;
-            pick = 1;
+            pick = starting_round;
+            round = starting_pick;
+            overall_pick = ((starting_round - 1) * numTeams) + pick;
             while($.inArray(overall_pick, temp_array)> -1){
                 if(pick < numTeams){
                     pick++;
@@ -483,7 +483,7 @@ $(document).ready(function(){
                restyle_player_list_row_for_drafted_player(obj);
                add_player_to_draft_record(this.team, this.player_name, this.player_position);
             });
-            go_to_first_available_pick();
+            go_to_first_available_pick(1,1);
             update_draft_status();
             color_the_player_table();
             highlight_picking_teams_table();
