@@ -155,10 +155,11 @@ $(document).ready(function(){
         //console.log('a draft status select box change fired, did we want it to?');
         pick = $('#draft_status_pick').val();
         round = $('#draft_status_round').val();
-        overall_pick = (round -1 ) * numTeams + pick;
+        overall_pick = parseInt((round -1 ) * numTeams + pick);
         update_draft_status(round, pick);
         color_the_player_table();
         highlight_picking_teams_table();
+        console.log(overall_pick + ' ' + round + ' ' + pick);
     });
     
     $('body').on('click', '.hide_round', function(){
