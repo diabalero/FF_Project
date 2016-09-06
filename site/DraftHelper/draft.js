@@ -155,7 +155,7 @@ load_the_page();
         undo_last_draft_pick();
     });
     $('body').on('click', '#set_keepers', function(){
-        set_keepers();
+        export_keepers();
     });
 
     $('body').on('change', '.draft_status_select', function(){
@@ -502,7 +502,9 @@ load_the_page();
         }
         
         function export_keepers(){
-            
+            $.post('data.php', draft_record, function(e){
+               console.log(e); 
+            });
         }
 
            
