@@ -23,6 +23,7 @@ tr[drafted=false]:hover{
 #teams_display{
     overflow: auto;
     height: 70vh;
+    min-width:50%;
 }
 
 #league_creator{

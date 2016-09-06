@@ -1,8 +1,8 @@
 //TO DO//
 //Features: 
     //export and import keeper list
-    //enable the quick config menu
 //style:
+    //If you start a draft with few teams, the teams div shrinks too much, 
     //center the team tables in thier container, right now they lean to the left
     //force page to be 100% wide (why is it stopping short on wide monitors?)
 //improvements:
@@ -35,6 +35,7 @@ $(document).ready(function(){
        filter_player_list('All', 'All');
    }); */
    
+   function load_the_page(){
    //load the list of players from nfl.com's api
    $('#player_list_filter').load('../DraftHelper/data.php?resource=player_list_filter');
    get_players();
@@ -52,8 +53,8 @@ $(document).ready(function(){
     });
     $('#quick_draft_configuration').load('../DraftHelper/data.php?resource=quick_draft_configuration');
     $('#draft_controls').load('../DraftHelper/data.php?resource=draft_controls');
-    
-   
+   }
+load_the_page();
    
    //create an array of team information
    var teams_info = [];
@@ -65,7 +66,23 @@ $(document).ready(function(){
    //launch new draft
    $('body').on('click', '#launch_new_draft', function(e){
        e.preventDefault();
-       alert('default was prevented');
+       //alert('default was prevented');
+       numTeams = parseInt($('#draft_configuration_select_teams').val());
+       numRounds = parseInt($('#draft_configuration_select_rounds').val());
+       var flex = $('#draft_configuration_select_flex').val();
+       draft_record = [];
+       round = 1;
+       pick = 1;
+       overall_pick = 1;
+       if(flex == 'std'){
+           allowed_flex_positions = ['RB', 'WR'];
+       }
+       if(flex == 'te'){
+           allowed_flex_positions = ['RB','WR','TE'];
+       }
+       
+       load_the_page();
+       
    });
    
    //function to draft a player
@@ -82,10 +99,12 @@ $(document).ready(function(){
             add_player_to_draft_record(team, player_name, player_pos);
             restyle_player_list_row_for_drafted_player(this_obj);
             go_to_first_available_pick(1,1);
+            
+            //console.log('on tr:player_row click: round: '+round+ ' pick:'+pick+ ' overall_pick: '+overall_pick);
             update_draft_status(round, pick);
             color_the_player_table();
             highlight_picking_teams_table();
-            
+           //console.log('pick: '+pick, ' round: '+round+ ' numTeams: '+numTeams+' numRounds: '+numRounds+ ' team_info: '+team_info[1]);
         }
         
     });
@@ -147,7 +166,7 @@ $(document).ready(function(){
         update_draft_status(round, pick);
         color_the_player_table();
         highlight_picking_teams_table();
-        console.log(overall_pick + ' ' + round + ' ' + pick);
+        //console.log('on draft status change:'+ overall_pick + ' ' + round + ' ' + pick);
     });
     
     $('body').on('click', '.hide_round', function(){
@@ -210,20 +229,24 @@ $(document).ready(function(){
         }
         
         function get_team_info(round, pick){
+            //console.log('get team info numTeams: '+ numTeams);
             if (round % 2 != 0){ //applies to odd rounds
                 local_team_info = teams_info[pick];
             }
             else{ //applies to even rounds
                 local_team_info = teams_info[(numTeams+1) - pick];
+                console.log((numTeams+1) - pick);
             }
+            //console.log('get_team_info: '+round+ ' ' +pick+ ' '+local_team_info['team_name']);
             return local_team_info;
         }
         function update_draft_status(){
-            var team_info = get_team_info(round, pick);
+           //console.log('update draft status: '+ round+' '+pick);
+            team_info = get_team_info(round, pick);
             $('#draft_status_round').val(round);
             $('#draft_status_pick').val(pick);
             $('#picking_team').text(team_info['team_name']);
-            //console.log(team_info);
+            //console.log('update_draft_status: '+ team_info['team_name']);
         }
         
         function color_the_player_table(){
@@ -475,6 +498,10 @@ $(document).ready(function(){
             update_draft_status();
             color_the_player_table();
             highlight_picking_teams_table();
+            
+        }
+        
+        function export_keepers(){
             
         }
 
