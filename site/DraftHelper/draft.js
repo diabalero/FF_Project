@@ -502,10 +502,14 @@ load_the_page();
         }
         
         function export_keepers(){
-            $.post('data.php', draft_record, function(e){
-               console.log(e); 
-            });
+            var json = {};
+            for(i=0;i<draft_record.length;i++){
+                json[i] = draft_record[i];
+            }
+            var response = $.post('post.php', json);
+            console.log(response);
         }
+
 
            
 }); //end document.ready

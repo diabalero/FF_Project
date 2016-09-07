@@ -203,7 +203,4 @@ if($_GET['resource'] == 'player_list_filter'){
 }*/
 
 
-if($_POST){
-    print_r($_POST);
-}
 ?>
