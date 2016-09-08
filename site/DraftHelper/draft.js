@@ -49,6 +49,7 @@ $(document).ready(function(){
        });
     $('#draft_record').load('../DraftHelper/data.php?resource=draft_record&numTeams='+numTeams+'&numRounds='+numRounds);
     $('#draft_status').load('../DraftHelper/data.php?resource=draft_status&num_rounds='+numRounds+'&num_teams='+numTeams, function(){
+        
         update_draft_status(round, pick);
     });
     $('#quick_draft_configuration').load('../DraftHelper/data.php?resource=quick_draft_configuration');
@@ -59,8 +60,8 @@ load_the_page();
    //create an array of team information
    var teams_info = [];
    for(i = 1; i <= numTeams; i++){
-       teams_info[i] = {'draft_position': i, 'team_name':'Team'+i, 'odd_round_pick':i,'even_round_pick':(numTeams+1)-i};
-       //console.log(team_info[i]);
+       teams_info[i] = {'draft_position': i, 'team_name':'Team'+i};
+       //console.log(teams_info[i]);
    }
    
    //launch new draft
@@ -154,8 +155,12 @@ load_the_page();
     $('body').on('click', '#undo_button', function(){
         undo_last_draft_pick();
     });
-    $('body').on('click', '#set_keepers', function(){
-        export_keepers();
+    $('body').on('click', '#export_draft', function(){
+        export_draft();
+    });
+    $('body').on('click', '#import_draft', function(){
+        var file = $('#import_file').val();
+        import_draft(file);
     });
 
     $('body').on('change', '.draft_status_select', function(){
@@ -172,6 +177,11 @@ load_the_page();
     $('body').on('click', '.hide_round', function(){
        round_to_hide = $(this).attr('round_to_hide');
        $('div[round='+round_to_hide+']').slideToggle(150);
+    });
+    
+    $('body').on('click', '#download_export_draft', function(){
+        enable_export_draft();
+        this.remove();
     });
     
 
@@ -500,19 +510,46 @@ load_the_page();
             highlight_picking_teams_table();
             
         }
-        
-        function export_keepers(){
+        function enable_export_draft(){
+            $('#export_draft').prop('disabled', false);
+        }
+        function disable_export_draft(){
+            $('#export_draft').prop('disabled', true);
+        }
+        function export_draft(){
             var json = {};
-            var filename;
-            for(i=0;i<draft_record.length;i++){
+            for(i=1;i<=draft_record.length;i++){
                 json['pick_'+i] = draft_record[i];
             }
+            for(i=1;i<=teams_info;i++){
+                json['team_'+i] = teams_info[i];
+            }
             var response = $.post('post.php', json, function(){
-                $('#draft_controls').append('<br><a onClick=this.style.display="none" href="'+response.responseText+'" download>Click here to download</a>');
-            });
+                $('#draft_controls').append('<a id="download_export_draft" href="'+response.responseText+'" download>Click here to download</a>');    
+                });
+            disable_export_draft();
+        }
+        
+        function import_draft(file){
+            var formData = new FormData();
+            formData.append("userfile", file);
+            var request = new XMLHttpRequest();
+            //request.addEventListener("load", transferComplete);
+            request.onload = function(){
+              console.log(request.statusText);
+              console.log(request.response);  
+            }
+            request.open("POST", "import.php");
+            request.send(formData);
+            var json = request.responseText;
+            console.log('well i made it this far...'+json);
             
+        }
+        function transferComplete(evt){
+            console.log('transfer completed ' + evt.statusText);
         }
            
 }); //end document.ready
 
 
+//onClick=this.style.display="none"
