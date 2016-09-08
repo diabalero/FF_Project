@@ -503,16 +503,16 @@ load_the_page();
         
         function export_keepers(){
             var json = {};
+            var filename;
             for(i=0;i<draft_record.length;i++){
-                json[i] = draft_record[i];
+                json['pick_'+i] = draft_record[i];
             }
-            var response = $.post('post.php', json);
-            console.log(response);
+            var response = $.post('post.php', json, function(){
+                $('#draft_controls').append('<br><a onClick=this.style.display="none" href="'+response.responseText+'" download>Click here to download</a>');
+            });
+            
         }
-
-
            
 }); //end document.ready
 
 
-// player_name="'+value['firstName']+' '+value['lastName']+'" player_pos="'+value['position']+'" player_team="'+value['teamAbbr']+'";

@@ -1,17 +1,12 @@
 <?php
 
 if($_POST){
+    //code to delete the contents of the folder first might be cool.
     $encode = json_encode($_POST);
-    $file = 'keeper_exports/export';
+    $rand = rand(0, 10);
+    $file = 'keeper_exports/'.$rand.'.json';
     file_put_contents($file, $encode);
-    if( !file_exists($file) ) die("File not found");
-    header('Content-disposition: attachment; filename='.$file);
-    readfile($file);
+    echo $file;
 }
 
 ?>
-
-200 OK
-Content-Type: text/html; charset=utf-8
-Content-Disposition: attachment; filename="keeper_exports/export"
-Content-Length: 22
