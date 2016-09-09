@@ -162,6 +162,10 @@ load_the_page();
         var file = $('#import_file').val();
         import_draft(file);
     });
+    $('body').on('click', '#download_export_draft', function(){
+    enable_export_draft();
+    this.remove();
+    }); 
 
     $('body').on('change', '.draft_status_select', function(){
         //console.log('a draft status select box change fired, did we want it to?');
@@ -179,10 +183,7 @@ load_the_page();
        $('div[round='+round_to_hide+']').slideToggle(150);
     });
     
-    $('body').on('click', '#download_export_draft', function(){
-        enable_export_draft();
-        this.remove();
-    });
+
     
 
         function add_player_to_team_board(team, player_name, player_pos){
@@ -351,24 +352,7 @@ load_the_page();
             color_the_player_table();
             
         }
-        
-        //this doesnt work, but if I figure out how the functions that do work, work, maybe I can fix this...
-        /*function player_list_from_nfl_com(){
-            var url = "http://api.fantasy.nfl.com/v1/players/userdraftranks?format=json&count=100&offset=";
-            $('#player_list').html('<table id="player_list_table"><tr><th>Pos</th><th>Player</th><th>Team</th><th>ADP</th></tr>');
-                for(i=0;i<501;i+=100){
-                //console.log(url+i);
-                
-                $.getJSON(url+i, function(data){
-                    $.each(data['players'], function(key, value){
-                    $('#player_list_table tr:last').after('<tr player_name="'+value['firstName']+' '+value['lastName']+'" player_pos="'+value['position']+'" player_team="'+value['teamAbbr']+'"><td>'+value['position']+'</td><td>'+value['firstName']+ ' '+value['lastName']+'</td><td>'+value['teamAbbr']+'</td><td>'+value['rank']+'</td></tr>');
-                    });
-                    
-                });
-                }
-        }*/
 
-  
         function populate_player_list_via_json_queries(callback){
             var players_array = [];        
             var url = "http://api.fantasy.nfl.com/v1/players/editordraftranks?format=json&count=50&offset=";
@@ -466,50 +450,6 @@ load_the_page();
             
         }
         
-        function set_keepers(){
-            draft_record.push({'overall_pick': 10, 'round':1, 'pick':10,'team': 10, 'player_name': 'Rob Gronkowski', 'player_position': 'TE', 'player_team': 'NE'});
-            draft_record.push({'overall_pick': 12, 'round':1, 'pick':12, 'team': 12,'player_name': 'Antonio Brown', 'player_position': 'WR', 'player_team': 'PIT'});
-            draft_record.push({'overall_pick': 14, 'round':2, 'pick':2, 'team': 11, 'player_name': 'Odell Beckham', 'player_position': 'WR', 'player_team': 'NYG'});
-            draft_record.push({'overall_pick': 22, 'round':2, 'pick':10, 'team': 3, 'player_name': 'A.J. Green', 'player_position': 'WR', 'player_team': 'CIN'});
-            draft_record.push({'overall_pick': 27, 'round':3, 'pick':3, 'team': 3, 'player_name': 'Mike Evans', 'player_position': 'WR', 'player_team': 'TB'});
-            draft_record.push({'overall_pick': 31, 'round':3, 'pick':7, 'team': 7, 'player_name': 'DeAndre Hopkins', 'player_position': 'WR', 'player_team': 'HOU'});
-            draft_record.push({'overall_pick': 37, 'round':4, 'pick':1, 'team': 12, 'player_name': 'Amari Cooper', 'player_position': 'WR', 'player_team': 'OAK'});
-            draft_record.push({'overall_pick': 49, 'round':5, 'pick':1, 'team': 1, 'player_name': 'Julian Edelman', 'player_position': 'WR', 'player_team': 'NE'});
-            draft_record.push({'overall_pick': 50, 'round':5, 'pick':2, 'team': 2, 'player_name': 'Todd Gurley', 'player_position': 'RB', 'player_team': 'LAR'});
-            draft_record.push({'overall_pick': 58, 'round':5, 'pick':10, 'team': 10, 'player_name': 'Jarvis Landry', 'player_position': 'WR', 'player_team': 'MIA'});
-            draft_record.push({'overall_pick': 59, 'round':5, 'pick':11, 'team': 11, 'player_name': 'Brandon Marshall', 'player_position': 'WR', 'player_team': 'NYJ'});
-            draft_record.push({'overall_pick': 61, 'round':6, 'pick':1, 'team': 12, 'player_name': 'Tom Brady', 'player_position': 'QB', 'player_team': 'NE'});
-            draft_record.push({'overall_pick': 65, 'round':6, 'pick':5, 'team': 8, 'player_name': 'Allen Robinson', 'player_position': 'WR', 'player_team': 'JAC'});
-            draft_record.push({'overall_pick': 80, 'round':7, 'pick':8, 'team': 8,  'player_name': 'Ryan Mathews', 'player_position': 'RB', 'player_team': 'PHI'});
-            draft_record.push({'overall_pick': 98, 'round':9, 'pick':2, 'team': 2, 'player_name': 'Devonta Freeman', 'player_position': 'RB', 'player_team': 'ATL'});
-            draft_record.push({'overall_pick': 114, 'round':10, 'pick':6, 'team': 7, 'player_name': 'Cam Newton', 'player_position': 'QB', 'player_team': 'CAR'});
-            draft_record.push({'overall_pick': 123, 'round':11, 'pick':3, 'team': 3, 'player_name': 'Julius Thomas', 'player_position': 'TE', 'player_team': 'JAC'});
-            draft_record.push({'overall_pick': 125, 'round':11, 'pick':5, 'team': 5, 'player_name': 'David Johnson', 'player_position': 'RB', 'player_team': 'AZ'});
-            draft_record.push({'overall_pick': 130, 'round':11, 'pick':10, 'team': 10, 'player_name': 'DeAngelo Williams', 'player_position': 'RB', 'player_team': 'PIT'});
-            draft_record.push({'overall_pick': 145, 'round':13, 'pick':1, 'team': 1, 'player_name': 'Tyler Lockett', 'player_position': 'WR', 'player_team': 'SEA'});
-            draft_record.push({'overall_pick': 167, 'round':15, 'pick':1, 'team': 1, 'player_name': 'Jay Ajayi', 'player_position': 'RB', 'player_team': 'MIA'});
-            draft_record.push({'overall_pick': 168, 'round':15, 'pick':2, 'team': 2, 'player_name': 'Doug Baldwin', 'player_position': 'WR', 'player_team': 'SEA'});
-            draft_record.push({'overall_pick': 172, 'round':15, 'pick':6, 'team': 6, 'player_name': 'Thomas Rawls', 'player_position': 'RB', 'player_team': 'SEA'});
-            draft_record.push({'overall_pick': 173, 'round':15, 'pick':7, 'team': 7, 'player_name': 'Kelvin Benjamin', 'player_pos': 'WR', 'player_team': 'CAR'});
-            draft_record.push({'overall_pick': 174, 'round':15, 'pick':8, 'team': 8, 'player_name': 'Blake Bortles', 'player_pos': 'QB', 'player_team': 'JAC'});
-            draft_record.push({'overall_pick': 179, 'round':15, 'pick':11, 'team': 11, 'player_name': 'Jordy Nelson', 'player_position': 'WR', 'player_team': 'GB'});
-            
-            $.each(draft_record, function(){
-               overall_pick = this.overall_pick;
-               round = this.round;
-               pick = this.pick; 
-               var obj = $("tr[player_name='"+this.player_name+"']");
-               //console.log(last_pick);
-               add_player_to_team_board(this.team, this.player_name, this.player_position);
-               restyle_player_list_row_for_drafted_player(obj);
-               add_player_to_draft_record(this.team, this.player_name, this.player_position);
-            });
-            go_to_first_available_pick(1,1);
-            update_draft_status();
-            color_the_player_table();
-            highlight_picking_teams_table();
-            
-        }
         function enable_export_draft(){
             $('#export_draft').prop('disabled', false);
         }
@@ -525,25 +465,22 @@ load_the_page();
                 json['team_'+i] = teams_info[i];
             }
             var response = $.post('post.php', json, function(){
-                $('#draft_controls').append('<a id="download_export_draft" href="'+response.responseText+'" download>Click here to download</a>');    
+                $('#export_span').append('<a id="download_export_draft" href="'+response.responseText+'" download>Click here to download</a>');    
                 });
             disable_export_draft();
         }
         
         function import_draft(file){
-            var formData = new FormData();
-            formData.append("userfile", file);
             var request = new XMLHttpRequest();
-            //request.addEventListener("load", transferComplete);
-            request.onload = function(){
-              console.log(request.statusText);
-              console.log(request.response);  
-            }
-            request.open("POST", "import.php");
-            request.send(formData);
-            var json = request.responseText;
-            console.log('well i made it this far...'+json);
-            
+            var formData = new FormData();
+            request.open("POST", "import.php", true);
+            request.onreadystatechange = function(){
+                if(request.readyState == 4&& request.status == 200){
+                    console.log(request.responseText);
+                }
+            };
+            formData.append("userfile", file);
+            request.send(formData);           
         }
         function transferComplete(evt){
             console.log('transfer completed ' + evt.statusText);

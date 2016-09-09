@@ -1,7 +1,6 @@
 <?php
+header('Content-Type: text/plain; charset=utf-8');
 
-if($_POST){
-    echo 'php file, checking in';
+if(isset($_FILES['userfile'])){
+    echo 'file isset';
 }
-
-?>
