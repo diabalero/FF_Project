@@ -15,9 +15,9 @@
     </HEAD>
     <body>
             <div id='menu' class="w3-row">
-                <div class='menu_div w3-col l4 w3-dark-grey' id='draft_status'></div>
-                <div class='menu_div w3-col l4 w3-dark-grey' id='draft_controls'></div>
-                <div class='menu_div w3-col l4 w3-dark-grey' id='quick_draft_configuration'></div>
+                <div class='menu_div w3-dark-grey' id='draft_status'></div>
+                <div class='menu_div w3-dark-grey' id='draft_controls'></div>
+                <div class='menu_div w3-dark-grey' id='quick_draft_configuration'></div>
             </div>
             <div id="content">
                 <div id='players' class='w3-quarter'>

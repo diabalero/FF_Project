@@ -5,6 +5,23 @@ body{
     overflow: hidden;
     position: fixed;
 }
+hr{
+    height: 1px;
+    padding: 0;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 0;
+}
+
+#menu{
+    display: flex;
+    justify-content: center;
+    height: 8vh;
+}
+
+@media only screen and (max-height: 750px){
+    #menu{height: 20vh;}
+}
 
 #player_list{
     overflow-y: scroll;
@@ -15,9 +32,16 @@ tr[drafted=false]:hover{
     cursor: pointer;
 }
 
-#draft_status, #draft_controls, #quick_draft_configuration{
-    height: 30vh;
+#draft_status, #draft_controls{
     overflow-y: auto;
+    flex: auto;
+}
+
+#quick_draft_configuration{
+    overflow-y: auto;
+    flex-grow: 2;
+    flex-shrink: 1;
+    flex-basis: auto;
 }
 
 #teams_display{
