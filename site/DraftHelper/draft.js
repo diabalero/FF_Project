@@ -158,10 +158,7 @@ load_the_page();
     $('body').on('click', '#export_draft', function(){
         export_draft();
     });
-    $('body').on('click', '#import_draft', function(){
-        var file = $('#import_file').val();
-        import_draft(file);
-    });
+
     $('body').on('click', '#download_export_draft', function(){
     enable_export_draft();
     this.remove();
@@ -470,18 +467,25 @@ load_the_page();
             disable_export_draft();
         }
         
+        $('body').on('change', '#import_file', function(){
+            var file = this.files[0];
+            import_draft(this.files[0]);
+        });
+        
         function import_draft(file){
-            var request = new XMLHttpRequest();
-            var formData = new FormData();
-            request.open("POST", "import.php", true);
-            request.onreadystatechange = function(){
-                if(request.readyState == 4&& request.status == 200){
-                    console.log(request.responseText);
+            var url = 'import.php';
+            var xhr = new XMLHttpRequest();
+            var fd = new FormData();
+            xhr.open("POST", "import.php", true);
+            xhr.onreadystatechange = function(){
+                if(xhr.readyState == 4 && xhr.status == 200){
+                    console.log(xhr.response);
                 }
             };
-            formData.append("userfile", file);
-            request.send(formData);           
+            fd.append("userfile", file);
+            xhr.send(fd);           
         }
+        
         function transferComplete(evt){
             console.log('transfer completed ' + evt.statusText);
         }

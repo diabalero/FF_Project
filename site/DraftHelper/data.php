@@ -98,8 +98,7 @@ if($_GET['resource']=='draft_controls'){
     echo '<img src="../images/sk.jpg" alt="set keepers" id="set_keepers">';*/
     echo "<button class='w3-btn w3-round w3-green' alt='undo' id='undo_button'>Undo</button><br><br>";
     echo "<span id='export_span'><button class='w3-btn w3-round w3-indigo' alt='Export Draft' id='export_draft'>Export Draft</button> </span><br><br>";
-    echo "<button class='w3-btn w3-round w3-indigo' alt='Import Draft' id='import_draft'>Import</button>";
-    echo " <input type='file' id='import_file'><br>";
+    echo "<input class='w3-btn w3-round w3-red' type='file' id='import_file'><br>";
 }
 
 if($_GET['resource'] == 'draft_status'){
