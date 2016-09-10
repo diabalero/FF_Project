@@ -455,10 +455,10 @@ load_the_page();
         }
         function export_draft(){
             var json = {};
-            for(i=1;i<=draft_record.length;i++){
+            for(i=0;i<=draft_record.length;i++){
                 json['pick_'+i] = draft_record[i];
             }
-            for(i=1;i<=teams_info;i++){
+            for(i=1; i<=teams_info.length; i++){
                 json['team_'+i] = teams_info[i];
             }
             var response = $.post('post.php', json, function(){
@@ -471,25 +471,28 @@ load_the_page();
             var file = this.files[0];
             import_draft(this.files[0]);
         });
-        
+
         function import_draft(file){
             var url = 'import.php';
             var xhr = new XMLHttpRequest();
             var fd = new FormData();
+            
             xhr.open("POST", "import.php", true);
+            fd.append("userfile", file);
+            xhr.send(fd);    
             xhr.onreadystatechange = function(){
                 if(xhr.readyState == 4 && xhr.status == 200){
-                    console.log(xhr.response);
+                    //console.log(xhr.responseText);
+                    json = JSON.parse(xhr.response);
+                    console.log(json);
                 }
             };
-            fd.append("userfile", file);
-            xhr.send(fd);           
+            
         }
         
         function transferComplete(evt){
             console.log('transfer completed ' + evt.statusText);
         }
-           
 }); //end document.ready
 
 
