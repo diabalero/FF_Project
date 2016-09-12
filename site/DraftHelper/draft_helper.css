@@ -19,14 +19,29 @@ hr{
     height: 8vh;
 }
 
-@media only screen and (max-height: 750px){
-    #menu{height: 20vh;}
-}
-
 #player_list{
     overflow-y: scroll;
-    height: 65vh;
+    height: 87vh;
 }
+
+#teams_display{
+    overflow: auto;
+    height: 92vh;
+    min-width:50%;
+}
+
+#draft_record{
+    overflow:auto;
+    height: 92vh;
+}
+
+@media only screen and (max-height: 750px){
+    #menu{height: 20vh;}
+    #player_list{height: 70vh;}
+    #teams_display{height: 80vh;}
+    #draft_record{height: 80vh;}
+}
+
 
 tr[drafted=false]:hover{
     cursor: pointer;
@@ -44,20 +59,11 @@ tr[drafted=false]:hover{
     flex-basis: auto;
 }
 
-#teams_display{
-    overflow: auto;
-    height: 70vh;
-    min-width:50%;
-}
-
 #league_creator{
     overflow: auto;
     height: 100vh;
 }
-#draft_record{
-    overflow:auto;
-    height: 70vh;
-}
+
 /*Below is the old CSS*/
 /*body{
     font-family: PT Sans Narrow;
