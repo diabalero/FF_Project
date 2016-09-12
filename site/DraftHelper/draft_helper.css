@@ -16,7 +16,7 @@ hr{
 #menu{
     display: flex;
     justify-content: center;
-    height: 8vh;
+    height: 10vh;
 }
 
 #player_list{
