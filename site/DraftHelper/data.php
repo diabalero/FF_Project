@@ -65,7 +65,7 @@ if ($_GET['resource'] == 'drafted_players'){
 } */
 
 if($_GET['resource'] == 'quick_draft_configuration'){
-    echo "<span class='menu_div_title'>Start New Draft (Quick Config)</span><br><hr>";
+    echo "<span class='menu_div_title'>Start New Draft (Quick Config)</span><hr>";
     echo "<form id='draft_configuration_form' method='post'>";
     echo "Teams: <select id='draft_configuration_select_teams'>";
     for($i=1;$i<21;$i++){
@@ -75,7 +75,7 @@ if($_GET['resource'] == 'quick_draft_configuration'){
         else{
             echo "<option value='$i'>$i</option>";    }    
         }
-    echo "</select><br>";
+    echo "</select>&nbsp &nbsp &nbsp &nbsp";
     echo "Rounds: <select id='draft_configuration_select_rounds'>";
     for($i=1;$i<21;$i++){
         if($i == '15'){
@@ -88,12 +88,12 @@ if($_GET['resource'] == 'quick_draft_configuration'){
     echo "</select><br>";
     echo "Flex: <select id='draft_configuration_select_flex'><option value='std'>WR, RB</option><option value='te'>WR, RB, TE</option></select>";
     
-    echo "<br><button id='launch_new_draft'>Launch New Draft</button>";
+    echo "&nbsp &nbsp &nbsp &nbsp<button id='launch_new_draft'>Launch New Draft</button>";
     echo "</form>";
 }
 
 if($_GET['resource']=='draft_controls'){
-    echo "<span class='menu_div_title'>Draft Controls</span><br><hr>";
+    echo "<span class='menu_div_title'>Draft Controls</span><hr>";
     /*echo '<img src="../images/undo.png" alt="undo" id="undo_button">';
     echo '<img src="../images/sk.jpg" alt="set keepers" id="set_keepers">';*/
     echo "<button class='w3-btn w3-round w3-green' alt='undo' id='undo_button'>Undo</button><br><br>";
@@ -104,12 +104,12 @@ if($_GET['resource']=='draft_controls'){
 if($_GET['resource'] == 'draft_status'){
     $num_teams = $_GET['num_teams'];
     $num_rounds = $_GET['num_rounds'];
-    echo "<span class='menu_div_title'>Draft Status</span><br><hr>";
+    echo "<span class='menu_div_title'>Draft Status</span><hr>";
     echo 'Round: <select class="draft_status_select" id="draft_status_round">';
     for($i=1; $i<=$num_rounds; $i++){
         echo '<option value='."$i".'>'.$i.'</option>';
     }
-    echo '</select><br><br> Pick: <select class="draft_status_select" id="draft_status_pick">';
+    echo '</select>&nbsp &nbsp &nbsp &nbsp Pick: <select class="draft_status_select" id="draft_status_pick">';
     for($i=1; $i<=$num_teams; $i++){
         echo '<option value='."$i".'>'.$i.'</option>';
     }
