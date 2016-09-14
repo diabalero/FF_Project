@@ -21,28 +21,23 @@ $(document).ready(function(){
    var draft_record = [];
    var overall_pick = 1;
    var allowed_flex_positions = ['RB', 'WR'];
-   var last_pick = []; //I will just set last_pick to overall_pick after a selection, 
-   //then the undo function will just erase that from the draft record, and restyle what needs it
    
-   
-    
-   //load the list of all the players into the side bar from the database
-   //$('#player_list').load('../DraftHelper/data.php?resource=player_list');
-   
-   //load the list of all the players from a CSV (ffcalculator is the source)
-   /*$('#player_list').load('../DraftHelper/data.php?resource=player_list_from_csv', function(){
-       color_the_player_table();
-       filter_player_list('All', 'All');
-   }); */
-   
-   function load_the_page(){
+   function start_new_draft(config){
+    numTeams = config.numTeams;
+    numRounds = config.numRounds;
+        num_bench_spots = numRounds - 9;
+    allowed_flex_positions = config.allowed_flex_positions;
+    round = 1;
+    pick = 1;
+    overall_pick = 1;
+    draft_record = [];
+
    //load the list of players from nfl.com's api
    $('#player_list_filter').load('../DraftHelper/data.php?resource=player_list_filter');
    get_players();
    filter_player_list('All', 'All');
    
    //load the team tables based on number of teams and rounds (# of rounds effects bench spots)
-   //I need to add configuration for how many of each position and what can be in a flex spot using the allowed flex positions array
    $('#teams_display').load('../DraftHelper/data.php?resource=teams_display&numTeams='+numTeams+'&numRounds='+numRounds, function(){
     current_team_id = 1;
     current_team_name = $('#team_'+current_team_id+'_board').find('.team_name').text();
@@ -55,13 +50,12 @@ $(document).ready(function(){
     $('#quick_draft_configuration').load('../DraftHelper/data.php?resource=quick_draft_configuration');
     $('#draft_controls').load('../DraftHelper/data.php?resource=draft_controls');
    }
-load_the_page();
+start_new_draft();
    
    //create an array of team information
    var teams_info = [];
    for(i = 1; i <= numTeams; i++){
        teams_info[i] = {'draft_position': i, 'team_name':'Team'+i};
-       //console.log(teams_info[i]);
    }
    
    //launch new draft
@@ -82,7 +76,7 @@ load_the_page();
            allowed_flex_positions = ['RB','WR','TE'];
        }
        
-       load_the_page();
+       start_new_draft();
        
    });
    
@@ -165,14 +159,12 @@ load_the_page();
     }); 
 
     $('body').on('change', '.draft_status_select', function(){
-        //console.log('a draft status select box change fired, did we want it to?');
         pick = $('#draft_status_pick').val();
         round = $('#draft_status_round').val();
         go_to_first_available_pick(pick, round);
         update_draft_status(round, pick);
         color_the_player_table();
         highlight_picking_teams_table();
-        //console.log('on draft status change:'+ overall_pick + ' ' + round + ' ' + pick);
     });
     
     $('body').on('click', '.hide_round', function(){
@@ -455,11 +447,17 @@ load_the_page();
         }
         function export_draft(){
             var json = {};
+            json.teams = {};
+            json.picks = {};
+            json.numTeams = numTeams;
+            json.numRounds = numRounds;
+            json.allowed_flex_positions = allowed_flex_positions;
+
             for(i=0;i<=draft_record.length;i++){
-                json['pick_'+i] = draft_record[i];
+                json['picks']['pick_'+i] = draft_record[i];
             }
             for(i=1; i<=teams_info.length; i++){
-                json['team_'+i] = teams_info[i];
+                json['teams']['team_'+i] = teams_info[i];
             }
             var response = $.post('post.php', json, function(){
                 $('#export_span').append('<a id="download_export_draft" href="'+response.responseText+'" download>Click here to download</a>');    
@@ -488,10 +486,6 @@ load_the_page();
                 }
             };
             
-        }
-        
-        function transferComplete(evt){
-            console.log('transfer completed ' + evt.statusText);
         }
 }); //end document.ready
 
