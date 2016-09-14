@@ -22,14 +22,13 @@ $(document).ready(function(){
    var overall_pick = 1;
    var allowed_flex_positions = ['RB', 'WR'];
    
-   function load_the_page(){
+   function start_new_draft(config){
    //load the list of players from nfl.com's api
    $('#player_list_filter').load('../DraftHelper/data.php?resource=player_list_filter');
    get_players();
    filter_player_list('All', 'All');
    
    //load the team tables based on number of teams and rounds (# of rounds effects bench spots)
-   //I need to add configuration for how many of each position and what can be in a flex spot using the allowed flex positions array
    $('#teams_display').load('../DraftHelper/data.php?resource=teams_display&numTeams='+numTeams+'&numRounds='+numRounds, function(){
     current_team_id = 1;
     current_team_name = $('#team_'+current_team_id+'_board').find('.team_name').text();
@@ -42,7 +41,7 @@ $(document).ready(function(){
     $('#quick_draft_configuration').load('../DraftHelper/data.php?resource=quick_draft_configuration');
     $('#draft_controls').load('../DraftHelper/data.php?resource=draft_controls');
    }
-load_the_page();
+start_new_draft();
    
    //create an array of team information
    var teams_info = [];
@@ -68,7 +67,7 @@ load_the_page();
            allowed_flex_positions = ['RB','WR','TE'];
        }
        
-       load_the_page();
+       start_new_draft();
        
    });
    
@@ -478,10 +477,6 @@ load_the_page();
                 }
             };
             
-        }
-        
-        function transferComplete(evt){
-            console.log('transfer completed ' + evt.statusText);
         }
 }); //end document.ready
 
