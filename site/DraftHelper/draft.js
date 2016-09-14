@@ -11,18 +11,32 @@
 
 
 $(document).ready(function(){
-    
-   var numTeams = 12;
-   var numRounds = 15;
-   var num_bench_spots = numRounds - 9;
-   var round = 1;
-   var pick = 1;
+   var default_config = {
+       numRounds:15,
+       numTeams:12,
+       picks:[],
+       teams:[{'team_name':'Team 1', 'draft_position':1},
+                {'team_name':'Team 2', 'draft_position':2},
+                {'team_name':'Team 3', 'draft_position':3},
+                {'team_name':'Team 4', 'draft_position':4},
+                {'team_name':'Team 5', 'draft_position':5},
+                {'team_name':'Team 6', 'draft_position':6},
+                {'team_name':'Team 7', 'draft_position':7},
+                {'team_name':'Team 8', 'draft_position':8},
+                {'team_name':'Team 9', 'draft_position':9},
+                {'team_name':'Team 10', 'draft_position':10},
+                {'team_name':'Team 11', 'draft_position':11},
+                {'team_name':'Team 12', 'draft_position':12}]
+                
+            }
    var dp_of_team_name_change;
+   var teams_info = [];
    var draft_record = [];
-   var overall_pick = 1;
-   var allowed_flex_positions = ['RB', 'WR'];
+
    
    function start_new_draft(config){
+    teams_info = [];
+    draft_record = [];
     numTeams = config.numTeams;
     numRounds = config.numRounds;
         num_bench_spots = numRounds - 9;
@@ -30,7 +44,15 @@ $(document).ready(function(){
     round = 1;
     pick = 1;
     overall_pick = 1;
-    draft_record = [];
+    $.each(config.teams, function(){
+       teams_info.push(this);
+    });
+    $.each(config.picks, function(){
+        draft_record.push(this);
+    });
+    console.log(teams_info);
+    console.log(draft_record);
+    
 
    //load the list of players from nfl.com's api
    $('#player_list_filter').load('../DraftHelper/data.php?resource=player_list_filter');
@@ -50,7 +72,8 @@ $(document).ready(function(){
     $('#quick_draft_configuration').load('../DraftHelper/data.php?resource=quick_draft_configuration');
     $('#draft_controls').load('../DraftHelper/data.php?resource=draft_controls');
    }
-start_new_draft();
+   
+start_new_draft(default_config);
    
    //create an array of team information
    var teams_info = [];
@@ -61,7 +84,6 @@ start_new_draft();
    //launch new draft
    $('body').on('click', '#launch_new_draft', function(e){
        e.preventDefault();
-       //alert('default was prevented');
        numTeams = parseInt($('#draft_configuration_select_teams').val());
        numRounds = parseInt($('#draft_configuration_select_rounds').val());
        var flex = $('#draft_configuration_select_flex').val();
@@ -75,8 +97,25 @@ start_new_draft();
        if(flex == 'te'){
            allowed_flex_positions = ['RB','WR','TE'];
        }
-       
-       start_new_draft();
+       var config = {
+       numRounds:numRounds,
+       numTeams:numTeams,
+       picks:[],
+       teams:[{'team_name':'Team 1', 'draft_position':1},
+                {'team_name':'Team 2', 'draft_position':2},
+                {'team_name':'Team 3', 'draft_position':3},
+                {'team_name':'Team 4', 'draft_position':4},
+                {'team_name':'Team 5', 'draft_position':5},
+                {'team_name':'Team 6', 'draft_position':6},
+                {'team_name':'Team 7', 'draft_position':7},
+                {'team_name':'Team 8', 'draft_position':8},
+                {'team_name':'Team 9', 'draft_position':9},
+                {'team_name':'Team 10', 'draft_position':10},
+                {'team_name':'Team 11', 'draft_position':11},
+                {'team_name':'Team 12', 'draft_position':12}]
+                
+            }
+       start_new_draft(config);
        
    });
    
@@ -117,6 +156,7 @@ start_new_draft();
         teams_info[dp_of_team_name_change]['team_name'] = new_team_name;
         update_draft_status(round, pick);
         $('.team_board').find('div[purpose="team_name"]').addClass('team_name');
+        console.log(teams_info);
         }
 
         });
@@ -128,6 +168,7 @@ start_new_draft();
             teams_info[dp_of_team_name_change]['team_name'] = new_team_name;
             update_draft_status(round, pick);
             $('.team_board').find('div[purpose="team_name"]').addClass('team_name');
+            console.log(teams_info);
             }
         }
         
@@ -482,7 +523,8 @@ start_new_draft();
                 if(xhr.readyState == 4 && xhr.status == 200){
                     //console.log(xhr.responseText);
                     json = JSON.parse(xhr.response);
-                    console.log(json);
+                    //console.log(json);
+                    start_new_draft(json);
                 }
             };
             
