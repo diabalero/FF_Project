@@ -21,19 +21,6 @@ $(document).ready(function(){
    var draft_record = [];
    var overall_pick = 1;
    var allowed_flex_positions = ['RB', 'WR'];
-   var last_pick = []; //I will just set last_pick to overall_pick after a selection, 
-   //then the undo function will just erase that from the draft record, and restyle what needs it
-   
-   
-    
-   //load the list of all the players into the side bar from the database
-   //$('#player_list').load('../DraftHelper/data.php?resource=player_list');
-   
-   //load the list of all the players from a CSV (ffcalculator is the source)
-   /*$('#player_list').load('../DraftHelper/data.php?resource=player_list_from_csv', function(){
-       color_the_player_table();
-       filter_player_list('All', 'All');
-   }); */
    
    function load_the_page(){
    //load the list of players from nfl.com's api
@@ -61,7 +48,6 @@ load_the_page();
    var teams_info = [];
    for(i = 1; i <= numTeams; i++){
        teams_info[i] = {'draft_position': i, 'team_name':'Team'+i};
-       //console.log(teams_info[i]);
    }
    
    //launch new draft
@@ -165,14 +151,12 @@ load_the_page();
     }); 
 
     $('body').on('change', '.draft_status_select', function(){
-        //console.log('a draft status select box change fired, did we want it to?');
         pick = $('#draft_status_pick').val();
         round = $('#draft_status_round').val();
         go_to_first_available_pick(pick, round);
         update_draft_status(round, pick);
         color_the_player_table();
         highlight_picking_teams_table();
-        //console.log('on draft status change:'+ overall_pick + ' ' + round + ' ' + pick);
     });
     
     $('body').on('click', '.hide_round', function(){
@@ -455,11 +439,17 @@ load_the_page();
         }
         function export_draft(){
             var json = {};
+            json.teams = {};
+            json.picks = {};
+            json.numTeams = numTeams;
+            json.numRounds = numRounds;
+            json.allowed_flex_positions = allowed_flex_positions;
+
             for(i=0;i<=draft_record.length;i++){
-                json['pick_'+i] = draft_record[i];
+                json['picks']['pick_'+i] = draft_record[i];
             }
             for(i=1; i<=teams_info.length; i++){
-                json['team_'+i] = teams_info[i];
+                json['teams']['team_'+i] = teams_info[i];
             }
             var response = $.post('post.php', json, function(){
                 $('#export_span').append('<a id="download_export_draft" href="'+response.responseText+'" download>Click here to download</a>');    
