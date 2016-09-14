@@ -23,6 +23,15 @@ $(document).ready(function(){
    var allowed_flex_positions = ['RB', 'WR'];
    
    function start_new_draft(config){
+    numTeams = config.numTeams;
+    numRounds = config.numRounds;
+        num_bench_spots = numRounds - 9;
+    allowed_flex_positions = config.allowed_flex_positions;
+    round = 1;
+    pick = 1;
+    overall_pick = 1;
+    draft_record = [];
+
    //load the list of players from nfl.com's api
    $('#player_list_filter').load('../DraftHelper/data.php?resource=player_list_filter');
    get_players();
