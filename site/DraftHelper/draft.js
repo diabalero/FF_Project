@@ -11,9 +11,13 @@
 
 
 $(document).ready(function(){
-   var default_config = {
+    var dp_of_team_name_change;
+    var teams_info = [];
+    var draft_record = [];
+    var default_config = {
        numRounds:15,
        numTeams:12,
+       allowed_flex_positions:['RB','WR'],
        picks:[],
        teams:[{'team_name':'Team 1', 'draft_position':1},
                 {'team_name':'Team 2', 'draft_position':2},
@@ -29,12 +33,9 @@ $(document).ready(function(){
                 {'team_name':'Team 12', 'draft_position':12}]
                 
             }
-   var dp_of_team_name_change;
-   var teams_info = [];
-   var draft_record = [];
 
-   
    function start_new_draft(config){
+    //set some variables
     teams_info = [];
     draft_record = [];
     numTeams = config.numTeams;
@@ -44,30 +45,25 @@ $(document).ready(function(){
     round = 1;
     pick = 1;
     overall_pick = 1;
-    $.each(config.teams, function(){
-       teams_info.push(this);
-    });
+    //create the draft record, will be empty if new draft or no keepers
     $.each(config.picks, function(){
-        draft_record.push(this);
+        draft_a_player(this.player_name, this.player_team, this.player_pos, this.team, this.round, this.pick, this.overall_pick);
     });
-    console.log(teams_info);
     console.log(draft_record);
-    
-
    //load the list of players from nfl.com's api
    $('#player_list_filter').load('../DraftHelper/data.php?resource=player_list_filter');
    get_players();
    filter_player_list('All', 'All');
-   
    //load the team tables based on number of teams and rounds (# of rounds effects bench spots)
    $('#teams_display').load('../DraftHelper/data.php?resource=teams_display&numTeams='+numTeams+'&numRounds='+numRounds, function(){
-    current_team_id = 1;
-    current_team_name = $('#team_'+current_team_id+'_board').find('.team_name').text();
+        $.each(config.teams, function(){
+       teams_info.push(this);
+       $('div[draft_position='+this.draft_position+']').text(this.team_name);
+    });
        });
     $('#draft_record').load('../DraftHelper/data.php?resource=draft_record&numTeams='+numTeams+'&numRounds='+numRounds);
     $('#draft_status').load('../DraftHelper/data.php?resource=draft_status&num_rounds='+numRounds+'&num_teams='+numTeams, function(){
-        
-        update_draft_status(round, pick);
+        go_to_first_available_pick(1,1);
     });
     $('#quick_draft_configuration').load('../DraftHelper/data.php?resource=quick_draft_configuration');
     $('#draft_controls').load('../DraftHelper/data.php?resource=draft_controls');
@@ -120,6 +116,18 @@ start_new_draft(default_config);
    });
    
    //function to draft a player
+   function draft_a_player(player_name, player_team, player_pos, team, round, pick, overall_pick){
+        if(add_player_to_team_board(team, player_name, player_pos) == 1){ //this if statement should be replaced with functionality that allows you to draft whoever you want, not limited by position
+            draft_record.push({'overall_pick':overall_pick, 'round':round, 'pick':pick, 'team':team, 'player_name':player_name, 'player_position':player_pos, 'player_team':player_team });
+            add_player_to_draft_record(team, player_name, player_pos);
+            restyle_player_list_row_for_drafted_player($('tr[player_name="'+player_name+'"]'));
+            go_to_first_available_pick(1,1);
+            update_draft_status(round, pick);
+            color_the_player_table();
+            highlight_picking_teams_table();
+        }
+   }
+
     $('body').on('click', 'tr[drafted=false]', function () {
         var player_name = $(this).attr('player_name');
         var player_pos = $(this).attr('player_pos');
@@ -128,17 +136,14 @@ start_new_draft(default_config);
         var team_info = get_team_info(round, pick);
         var team = team_info['draft_position'];
         //console.log(team_info);
-        if(add_player_to_team_board(team, player_name, player_pos) == 1){ //this if statement shoudl be replaced with functionality that allows you to draft whoever you want, not limited by position
+        if(add_player_to_team_board(team, player_name, player_pos) == 1){ //this if statement should be replaced with functionality that allows you to draft whoever you want, not limited by position
             draft_record.push({'overall_pick':overall_pick, 'round':round, 'pick':pick, 'team':team, 'player_name':player_name, 'player_position':player_pos, 'player_team':player_team });
             add_player_to_draft_record(team, player_name, player_pos);
             restyle_player_list_row_for_drafted_player(this_obj);
             go_to_first_available_pick(1,1);
-            
-            //console.log('on tr:player_row click: round: '+round+ ' pick:'+pick+ ' overall_pick: '+overall_pick);
             update_draft_status(round, pick);
             color_the_player_table();
             highlight_picking_teams_table();
-           //console.log('pick: '+pick, ' round: '+round+ ' numTeams: '+numTeams+' numRounds: '+numRounds+ ' team_info: '+team_info[1]);
         }
         
     });
@@ -281,9 +286,10 @@ start_new_draft(default_config);
             //console.log('get_team_info: '+round+ ' ' +pick+ ' '+local_team_info['team_name']);
             return local_team_info;
         }
-        function update_draft_status(){
+        function update_draft_status(round, pick){
            //console.log('update draft status: '+ round+' '+pick);
             team_info = get_team_info(round, pick);
+            console.log(team_info);
             $('#draft_status_round').val(round);
             $('#draft_status_pick').val(pick);
             $('#picking_team').text(team_info['team_name']);
@@ -521,7 +527,7 @@ start_new_draft(default_config);
             xhr.send(fd);    
             xhr.onreadystatechange = function(){
                 if(xhr.readyState == 4 && xhr.status == 200){
-                    //console.log(xhr.responseText);
+                    console.log(xhr.responseText);
                     json = JSON.parse(xhr.response);
                     //console.log(json);
                     start_new_draft(json);
