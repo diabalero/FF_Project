@@ -33,13 +33,7 @@ $(document).ready(function(){
                 {'team_name':'Team 12', 'draft_position':12}]
                 
         }
-
-
-        console.log(teams_info);
-   
     start_new_draft(default_config);
-    console.log(teams_info);
-    console.log(draft_record);
 //event listeners
     $('body').on('click', '#launch_new_draft', function(e){
         e.preventDefault();
@@ -154,19 +148,18 @@ $(document).ready(function(){
     
 //functions
     function start_new_draft(config){
-        //set some variables
+        round = 1;
+        pick = 1;
+        overall_pick = 1;
         teams_info = [];
-        $.each(config.teams, function(){
-
-            });
-        draft_record = [];
         numTeams = config.numTeams;
         numRounds = config.numRounds;
         num_bench_spots = numRounds - 9;
         allowed_flex_positions = config.allowed_flex_positions;
-        round = 1;
-        pick = 1;
-        overall_pick = 1;
+        $.each(config.teams, function(){
+            teams_info.push(this);
+            });
+        draft_record = [];
         $('#player_list_filter').load('../DraftHelper/data.php?resource=player_list_filter');
         get_players();
         filter_player_list('All', 'All');
@@ -255,21 +248,17 @@ $(document).ready(function(){
     function get_team_info(round, pick){
         //console.log('get team info numTeams: '+ numTeams);
         if (round % 2 != 0){ //applies to odd rounds
-            local_team_info = teams_info[pick];
-            console.log('hello from odd round'+ local_team_info);
+            local_team_info = teams_info[pick -1];
         }
         else{ //applies to even rounds
-            local_team_info = teams_info[(numTeams+1) - pick];
-            console.log((numTeams+1) - pick);
-            console.log('hello from even round');
+            local_team_info = teams_info[(numTeams+1) - (pick - 1)];
         }
         //console.log('get_team_info: '+round+ ' ' +pick+ ' '+local_team_info['team_name']);
         return local_team_info;
         }
     function update_draft_status(round, pick){
-        console.log('round:'+ round+' pick'+pick);
         team_info = get_team_info(round, pick);
-        //console.log(team_info);
+        console.log('update draft status' + team_info);
         $('#draft_status_round').val(round);
         $('#draft_status_pick').val(pick);
         $('#picking_team').text(team_info['team_name']);
