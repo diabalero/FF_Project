@@ -59,8 +59,9 @@ $(document).ready(function(){
         var this_obj = $(this); //just use this variable for styling selected player rows, dont have to use $(this) that way.
         var team_info = get_team_info(round, pick);
         var team = team_info['draft_position'];
+        draft_a_player(player_name, player_team, player_pos, team, round, pick, overall_pick);
         //console.log(team_info);
-        if(add_player_to_team_board(team, player_name, player_pos) == 1){ //this if statement should be replaced with functionality that allows you to draft whoever you want, not limited by position
+        /*if(add_player_to_team_board(team, player_name, player_pos) == 1){ //this if statement should be replaced with functionality that allows you to draft whoever you want, not limited by position
             draft_record.push({'overall_pick':overall_pick, 'round':round, 'pick':pick, 'team':team, 'player_name':player_name, 'player_position':player_pos, 'player_team':player_team });
             add_player_to_draft_record(team, player_name, player_pos, overall_pick);
             restyle_player_list_row_for_drafted_player(this_obj);
@@ -68,7 +69,7 @@ $(document).ready(function(){
             update_draft_status(round, pick);
             color_the_player_table();
             highlight_picking_teams_table();
-        }
+        }*/
         
         });
     
@@ -157,16 +158,20 @@ $(document).ready(function(){
         numRounds = config.numRounds;
         num_bench_spots = numRounds - 9;
         allowed_flex_positions = config.allowed_flex_positions;
-        $.each(config.teams, function(){
-            teams_info.push(this);
-            });
+        //console.log(config.teams[0]);
+        for(i=1;i<=numTeams;i++){
+            teams_info[i] = config.teams[i-1];
+        }
+        console.log(teams_info);
+        //$.each(config.teams, function(){
+        //    teams_info.push(this);
+        //    });
         $('#player_list_filter').load('../DraftHelper/data.php?resource=player_list_filter');
         get_players();
         filter_player_list('All', 'All');
         //load the team tables based on number of teams and rounds (# of rounds effects bench spots)
         $('#teams_display').load('../DraftHelper/data.php?resource=teams_display&numTeams='+numTeams+'&numRounds='+numRounds, function(){
             $.each(config.teams, function(){
-            teams_info.push(this);
             $('div[draft_position='+this.draft_position+']').text(this.team_name);
                 });
             });
@@ -180,8 +185,8 @@ $(document).ready(function(){
         $('#draft_controls').load('../DraftHelper/data.php?resource=draft_controls');
         $('#draft_status').load('../DraftHelper/data.php?resource=draft_status&num_rounds='+numRounds+'&num_teams='+numTeams, function(){
             go_to_first_available_pick(1,1);
+            
             update_draft_status(round, pick);
-            console.log(round + ' '+ pick);
             });
 
 
@@ -249,17 +254,16 @@ $(document).ready(function(){
         }
     function get_team_info(round, pick){
         if (round % 2 != 0){ //applies to odd rounds
-            local_team_info = teams_info[pick - 1];
+            local_team_info = teams_info[pick];
         }
         else{ //applies to even rounds
-            local_team_info = teams_info[(numTeams) - (pick)];
+            local_team_info = teams_info[(numTeams + 1) - (pick)];
         }
         //console.log('get_team_info: '+round+ ' ' +pick+ ' '+local_team_info['team_name']);
         return local_team_info;
         }
     function update_draft_status(round, pick){
         team_info = get_team_info(round, pick);
-        console.log(pick + ' '+ round);
         $('#draft_status_round').val(round);
         $('#draft_status_pick').val(pick);
         $('#picking_team').text(team_info['team_name']);
@@ -403,10 +407,9 @@ $(document).ready(function(){
         $.each(draft_record, function(){
             temp_array.push(parseInt(this.overall_pick));
         });
-        console.log(temp_array);
         pick = starting_round;
         round = starting_pick;
-        overall_pick = ((starting_round - 1) * numTeams) + pick;
+        overall_pick = ((starting_round - 1) * numTeams) + starting_pick;
         while($.inArray(overall_pick, temp_array) > -1){
             if(pick < numTeams){
                 pick++;
@@ -418,7 +421,6 @@ $(document).ready(function(){
                 overall_pick++;
             }
         }
-        console.log (pick + ' ' + round);
         }          
     function highlight_picking_teams_table(){
         if(round%2!=0){ team = pick;}
@@ -427,9 +429,9 @@ $(document).ready(function(){
         $('#team_'+team+'_board th').css('background-color', '#E37222');
         $('#team_'+team+'_board th').css('border-radius', '.5em');
         //Trying to get the header of team on the clock to flash
-        for(i=5; i >= 1; i--){
-            $('#team_'+team+'_board th').fadeOut(500).fadeIn(500);
-        } 
+        //for(i=5; i >= 1; i--){
+        //    $('#team_'+team+'_board th').fadeOut(500).fadeIn(500);
+        //} 
         //$('#team_'+team+'_board th').fadeToggle("slow", "linear");
         }
     function print_draft_results(){
