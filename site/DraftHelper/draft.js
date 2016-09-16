@@ -62,7 +62,7 @@ $(document).ready(function(){
         //console.log(team_info);
         if(add_player_to_team_board(team, player_name, player_pos) == 1){ //this if statement should be replaced with functionality that allows you to draft whoever you want, not limited by position
             draft_record.push({'overall_pick':overall_pick, 'round':round, 'pick':pick, 'team':team, 'player_name':player_name, 'player_position':player_pos, 'player_team':player_team });
-            add_player_to_draft_record(team, player_name, player_pos);
+            add_player_to_draft_record(team, player_name, player_pos, overall_pick);
             restyle_player_list_row_for_drafted_player(this_obj);
             go_to_first_available_pick(1,1);
             update_draft_status(round, pick);
@@ -152,6 +152,7 @@ $(document).ready(function(){
         pick = 1;
         overall_pick = 1;
         teams_info = [];
+        draft_record = [];
         numTeams = config.numTeams;
         numRounds = config.numRounds;
         num_bench_spots = numRounds - 9;
@@ -159,7 +160,6 @@ $(document).ready(function(){
         $.each(config.teams, function(){
             teams_info.push(this);
             });
-        draft_record = [];
         $('#player_list_filter').load('../DraftHelper/data.php?resource=player_list_filter');
         get_players();
         filter_player_list('All', 'All');
@@ -169,25 +169,26 @@ $(document).ready(function(){
             teams_info.push(this);
             $('div[draft_position='+this.draft_position+']').text(this.team_name);
                 });
-            console.log(teams_info);
             });
-        //create the draft record, will be empty if new draft or no keepers
-        $.each(config.picks, function(){
-            draft_a_player(this.player_name, this.player_team, this.player_pos, this.team, this.round, this.pick, this.overall_pick);
-            });
-        $('#draft_record').load('../DraftHelper/data.php?resource=draft_record&numTeams='+numTeams+'&numRounds='+numRounds);
-        $('#draft_status').load('../DraftHelper/data.php?resource=draft_status&num_rounds='+numRounds+'&num_teams='+numTeams, function(){
-
-            });
+        $('#draft_record').load('../DraftHelper/data.php?resource=draft_record&numTeams='+numTeams+'&numRounds='+numRounds, function(){
+            //create the draft record, will be empty if new draft or no keepers
+            $.each(config.picks, function(){
+                draft_a_player(this.player_name, this.player_team, this.player_position, this.team, this.round, this.pick, this.overall_pick);
+                });
+        });
         $('#quick_draft_configuration').load('../DraftHelper/data.php?resource=quick_draft_configuration');
         $('#draft_controls').load('../DraftHelper/data.php?resource=draft_controls');
-        go_to_first_available_pick(1,1);
-        update_draft_status(round, pick);
+        $('#draft_status').load('../DraftHelper/data.php?resource=draft_status&num_rounds='+numRounds+'&num_teams='+numTeams, function(){
+            go_to_first_available_pick(1,1);
+            update_draft_status(round, pick);
+            });
+
+
         }
     function draft_a_player(player_name, player_team, player_pos, team, round, pick, overall_pick){
         if(add_player_to_team_board(team, player_name, player_pos) == 1){ //this if statement should be replaced with functionality that allows you to draft whoever you want, not limited by position
             draft_record.push({'overall_pick':overall_pick, 'round':round, 'pick':pick, 'team':team, 'player_name':player_name, 'player_position':player_pos, 'player_team':player_team });
-            add_player_to_draft_record(team, player_name, player_pos);
+            add_player_to_draft_record(team, player_name, player_pos, overall_pick);
             restyle_player_list_row_for_drafted_player($('tr[player_name="'+player_name+'"]'));
             go_to_first_available_pick(1,1);
             update_draft_status(round, pick);
@@ -239,7 +240,7 @@ $(document).ready(function(){
             }
         }
         }
-    function add_player_to_draft_record(team, player_name, player_pos){
+    function add_player_to_draft_record(team, player_name, player_pos, overall_pick){
         $('span[overall_pick='+overall_pick+']').text(player_name+' '+player_pos);
         }
     function restyle_player_list_row_for_drafted_player(obj){
@@ -248,21 +249,20 @@ $(document).ready(function(){
     function get_team_info(round, pick){
         //console.log('get team info numTeams: '+ numTeams);
         if (round % 2 != 0){ //applies to odd rounds
-            local_team_info = teams_info[pick -1];
+            local_team_info = teams_info[pick - 1];
         }
         else{ //applies to even rounds
-            local_team_info = teams_info[(numTeams+1) - (pick - 1)];
+            local_team_info = teams_info[(numTeams) - (pick)];
         }
         //console.log('get_team_info: '+round+ ' ' +pick+ ' '+local_team_info['team_name']);
         return local_team_info;
         }
     function update_draft_status(round, pick){
         team_info = get_team_info(round, pick);
-        console.log('update draft status' + team_info);
+        //console.log('update draft status' + team_info);
         $('#draft_status_round').val(round);
         $('#draft_status_pick').val(pick);
         $('#picking_team').text(team_info['team_name']);
-        //console.log('update_draft_status: '+ team_info['team_name']);
         }
     function color_the_player_table(){
         $('.player_row').each(function(index){
@@ -470,9 +470,7 @@ $(document).ready(function(){
         xhr.send(fd);    
         xhr.onreadystatechange = function(){
             if(xhr.readyState == 4 && xhr.status == 200){
-                console.log(xhr.responseText);
                 json = JSON.parse(xhr.response);
-                //console.log(json);
                 start_new_draft(json);
                 }
             };
