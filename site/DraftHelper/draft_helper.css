@@ -17,6 +17,7 @@ hr{
     display: flex;
     justify-content: center;
     height: 10vh;
+    overflow: hidden;
 }
 
 #player_list{
@@ -47,9 +48,14 @@ tr[drafted=false]:hover{
     cursor: pointer;
 }
 
-#draft_status, #draft_controls{
-    overflow-y: auto;
-    flex: auto;
+#draft_status{
+    overflow-y: hidden;
+    flex: 1;
+}
+
+#draft_controls{
+    overflow-y: hidden;
+    flex: 2;
 }
 
 #quick_draft_configuration{

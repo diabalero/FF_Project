@@ -36,7 +36,7 @@ if($_GET['resource'] == 'draft_record'){
     $num_rounds = $_GET['numRounds'];
     $overall_pick = 1;
     for($round=1; $round <= $num_rounds; $round++){
-        echo "<div class='w3-panel w3-yellow w3-round-large hide_round' round_to_hide='".$round."'>Round".$round."</div>";
+        echo "<div style='background-color:#E37222;' class='w3-panel w3-text-white w3-round hide_round' round_to_hide=' ".$round."'>Round".$round."</div>";
         echo "<div round='".$round."'>";
         for($pick=1;$pick<=$num_teams;$pick++){
             echo "<div class='w3-panel w3-blue w3-round-large w3-margin-bottom' overall_pick='".$overall_pick."' round='".$round."' pick='".$pick."'>
@@ -64,10 +64,11 @@ if ($_GET['resource'] == 'drafted_players'){
     echo $sql;
 } */
 
+/*Start of Quick Draft Configuration code*/
 if($_GET['resource'] == 'quick_draft_configuration'){
-    echo "<span class='menu_div_title'>Start New Draft (Quick Config)</span><hr>";
-    echo "<form id='draft_configuration_form' method='post'>";
-    echo "Teams: <select id='draft_configuration_select_teams'>";
+    echo "<div class='w3-dropdown-hover'><span class='menu_div_title'>Start New Draft (Quick Config)</span><hr>";
+    echo "<div class='w3-dropdown-content w3-card-4' style='width:250px'><div class='w3-container'><form id='draft_configuration_form' method='post'>";
+    echo "<div class='w3-small'> Teams: <select id='draft_configuration_select_teams'>";
     for($i=1;$i<21;$i++){
         if($i == '12'){
             echo "<option value='$i' selected>$i</option>";    
@@ -88,34 +89,36 @@ if($_GET['resource'] == 'quick_draft_configuration'){
     echo "</select><br>";
     echo "Flex: <select id='draft_configuration_select_flex'><option value='std'>WR, RB</option><option value='te'>WR, RB, TE</option></select>";
     
-    echo "&nbsp &nbsp &nbsp &nbsp<button id='launch_new_draft'>Launch New Draft</button>";
-    echo "</form>";
+    echo "<br><button class='w3-btn w3-small w3-round w3-teal w3-margin-top' id='launch_new_draft'>Launch New Draft</button>";
+    echo "</form></div></div></div></div>";
 }
+/*End of Quick Draft Configuration code*/
 
+/*Start of Draft Controls code*/
 if($_GET['resource']=='draft_controls'){
-    echo "<span class='menu_div_title'>Draft Controls</span><hr>";
-    /*echo '<img src="../images/undo.png" alt="undo" id="undo_button">';
-    echo '<img src="../images/sk.jpg" alt="set keepers" id="set_keepers">';*/
-    echo "<button class='w3-btn w3-small w3-round w3-green' alt='undo' id='undo_button'>Undo</button>&nbsp &nbsp &nbsp &nbsp";
-    echo "<span id='export_span'><button class='w3-btn w3-small w3-round w3-indigo' alt='Export Draft' id='export_draft'>Export Draft</button> </span><br>";
-    echo "<input class='w3-btn w3-small w3-round w3-red w3-margin-top' type='file' id='import_file'><br>";
+    echo "<div class='w3-dropdown-hover'><span class='menu_div_title'>Draft Controls</span><hr>";
+    echo "<div class='w3-dropdown-content w3-card-4' style='width:300px;height:100px'><div class='w3-container w3-small'><span id='export_span'><button class='w3-btn w3-small w3-round w3-teal' alt='Export Draft' id='export_draft'>Export Draft</button> </span><br>";
+    echo "<input class='w3-btn w3-small w3-round w3-margin-top w3-teal' type='file' id='import_file'><br></div></div></div>";
 }
+/*End of Draft Controls code*/
 
+/*Start of Draft Status code*/
 if($_GET['resource'] == 'draft_status'){
     $num_teams = $_GET['num_teams'];
     $num_rounds = $_GET['num_rounds'];
     echo "<span class='menu_div_title'>Draft Status</span><hr>";
-    echo 'Round: <select class="draft_status_select" id="draft_status_round">';
+    echo 'Round: <select class="draft_status_select w3-small" id="draft_status_round">';
     for($i=1; $i<=$num_rounds; $i++){
         echo '<option value='."$i".'>'.$i.'</option>';
     }
-    echo '</select>&nbsp &nbsp &nbsp &nbsp Pick: <select class="draft_status_select" id="draft_status_pick">';
+    echo '</select>&nbsp &nbsp &nbsp &nbsp Pick: <select class="draft_status_select w3-small" id="draft_status_pick">';
     for($i=1; $i<=$num_teams; $i++){
         echo '<option value='."$i".'>'.$i.'</option>';
     }
-    echo '</select><br><br> Picking Team: <span id="picking_team"></span>';
-
+    echo '</select><div class="w3-margin-top">Picking Team: <span id="picking_team"></span></div>';
+    echo "<button class='w3-btn w3-tiny w3-round w3-red w3-margin-top' alt='undo' id='undo_button'>Undo Last Pick</button>";
 }
+/*End of Draft Status code*/
 
 if($_GET['resource'] == 'teams_display'){
     $num_rounds = $_GET['numRounds'];
