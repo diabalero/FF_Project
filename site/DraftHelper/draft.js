@@ -181,6 +181,7 @@ $(document).ready(function(){
         $('#draft_status').load('../DraftHelper/data.php?resource=draft_status&num_rounds='+numRounds+'&num_teams='+numTeams, function(){
             go_to_first_available_pick(1,1);
             update_draft_status(round, pick);
+            console.log(round + ' '+ pick);
             });
 
 
@@ -259,7 +260,7 @@ $(document).ready(function(){
         }
     function update_draft_status(round, pick){
         team_info = get_team_info(round, pick);
-        //console.log('update draft status' + team_info);
+        console.log(pick + ' '+ round);
         $('#draft_status_round').val(round);
         $('#draft_status_pick').val(pick);
         $('#picking_team').text(team_info['team_name']);
@@ -401,12 +402,13 @@ $(document).ready(function(){
     function go_to_first_available_pick(starting_round, starting_pick){
         var temp_array = [];
         $.each(draft_record, function(){
-            temp_array.push(this.overall_pick);
+            temp_array.push(parseInt(this.overall_pick));
         });
+        console.log(temp_array);
         pick = starting_round;
         round = starting_pick;
         overall_pick = ((starting_round - 1) * numTeams) + pick;
-        while($.inArray(overall_pick, temp_array)> -1){
+        while($.inArray(overall_pick, temp_array) > -1){
             if(pick < numTeams){
                 pick++;
                 overall_pick++;
@@ -417,6 +419,7 @@ $(document).ready(function(){
                 overall_pick++;
             }
         }
+        console.log (pick + ' ' + round);
         }          
     function highlight_picking_teams_table(){
         if(round%2!=0){ team = pick;}
