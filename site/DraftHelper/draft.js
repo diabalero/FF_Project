@@ -248,7 +248,6 @@ $(document).ready(function(){
         $(obj).attr('drafted', 'true');
         }
     function get_team_info(round, pick){
-        //console.log('get team info numTeams: '+ numTeams);
         if (round % 2 != 0){ //applies to odd rounds
             local_team_info = teams_info[pick - 1];
         }
