@@ -457,7 +457,7 @@ $(document).ready(function(){
             json['picks']['pick_'+i] = draft_record[i];
         }
         for(i=1; i<=teams_info.length; i++){
-            json['teams']['team_'+i] = teams_info[i];
+            json['teams'][i-1] = teams_info[i];
         }
         var response = $.post('post.php', json, function(){
             $('#export_span').append('<a id="download_export_draft" href="'+response.responseText+'" download>Click here to download</a>');    
