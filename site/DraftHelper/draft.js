@@ -125,7 +125,7 @@ $(document).ready(function(){
         round = parseInt($('#draft_status_round').val());
         overall_pick = (numTeams*round) - (numTeams - pick);
         console.log('round: '+ round + 'pick: '+pick+' overall_pick:' + overall_pick);
-        update_draft_status(round, pick);
+        go_to_next_available_pick(round, pick, overall_pick);
         color_the_player_table();
         highlight_picking_teams_table();
         });
@@ -412,7 +412,28 @@ $(document).ready(function(){
                 }
             }
             update_draft_status(round, pick);
-        }          
+        }
+    function go_to_next_available_pick(current_round, current_pick, current_overall_pick){
+        var temp_array = [];
+        $.each(draft_record, function(){
+            temp_array.push(parseInt(this.overall_pick));
+        });
+        round = current_round;
+        pick = current_pick;
+        overall_pick = current_overall_pick;
+        while($.inArray(overall_pick, temp_array) > -1){
+            if(pick < numTeams){
+                pick++;
+                overall_pick++;
+            }
+            else{
+                pick = 1;
+                round++;
+                overall_pick++;
+                }
+            }
+            update_draft_status(round, pick);
+    }
     function highlight_picking_teams_table(){
         if(round%2!=0){ team = pick;}
         if(round%2==0) {team = (numTeams+1)-pick;}
@@ -441,7 +462,7 @@ $(document).ready(function(){
         json.allowed_flex_positions = allowed_flex_positions;
 
         for(i=0;i<=draft_record.length;i++){
-            json['picks']['pick_'+i] = draft_record[i];
+            json['picks'][i] = draft_record[i];
         }
         for(i=1; i<=teams_info.length; i++){
             json['teams'][i-1] = teams_info[i];
