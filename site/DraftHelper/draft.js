@@ -61,20 +61,9 @@ $(document).ready(function(){
         var player_pos = $(this).attr('player_pos');
         var player_team = $(this).attr('player_team');
         var this_obj = $(this); //just use this variable for styling selected player rows, dont have to use $(this) that way.
-        var team_info = get_team_info(round, pick);
+        var team_info = get_team_info(round, pick); //determine the picking team by what the current pick and round is
         var team = parseInt(team_info['draft_position']);
-        draft_a_player(player_name, player_team, player_pos, team, round, pick, overall_pick);
-        //console.log(team_info);
-        /*if(add_player_to_team_board(team, player_name, player_pos) == 1){ //this if statement should be replaced with functionality that allows you to draft whoever you want, not limited by position
-            draft_record.push({'overall_pick':overall_pick, 'round':round, 'pick':pick, 'team':team, 'player_name':player_name, 'player_position':player_pos, 'player_team':player_team });
-            add_player_to_draft_record(team, player_name, player_pos, overall_pick);
-            restyle_player_list_row_for_drafted_player(this_obj);
-            go_to_first_available_pick();
-            update_draft_status(round, pick);
-            color_the_player_table();
-            highlight_picking_teams_table();
-        }*/
-        
+        draft_a_player(player_name, player_team, player_pos, team, round, pick, overall_pick);        
         });
     
     $('body').on('dblclick', '.team_name', function() {
@@ -134,7 +123,8 @@ $(document).ready(function(){
     $('body').on('change', '.draft_status_select', function(){
         pick = parseInt($('#draft_status_pick').val());
         round = parseInt($('#draft_status_round').val());
-        go_to_first_available_pick();
+        overall_pick = (numTeams*round) - (numTeams - pick);
+        console.log('round: '+ round + 'pick: '+pick+' overall_pick:' + overall_pick);
         update_draft_status(round, pick);
         color_the_player_table();
         highlight_picking_teams_table();
