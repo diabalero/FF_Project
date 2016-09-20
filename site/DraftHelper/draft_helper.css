@@ -16,8 +16,9 @@ hr{
 #menu{
     display: flex;
     justify-content: center;
-    height: 10vh;
     overflow: hidden;
+    min-height: 15vh;
+
 }
 
 #player_list{
