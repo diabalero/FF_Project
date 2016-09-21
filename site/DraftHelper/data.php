@@ -94,13 +94,13 @@ if($_GET['resource'] == 'quick_draft_configuration'){
 }
 /*End of Quick Draft Configuration code*/
 
-/*Start of Draft Controls code*/
+/*Start of Draft Controls code
 if($_GET['resource']=='draft_controls'){
     echo "<div class='w3-dropdown-hover'><span class='menu_div_title'>Draft Controls</span><hr>";
     echo "<div class='w3-dropdown-content w3-card-4' style='width:300px;height:100px'><div class='w3-container w3-small'><span id='export_span'><button class='w3-btn w3-small w3-round w3-teal' alt='Export Draft' id='export_draft'>Export Draft</button> </span><br>";
     echo "<input class='w3-btn w3-small w3-round w3-margin-top w3-teal' type='file' id='import_file'><br></div></div></div>";
 }
-/*End of Draft Controls code*/
+End of Draft Controls code*/
 
 /*Start of Draft Status code*/
 if($_GET['resource'] == 'draft_status'){
@@ -119,6 +119,24 @@ if($_GET['resource'] == 'draft_status'){
     echo "<button class='w3-btn w3-tiny w3-round w3-red w3-margin-top' alt='undo' id='undo_button'>Undo Last Pick</button>";
 }
 /*End of Draft Status code*/
+
+/*--MODAL TEST--Start of Draft Controls code*/
+if($_GET['resource']=='draft_controls'){
+    echo '<button onclick="document.getElementById(\'DraftControlsModal\').style.display=\'block\'" class="w3-btn"><span class=\'menu_div_title\'>Draft Controls</span></button>';
+    echo "<div id=\"DraftControlsModal\" class=\"w3-modal\">
+            <div class=\"w3-modal-content  w3-card-8\">
+                    <header class=\"w3-container w3-blue\">
+                    <span onclick=\"document.getElementById('DraftControlsModal').style.display='none'\" class=\"w3-closebtn\">&times;</span>
+                    <h2>Draft Controls</h2>
+                    </header>
+                    <div class=\"w3-container\">
+                    <span id='export_span'><button class='w3-btn w3-small w3-round w3-teal' alt='Export Draft' id='export_draft'>Export Draft</button> </span><br>
+                    <input class='w3-btn w3-small w3-round w3-margin-top w3-teal' type='file' id='import_file'>
+                </div>
+            </div>
+        </div>";
+}
+/*--MODAL TEST--End of Draft Controls code*/
 
 if($_GET['resource'] == 'teams_display'){
     $num_rounds = $_GET['numRounds'];
